@@ -1,8 +1,7 @@
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.6;
 
-remixd -s C:/Users/hp/Documents/GitHub/fisrtTask-ShaheerAndErmal --remix-ide https://remix.ethereum.org/#optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.7+commit.e28d00a7.js
-
-contract ERC721 {
+contract myNftErc721 {
     // Mapping tokend Id to owners
     mapping(uint256 => address) private _owners;
 

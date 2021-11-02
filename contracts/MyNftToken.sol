@@ -1,8 +1,9 @@
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.6;
 
-import "./Erc721.sol";
+import "./myNftErc721.sol";
 
-contract MyNftToken is ERC721 {
+contract MyNftToken is myNftErc721 {
     // Token name
     string private _name;
 
