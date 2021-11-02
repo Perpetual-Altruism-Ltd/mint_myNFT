@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.6;
 
+import "../libraries/Uint2str.sol";
+
 contract myNftErc721 {
+    using Uint2Str for string;
     // Mapping tokend Id to owners
     mapping(uint256 => address) private _owners;
 
@@ -62,5 +65,14 @@ contract myNftErc721 {
         // totalSupply++;
 
         emit Transfer(address(0), msg.sender, _tokenId);
+    }
+
+    function tokenURI(string memory _metadataurl, uint256 _tokenId)
+        public
+        pure
+        returns (string memory)
+    {
+        return
+            string(abi.encodePacked(_metadataurl, Uint2Str.uint2str(_tokenId)));
     }
 }
