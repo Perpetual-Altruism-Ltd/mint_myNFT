@@ -6,11 +6,6 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [],
-				"stateMutability": "nonpayable",
-				"type": "constructor"
-			},
-			{
 				"anonymous": false,
 				"inputs": [
 					{
@@ -85,19 +80,6 @@
 						"type": "uint256"
 					}
 				],
-				"name": "mint",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_tokenId",
-						"type": "uint256"
-					}
-				],
 				"name": "ownerOf",
 				"outputs": [
 					{
@@ -123,7 +105,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/MyNftToken.sol": "MyNftToken"
+			"contracts/myNftErc721.sol": "myNftErc721"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -137,14 +119,6 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/MyNftToken.sol": {
-			"keccak256": "0x04621f7d7a110076004d5fe377d9c082130a60dd754be40ca8b20fffaddd33ec",
-			"license": "UNLICENSED",
-			"urls": [
-				"bzz-raw://1ba8fecb6b02e3477df0155d556d93cb1fa500248888b77009d128787d6a5680",
-				"dweb:/ipfs/QmRUJbeR9zKT5F9vjrTmhoeMqEhaot7wJVMzALrdMJ74qM"
-			]
-		},
 		"contracts/myNftErc721.sol": {
 			"keccak256": "0x49a020171adb3fb5e2596962fe2843ee26f9a58d2ccae7235353b3ee7ec16cf1",
 			"license": "UNLICENSED",

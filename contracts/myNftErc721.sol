@@ -10,11 +10,25 @@ contract myNftErc721 {
 
     mapping(uint256 => bool) tokenExist;
 
+    // Check if we can access the length from front-end
+    // Total number of tokens in block chain
+    // uint public totalSupply =0;
+
     event Transfer(
         address indexed _from,
         address indexed _to,
         uint256 indexed _tokenId
     );
+
+    modifier uniqueToken(uint256 _tokenId) {
+        require(!tokenExist[_tokenId]);
+        _;
+    }
+
+    modifier notZeroAddress(address _to) {
+        require(_to != address(0));
+        _;
+    }
 
     function balanceOf(address _owner) external view returns (uint256) {
         return _balances[_owner];
@@ -30,7 +44,6 @@ contract myNftErc721 {
         uint256 _tokenId
     ) external payable {
         require(ownerOf(_tokenId) == _from);
-
         _owners[_tokenId] = _to;
         _balances[_from]--;
         _balances[_to]++;
@@ -38,12 +51,15 @@ contract myNftErc721 {
         emit Transfer(_from, _to, _tokenId);
     }
 
-    function _mint(address _to, uint256 _tokenId) internal {
-        require(_to != address(0));
-        require(!tokenExist[_tokenId]);
+    function _mint(address _to, uint256 _tokenId)
+        internal
+        uniqueToken(_tokenId)
+        notZeroAddress(_to)
+    {
         _owners[_tokenId] = _to;
         _balances[_to] += 1;
         tokenExist[_tokenId] = true;
+        // totalSupply++;
 
         emit Transfer(address(0), msg.sender, _tokenId);
     }
