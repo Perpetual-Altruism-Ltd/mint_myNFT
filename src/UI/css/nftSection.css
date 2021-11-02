@@ -1,0 +1,34 @@
+.nftSection {
+  background-color: aquamarine;
+}
+
+.nftContainer {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 0;
+}
+
+.singleNtf {
+  flex: 0 0 33.3333%;
+
+  margin-bottom: 20px;
+}
+
+.singleNtf div:nth-child(1) {
+  border-radius: 10px;
+  background-color: rgb(18, 70, 53);
+  height: 150px;
+  margin: 10px;
+  text-align: center;
+  padding: 5px 10px;
+}
+
+.nftSign {
+  border-radius: 50%;
+  background-color: whitesmoke;
+  display: inline;
+  padding: 10px 10px;
+  height: 60px;
+}
