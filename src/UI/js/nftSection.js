@@ -28,7 +28,7 @@ const navTemp = (nft) => {
    
   <div>
     <h3>${nft.name}</h3>
-    <div>
+    <div class ="nftWrapper">
       <p class="nftSign" style="color:${nft.attributes[0].value};font-size:${nft.attributes[1].value}px;">${nft.sign}</p>
     </div>
     <p>${nft.description}</p>

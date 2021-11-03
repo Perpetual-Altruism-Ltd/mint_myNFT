@@ -4,7 +4,9 @@ pragma solidity ^0.8.6;
 import "../libraries/Uint2str.sol";
 
 contract myNftErc721 {
+    // Using Uint2str library for converting uint to string
     using Uint2Str for string;
+
     // Mapping tokend Id to owners
     mapping(uint256 => address) private _owners;
 
@@ -13,9 +15,9 @@ contract myNftErc721 {
 
     mapping(uint256 => bool) tokenExist;
 
-    // Check if we can access the length from front-end
-    // Total number of tokens in block chain
-    // uint public totalSupply =0;
+    string metaDataUrl = "http://localhost:3005/api/metadata/";
+
+    uint256 public totalSupply = 0;
 
     event Transfer(
         address indexed _from,
@@ -62,17 +64,14 @@ contract myNftErc721 {
         _owners[_tokenId] = _to;
         _balances[_to] += 1;
         tokenExist[_tokenId] = true;
-        // totalSupply++;
+        totalSupply++;
 
         emit Transfer(address(0), msg.sender, _tokenId);
     }
 
-    function tokenURI(string memory _metadataurl, uint256 _tokenId)
-        public
-        pure
-        returns (string memory)
-    {
+    // Function return the url of the metada of the token
+    function tokenURI(uint256 _tokenId) public view returns (string memory) {
         return
-            string(abi.encodePacked(_metadataurl, Uint2Str.uint2str(_tokenId)));
+            string(abi.encodePacked(metaDataUrl, Uint2Str.uint2str(_tokenId)));
     }
 }
