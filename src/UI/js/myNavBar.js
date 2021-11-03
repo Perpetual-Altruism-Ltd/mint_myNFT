@@ -1,4 +1,8 @@
+import { loadWeb3 } from "./myWeb3.js";
+
 const navBarTemplate = document.createElement("myNavBar");
+
+loadWeb3();
 
 class myNavBar extends HTMLElement {
   constructor() {
@@ -6,6 +10,11 @@ class myNavBar extends HTMLElement {
     this.attachShadow({ mode: "open" });
     navBarTemplate.innerHTML = navTemp();
     this.shadowRoot.appendChild(navBarTemplate);
+  }
+
+  connectedCallback() {
+    this.shadowRoot.querySelector("#account").innerHTML =
+      web3.eth.defaultAccount !== null ? `${web3.eth.defaultAccount}` : "";
   }
 }
 
@@ -15,7 +24,7 @@ const navTemp = () => {
   <div class="myNav">
   <div class="navContainer">
     <h3>myNFT</h3>
-    <h3></h3>
+    <h3 id="account"></h3>
     </div>
   </div>`;
 };

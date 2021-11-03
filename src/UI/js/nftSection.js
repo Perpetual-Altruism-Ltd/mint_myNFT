@@ -1,4 +1,5 @@
 import { getAllMetaData } from "../../api/metaDataApiCalls.js";
+import { mintToken } from "./myWeb3.js";
 
 const allMetaData = await getAllMetaData();
 
@@ -18,6 +19,11 @@ class nftSection extends HTMLElement {
       nftTemplate.innerHTML = navTemp(element);
       nftContainer.appendChild(nftTemplate);
     });
+
+    const btn = document.createElement("button");
+    nftContainer.appendChild(btn);
+
+    btn.onclick = () => mintToken(111);
 
     this.shadowRoot.appendChild(nftContainer);
   }
