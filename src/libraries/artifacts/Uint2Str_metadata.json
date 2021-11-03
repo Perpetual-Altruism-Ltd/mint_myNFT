@@ -1,0 +1,65 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_i",
+						"type": "uint256"
+					}
+				],
+				"name": "uint2str",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "_uintAsString",
+						"type": "string"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"libraries/Uint2str.sol": "Uint2Str"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"libraries/Uint2str.sol": {
+			"keccak256": "0xcdf188b0eadfcdb24b21765f3be8918587b0da8551b139d4cf669edb4ecddec1",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://df005cd5e85d74257eded4d0b0d8047a35d97e0860c09f31203ce04d3097348a",
+				"dweb:/ipfs/QmZBybtas3ytUhVRBUu2kgVuKac5f67p5WfgFTuaWQygeb"
+			]
+		}
+	},
+	"version": 1
+}

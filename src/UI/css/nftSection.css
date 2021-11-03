@@ -1,0 +1,39 @@
+.nftContainer {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 0;
+}
+
+.singleNtf {
+  flex: 0 0 33.3333%;
+
+  margin-bottom: 20px;
+}
+
+.singleNtf div:nth-child(1) {
+  border-radius: 10px;
+  background-color: #988bdc;
+  height: 170px;
+  margin: 10px;
+  text-align: center;
+  padding: 5px 10px;
+  color: rgb(3, 3, 58);
+}
+
+.singleNtf div:nth-child(1) > p {
+  font-size: 18px;
+}
+
+.nftWrapper {
+  border-radius: 50%;
+  border-radius: 50%;
+  background-color: whitesmoke;
+  height: 60px;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}

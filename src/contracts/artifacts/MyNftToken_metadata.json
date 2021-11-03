@@ -1,0 +1,198 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "_from",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "Transfer",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "_transfer",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
+					}
+				],
+				"name": "balanceOf",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "mint",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "ownerOf",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "tokenURI",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "totalSupply",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"src/contracts/MyNftToken.sol": "MyNftToken"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"src/contracts/MyNftToken.sol": {
+			"keccak256": "0x04621f7d7a110076004d5fe377d9c082130a60dd754be40ca8b20fffaddd33ec",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://1ba8fecb6b02e3477df0155d556d93cb1fa500248888b77009d128787d6a5680",
+				"dweb:/ipfs/QmRUJbeR9zKT5F9vjrTmhoeMqEhaot7wJVMzALrdMJ74qM"
+			]
+		},
+		"src/contracts/myNftErc721.sol": {
+			"keccak256": "0xb0027f23768b9ae45d58e0413bd2a74ba34b14dce501f96414bfd88ce2beebca",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://7bb051852f6bb013a40b05019bd56cb449fbc40b065e8c2cb7332fe39160f42d",
+				"dweb:/ipfs/QmZppXqwNrFeM7qgoM8pLXTG4SsRdssp2DfsivqEDT3JZ6"
+			]
+		},
+		"src/libraries/Uint2str.sol": {
+			"keccak256": "0xcdf188b0eadfcdb24b21765f3be8918587b0da8551b139d4cf669edb4ecddec1",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://df005cd5e85d74257eded4d0b0d8047a35d97e0860c09f31203ce04d3097348a",
+				"dweb:/ipfs/QmZBybtas3ytUhVRBUu2kgVuKac5f67p5WfgFTuaWQygeb"
+			]
+		}
+	},
+	"version": 1
+}
