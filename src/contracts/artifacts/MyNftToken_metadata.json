@@ -80,9 +80,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "string",
-						"name": "_nameOfNft",
-						"type": "string"
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
 					}
 				],
 				"name": "mint",
@@ -98,12 +98,12 @@
 						"type": "uint256"
 					}
 				],
-				"name": "nftTokens",
+				"name": "myTokens",
 				"outputs": [
 					{
-						"internalType": "string",
+						"internalType": "uint256",
 						"name": "",
-						"type": "string"
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -127,6 +127,38 @@
 				],
 				"stateMutability": "view",
 				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "tokenURI",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "totalSupply",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -142,7 +174,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/MyNftToken.sol": "MyNftToken"
+			"src/contracts/MyNftToken.sol": "MyNftToken"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -156,20 +188,20 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/MyNftToken.sol": {
-			"keccak256": "0xf8b52c9613a4696280f8469a89041b1a0b65f63482fc137774dfbd72aff82af5",
+		"src/contracts/MyNftToken.sol": {
+			"keccak256": "0x98d89888604dde480457183490529d5ecde2c6c021561dbbcb35a35a09e99214",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://a3fa80866e2e607acad43b125bffcfc69078e7d8a9f0f7f5af503683f53274fd",
-				"dweb:/ipfs/QmVFKLLA9zUkCFBWjTGhTSZusWtigrDYhc6fcs3UduJyqx"
+				"bzz-raw://a08d214d5ad59390ba61be4c821903f1f023dcb825e903b2738a020ed1c51a78",
+				"dweb:/ipfs/QmdZsrYNkUjbdAHd7TNeoTBRr6erh3k9yqMPWgsYvb1n4v"
 			]
 		},
-		"contracts/myNftErc721.sol": {
-			"keccak256": "0x8a38eef04a56dcfd04962461ea4bb43add6ce32866da6fb38df3e859862426cb",
+		"src/contracts/myNftErc721.sol": {
+			"keccak256": "0xe1d91eed31529dd5758fe35cf9cab1c953c8f80cd841c471c063f8bfc83a4802",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://0d6b242712c91b5179f33e8bd724cc9bdd4f72466367c31938bb2db7cd5aa879",
-				"dweb:/ipfs/QmZkzeBjg7TzGDi3C7vv8p7F4Newdm25JDF99LD2tb2BCf"
+				"bzz-raw://30cd2489d4e9bc112c4802a070e5ce682686ebabbbfb40b0d8f4c933d17fda66",
+				"dweb:/ipfs/QmRHNc7paaMn5S8mWgi6AzM4Q6cKfDbAZQjqQksyfJBi79"
 			]
 		}
 	},
