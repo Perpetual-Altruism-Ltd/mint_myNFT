@@ -1,8 +1,6 @@
-import { loadWeb3 } from "./myWeb3.js";
+import { setDefaultAccount } from "./myWeb3.js";
 
 const navBarTemplate = document.createElement("myNavBar");
-
-loadWeb3();
 
 class myNavBar extends HTMLElement {
   constructor() {
@@ -13,8 +11,14 @@ class myNavBar extends HTMLElement {
   }
 
   connectedCallback() {
-    this.shadowRoot.querySelector("#account").innerHTML =
-      web3.eth.defaultAccount !== null ? `${web3.eth.defaultAccount}` : "";
+    let account = "";
+
+    setDefaultAccount().then(() => {
+      account = web3.eth.defaultAccount;
+
+      this.shadowRoot.querySelector("#account").innerHTML =
+        account !== null ? `${account}` : "   ";
+    });
   }
 }
 

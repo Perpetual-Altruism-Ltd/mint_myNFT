@@ -1,0 +1,59 @@
+.from-body {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.from-body > div:nth-child(1) {
+  background-color: #dce6f1;
+  padding: 10px 30px;
+  border-radius: 15px;
+}
+
+h2 {
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 5px;
+}
+
+.form-Row {
+  width: 250px;
+  margin-top: 1rem;
+}
+
+.form-Row label {
+  display: block;
+  margin: 4px 0;
+  font-weight: bold;
+}
+
+.form-Row input,
+textarea {
+  width: 100%;
+}
+
+.form-Row input {
+  height: 28px;
+}
+
+.btn {
+  padding: 8px 12px;
+  background-color: #981b4c;
+  border-radius: 6px;
+  border: none;
+  color: white;
+  margin: 5px auto;
+}
+
+.btn:hover {
+  cursor: pointer;
+  background-color: #342362;
+}
+
+#balance {
+  margin: 0;
+  text-align: end;
+  font-size: 22px;
+  color: #981b4c;
+}
