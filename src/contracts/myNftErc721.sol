@@ -1,12 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.6;
 
-import "../libraries/Uint2str.sol";
+
 
 contract myNftErc721 {
-    // Using Uint2str library for converting uint to string
-    using Uint2Str for string;
-
     // Mapping tokend Id to owners
     mapping(uint256 => address) private _owners;
 
@@ -17,7 +14,7 @@ contract myNftErc721 {
 
     string metaDataUrl = "http://localhost:3005/api/metadata/";
 
-    uint256 public totalSupply = 0;
+   
 
     event Transfer(
         address indexed _from,
@@ -64,14 +61,36 @@ contract myNftErc721 {
         _owners[_tokenId] = _to;
         _balances[_to] += 1;
         tokenExist[_tokenId] = true;
-        totalSupply++;
-
+       
         emit Transfer(address(0), msg.sender, _tokenId);
+    }
+    
+    // Function to convert uint tokenId to string
+    function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
+        if (_i == 0) {
+            return "0";
+        }
+        uint j = _i;
+        uint len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint k = len;
+        while (_i != 0) {
+            k = k-1;
+            uint8 temp = (48 + uint8(_i - _i / 10 * 10));
+            bytes1 b1 = bytes1(temp);
+            bstr[k] = b1;
+            _i /= 10;
+        }
+        return string(bstr);
     }
 
     // Function return the url of the metada of the token
     function tokenURI(uint256 _tokenId) public view returns (string memory) {
         return
-            string(abi.encodePacked(metaDataUrl, Uint2Str.uint2str(_tokenId)));
+            string(abi.encodePacked(metaDataUrl, uint2str(_tokenId)));
     }
 }

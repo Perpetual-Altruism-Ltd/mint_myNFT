@@ -1,3 +1,5 @@
+import { setDefaultAccount } from "./myWeb3.js";
+
 const navBarTemplate = document.createElement("myNavBar");
 
 class myNavBar extends HTMLElement {
@@ -7,6 +9,17 @@ class myNavBar extends HTMLElement {
     navBarTemplate.innerHTML = navTemp();
     this.shadowRoot.appendChild(navBarTemplate);
   }
+
+  connectedCallback() {
+    let account = "";
+
+    setDefaultAccount().then(() => {
+      account = web3.eth.defaultAccount;
+
+      this.shadowRoot.querySelector("#account").innerHTML =
+        account !== null ? `${account}` : "   ";
+    });
+  }
 }
 
 const navTemp = () => {
@@ -15,7 +28,7 @@ const navTemp = () => {
   <div class="myNav">
   <div class="navContainer">
     <h3>myNFT</h3>
-    <h3></h3>
+    <h3 id="account"></h3>
     </div>
   </div>`;
 };

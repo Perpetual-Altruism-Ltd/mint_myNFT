@@ -10,6 +10,12 @@ contract MyNftToken is myNftErc721 {
     // Token symbol
     string private _symbol;
 
+    // Array with all tokens created
+    uint[] public myTokens ;
+    
+    // Total number of tokens
+    uint256 public totalSupply = 0;
+
     constructor() {
         _name = "myNFTToken";
         _symbol = "myNFTSymbol";
@@ -17,5 +23,8 @@ contract MyNftToken is myNftErc721 {
 
     function mint(uint256 _tokenId) external {
         _mint(msg.sender, _tokenId);
+         myTokens.push(_tokenId);
+         totalSupply++;
+
     }
 }
