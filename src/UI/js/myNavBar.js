@@ -17,7 +17,7 @@ class myNavBar extends HTMLElement {
       account = web3.eth.defaultAccount;
 
       this.shadowRoot.querySelector("#account").innerHTML =
-        account !== null ? `${account}` : "   ";
+        account !== null ? `Address: ${account}` : "Address: N/A";
     });
   }
 }

@@ -1,4 +1,4 @@
-import { getAllMetaData } from "../../api/metaDataApiCalls.js";
+// import { getAllMetaData } from "../../api/metaDataApiCalls.js";
 import {
   getAllTheTokens,
   ownerOf,
@@ -44,7 +44,7 @@ class nftSection extends HTMLElement {
     this.tokens = await getAllTheTokens();
 
     for (let token in this.tokens) {
-      let tokenMeta = await getAllMetaData(this.tokens[token]);
+      // let tokenMeta = await getAllMetaData(this.tokens[token]);
 
       if (tokenMeta._id) this.allMetaData = [...this.allMetaData, tokenMeta];
     }
