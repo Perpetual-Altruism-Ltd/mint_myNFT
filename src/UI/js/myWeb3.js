@@ -16,7 +16,8 @@ export const loadWeb3 = async () => {
 loadWeb3();
 
 const abi = MyNftToken.output.abi;
-const address = "0x121d0f940a17ED33b0b90D961950aFbbE3e77fd7";
+
+const address = "0xF85b4C873d74C3fA6e10F2c6162Ff36ee1C7367e";
 
 const contract = new web3.eth.Contract(abi, address);
 
@@ -39,11 +40,15 @@ export const getAllTheTokens = async () => {
 };
 
 export const mintToken = async (tokenId) => {
-  await contract.methods.mint(tokenId).send({ from: web3.eth.defaultAccount });
+  const tokenURI = `http://localhost:3005/api/metadata/${tokenId}`;
+
+  await contract.methods
+    .mint(tokenId, tokenURI)
+    .send({ from: web3.eth.defaultAccount });
 };
 
-export const getMetaDataUrI = async (tokenId) => {
-  const metaDataUrI = await contract.methods.tokenURI(tokenId).call();
+export const getMetaDataURI = async (tokenId) => {
+  const metaDataUrI = await contract.methods.getTokenURI(tokenId).call();
   return metaDataUrI;
 };
 

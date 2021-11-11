@@ -80,12 +80,12 @@
 						"type": "uint256"
 					}
 				],
-				"name": "ownerOf",
+				"name": "getTokenURI",
 				"outputs": [
 					{
-						"internalType": "address",
+						"internalType": "string",
 						"name": "",
-						"type": "address"
+						"type": "string"
 					}
 				],
 				"stateMutability": "view",
@@ -99,25 +99,12 @@
 						"type": "uint256"
 					}
 				],
-				"name": "tokenURI",
+				"name": "ownerOf",
 				"outputs": [
 					{
-						"internalType": "string",
+						"internalType": "address",
 						"name": "",
-						"type": "string"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "totalSupply",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
+						"type": "address"
 					}
 				],
 				"stateMutability": "view",
@@ -152,11 +139,11 @@
 	},
 	"sources": {
 		"src/contracts/myNftErc721.sol": {
-			"keccak256": "0x35e56960548140bed5d02cb663fda430cd94005ddeadf3f99f992c0d835829ac",
+			"keccak256": "0x7fad3148a0fe8de39b5b7afad896fc579db9756c44b042210e4b5d10fc59636f",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://94b2bb9891b856775b4fedb25e460ae40fb1828e561ccf6dcb2e8c9a386b4bce",
-				"dweb:/ipfs/QmP2PqEXGNmvfwc8j3NrCyeSzSRJvMnDkkULqZeKmTWBM9"
+				"bzz-raw://8df0a9e18b2fa622009db113b578ff25b57ec911a8493a8f3ef33675c5198035",
+				"dweb:/ipfs/QmdXJdiq6L8DvR7LmDXgTPWn9FVan3Tr8NHGwVaX2JzqLB"
 			]
 		}
 	},
