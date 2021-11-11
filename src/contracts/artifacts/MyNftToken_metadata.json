@@ -39,29 +39,6 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "_from",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "_to",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_tokenId",
-						"type": "uint256"
-					}
-				],
-				"name": "_transfer",
-				"outputs": [],
-				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
 						"name": "_owner",
 						"type": "address"
 					}
@@ -164,6 +141,29 @@
 				],
 				"stateMutability": "view",
 				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "transfer",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -202,11 +202,11 @@
 			]
 		},
 		"src/contracts/myNftErc721.sol": {
-			"keccak256": "0x7fad3148a0fe8de39b5b7afad896fc579db9756c44b042210e4b5d10fc59636f",
+			"keccak256": "0x59014e555926313b09a23f0c9ff78597622550adc1256a320317e6f4de2a1c3d",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://8df0a9e18b2fa622009db113b578ff25b57ec911a8493a8f3ef33675c5198035",
-				"dweb:/ipfs/QmdXJdiq6L8DvR7LmDXgTPWn9FVan3Tr8NHGwVaX2JzqLB"
+				"bzz-raw://4b6f7348e2b39bdc031fabf61d9442d585ca2469450106776703c15ce39b4450",
+				"dweb:/ipfs/QmX9in35iF8crQPsRTWT3L272T81LajhEns1m7WPGTwTmy"
 			]
 		}
 	},

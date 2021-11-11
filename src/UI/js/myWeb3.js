@@ -17,7 +17,7 @@ loadWeb3();
 
 const abi = MyNftToken.output.abi;
 
-const address = "0xF85b4C873d74C3fA6e10F2c6162Ff36ee1C7367e";
+const address = "0xB6Fb6A3902c3a71Da521982B4384161501cf4e01";
 
 const contract = new web3.eth.Contract(abi, address);
 
@@ -68,7 +68,7 @@ export const ownerOf = async (tokenId) => {
 export const transferToken = async (tokenId, to) => {
   await setDefaultAccount();
   await contract.methods
-    ._transfer(web3.eth.defaultAccount, to, tokenId)
+    .transfer(web3.eth.defaultAccount, to, tokenId)
     .send({ from: web3.eth.defaultAccount })
     .once("receipt", (receipt) => console.log(receipt));
 };
