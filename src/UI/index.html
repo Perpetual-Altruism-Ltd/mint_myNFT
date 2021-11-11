@@ -5,14 +5,52 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/main.css" />
-
+    <link rel="stylesheet" href="./css/myNavBar.css" />
+    <link rel="stylesheet" href="./css/mintForm.css" />
+    <link rel="stylesheet" href="./css/nftSection.css"/>
     <title>myNft Project</title>
   </head>
   <body>
-    <my-nav-bar></my-nav-bar>
+    <div class="myNav">
+      <div class="navContainer">
+        <h3>myNFT</h3>
+        <h3 id="account"></h3>
+      </div>
+    </div>
     <div class="container">
-      <mint-from></mint-from>
-      <nft-section></nft-section>
+      <div class="loading-container">
+        <h6 class="loading-text">Loading. please wait...</h6>
+      </div>
+      <div class="error-container" style="display: none">
+        <h6 class="error-text"></h6>
+        <center style="margin-top: 50px">
+          <button type="button" class="btn" onClick="window.location.reload()">
+            Refresh
+          </button>
+        </center>
+      </div>
+      <div class="content-container" style="display: none">
+        <div class="mint-form">
+          <h2>Mint Token</h2>
+          <p id="balance"></p>
+          <form class="from-body">
+            <div>
+              <center>
+                <button id="mintBtn" type="button" class="btn">Mint</button>
+              </center>
+            </div>
+          </form>
+        </div>
+        <div class="nft-section">
+          <!--
+        <div class="nft-card">
+          <h3 class="nft-name"></h3>
+          <p class="nft-description"></p>
+          <button class="nft-transfer-btn btn">Transfer</button>
+        </div>
+-->
+        </div>
+      </div>
     </div>
     <script
       type="text/javascript"
