@@ -1,4 +1,4 @@
-import { getMetaDataUrI } from "../UI/js/myWeb3.js";
+import { getMetaDataUrI } from "../ui/js/myWeb3.js";
 
 export const getAllMetaData = async (tokenId) => {
   const url = await getMetaDataUrI(tokenId);
