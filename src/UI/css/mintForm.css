@@ -6,7 +6,7 @@
 }
 
 .from-body > div:nth-child(1) {
-  background-color: #dce6f1;
+  /* background-color: #dce6f1; */
   padding: 10px 30px;
   border-radius: 15px;
 }
@@ -38,7 +38,7 @@ textarea {
 }
 
 .btn {
-  padding: 8px 12px;
+  padding: 8px 16px;
   background-color: #981b4c;
   border-radius: 6px;
   border: none;
@@ -53,7 +53,8 @@ textarea {
 
 #balance {
   margin: 0;
-  text-align: end;
+  text-align: center;
   font-size: 22px;
+  margin: 16px 0;
   color: #981b4c;
 }
