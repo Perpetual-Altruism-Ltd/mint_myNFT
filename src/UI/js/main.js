@@ -152,6 +152,7 @@ class App {
         await transferToken( this.__contract, tokenId, addToAddress );
         this.__handleNftSectionContent()
       }
+      this.__handleBalanceEnquiry()
     } catch ( error ) {
       console.error( error )
       alert( 'Failed to transfer token.' + ` ${error.message || ''}` )
