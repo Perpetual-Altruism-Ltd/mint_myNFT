@@ -14,7 +14,7 @@ const CONTRACTS = [
   }, {
     name: 'Moonbase Alpha',
     networkVersion: '1287',
-    address: ''
+    address: '0x8d61c9A974a4e67E2f405794Db0ff3C1EA13A77f'
   },
 ]
 

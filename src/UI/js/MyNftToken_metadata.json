@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.7+commit.e28d00a7"
+		"version": "0.8.6+commit.11564f7e"
 	},
 	"language": "Solidity",
 	"output": {
@@ -189,19 +189,19 @@
 	},
 	"sources": {
 		"src/contracts/MyNftToken.sol": {
-			"keccak256": "0x98d89888604dde480457183490529d5ecde2c6c021561dbbcb35a35a09e99214",
+			"keccak256": "0x48bf26c388a540538f28e40a29097b1feaefbe7d0b3752dcd41df4adaab47bff",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://a08d214d5ad59390ba61be4c821903f1f023dcb825e903b2738a020ed1c51a78",
-				"dweb:/ipfs/QmdZsrYNkUjbdAHd7TNeoTBRr6erh3k9yqMPWgsYvb1n4v"
+				"bzz-raw://76066af43df8485dff1d16915bf3ad8dec68cabd2531c5a5828e42c6293615d0",
+				"dweb:/ipfs/QmSo34pUb2cWNW6bgRgYAPiFtNnCbKQ8Brhswyy9TFmQdM"
 			]
 		},
 		"src/contracts/myNftErc721.sol": {
-			"keccak256": "0xe1d91eed31529dd5758fe35cf9cab1c953c8f80cd841c471c063f8bfc83a4802",
+			"keccak256": "0x05d725d9555951a979593ca982a8dbedf96daf77e6e75c9e00d3de0f3a76f915",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://30cd2489d4e9bc112c4802a070e5ce682686ebabbbfb40b0d8f4c933d17fda66",
-				"dweb:/ipfs/QmRHNc7paaMn5S8mWgi6AzM4Q6cKfDbAZQjqQksyfJBi79"
+				"bzz-raw://0dd9fef6b46211cf357e0793dc9cbb3e8cca9333bedbc7a141fcd8dcc0b042fb",
+				"dweb:/ipfs/QmR7hPRRBE6Ka7a5kq9y3fy7hMmARQxWqRTKJ6fzdGRna9"
 			]
 		}
 	},
