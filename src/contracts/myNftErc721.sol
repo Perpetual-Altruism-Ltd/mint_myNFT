@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.6;
 
-
-
 contract myNftErc721 {
     // Mapping tokend Id to owners
     mapping(uint256 => address) private _owners;
@@ -10,11 +8,9 @@ contract myNftErc721 {
     // Mapping owner address to token count
     mapping(address => uint256) private _balances;
 
-    mapping(uint256 => bool) tokenExist;
+    mapping(uint256 => bool) private tokenExist;
 
-    string metaDataUrl = "http://localhost:3005/api/metadata/";
-
-   
+    mapping(uint256 => string) private tokenURI;
 
     event Transfer(
         address indexed _from,
@@ -23,12 +19,12 @@ contract myNftErc721 {
     );
 
     modifier uniqueToken(uint256 _tokenId) {
-        require(!tokenExist[_tokenId]);
+        require(!tokenExist[_tokenId], "Token already exist!");
         _;
     }
 
     modifier notZeroAddress(address _to) {
-        require(_to != address(0));
+        require(_to != address(0), "Should be a real address!");
         _;
     }
 
@@ -40,12 +36,20 @@ contract myNftErc721 {
         return _owners[_tokenId];
     }
 
-    function _transfer(
+    function transfer(
         address _from,
         address _to,
         uint256 _tokenId
-    ) external payable {
-        require(ownerOf(_tokenId) == _from);
+    ) external payable notZeroAddress(_to) {
+        require(tokenExist[_tokenId], "This token doesn't exist!");
+
+        require(
+            ownerOf(_tokenId) == msg.sender,
+            "You are not the owner of this token!"
+        );
+
+        require(_to != msg.sender, "You are the owner of this token already!");
+
         _owners[_tokenId] = _to;
         _balances[_from]--;
         _balances[_to]++;
@@ -53,44 +57,29 @@ contract myNftErc721 {
         emit Transfer(_from, _to, _tokenId);
     }
 
-    function _mint(address _to, uint256 _tokenId)
-        internal
-        uniqueToken(_tokenId)
-        notZeroAddress(_to)
-    {
+    function _mint(
+        address _to,
+        uint256 _tokenId,
+        string calldata _tokenURI
+    ) internal uniqueToken(_tokenId) notZeroAddress(_to) {
         _owners[_tokenId] = _to;
         _balances[_to] += 1;
         tokenExist[_tokenId] = true;
-       
+
+        _setTokenURI(_tokenId, _tokenURI);
+
         emit Transfer(address(0), msg.sender, _tokenId);
     }
-    
-    // Function to convert uint tokenId to string
-    function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
-        if (_i == 0) {
-            return "0";
-        }
-        uint j = _i;
-        uint len;
-        while (j != 0) {
-            len++;
-            j /= 10;
-        }
-        bytes memory bstr = new bytes(len);
-        uint k = len;
-        while (_i != 0) {
-            k = k-1;
-            uint8 temp = (48 + uint8(_i - _i / 10 * 10));
-            bytes1 b1 = bytes1(temp);
-            bstr[k] = b1;
-            _i /= 10;
-        }
-        return string(bstr);
+
+    function _setTokenURI(uint256 _tokenId, string calldata _tokenURI)
+        internal
+    {
+        tokenURI[_tokenId] = _tokenURI;
     }
 
-    // Function return the url of the metada of the token
-    function tokenURI(uint256 _tokenId) public view returns (string memory) {
-        return
-            string(abi.encodePacked(metaDataUrl, uint2str(_tokenId)));
+    // Function return the URI of the metada of the token
+    function getTokenURI(uint256 _tokenId) public view returns (string memory) {
+        require(tokenExist[_tokenId], "This token doesn't exist!");
+        return tokenURI[_tokenId];
     }
 }

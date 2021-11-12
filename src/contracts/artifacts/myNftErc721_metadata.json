@@ -11,6 +11,31 @@
 					{
 						"indexed": true,
 						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "_approved",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "Approval",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
 						"name": "_from",
 						"type": "address"
 					},
@@ -29,29 +54,6 @@
 				],
 				"name": "Transfer",
 				"type": "event"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_from",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "_to",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_tokenId",
-						"type": "uint256"
-					}
-				],
-				"name": "_transfer",
-				"outputs": [],
-				"stateMutability": "payable",
-				"type": "function"
 			},
 			{
 				"inputs": [
@@ -80,6 +82,25 @@
 						"type": "uint256"
 					}
 				],
+				"name": "getTokenURI",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					}
+				],
 				"name": "ownerOf",
 				"outputs": [
 					{
@@ -94,33 +115,24 @@
 			{
 				"inputs": [
 					{
+						"internalType": "address",
+						"name": "_from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					},
+					{
 						"internalType": "uint256",
 						"name": "_tokenId",
 						"type": "uint256"
 					}
 				],
-				"name": "tokenURI",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "",
-						"type": "string"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "totalSupply",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
+				"name": "transfer",
+				"outputs": [],
+				"stateMutability": "payable",
 				"type": "function"
 			}
 		],
@@ -152,11 +164,11 @@
 	},
 	"sources": {
 		"src/contracts/myNftErc721.sol": {
-			"keccak256": "0x35e56960548140bed5d02cb663fda430cd94005ddeadf3f99f992c0d835829ac",
+			"keccak256": "0x78db2f15410f249cb0943bcf0bb196de061a7783663c1fba39f2aaac26bd1153",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://94b2bb9891b856775b4fedb25e460ae40fb1828e561ccf6dcb2e8c9a386b4bce",
-				"dweb:/ipfs/QmP2PqEXGNmvfwc8j3NrCyeSzSRJvMnDkkULqZeKmTWBM9"
+				"bzz-raw://cd6c2a7b974f47d99b81a84f343a99d4b751e856d50ed4d7095d5c4a94bb9f7d",
+				"dweb:/ipfs/QmdjXwy5wcwrjTy24Af9JWGvhjuXpp2r2RJF1YfzxwCcsn"
 			]
 		}
 	},
