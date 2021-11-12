@@ -10,7 +10,7 @@ const CONTRACTS = [
   }, {
     name: 'Kovan',
     networkVersion: '42',
-    address: ''
+    address: '0x032A572996cfab0D678d0eB07c7D1d59F72f4Af2'
   }, {
     name: 'Moonbase Alpha',
     networkVersion: '1287',
@@ -26,7 +26,14 @@ class App {
   __allTokens = []
   __allMetadata = []
 
-  constructor() { }
+  constructor() {
+    if ( window.ethereum ) {
+      window.ethereum.on( 'chainChanged', (event) => {
+        // console.log( 'Changed', event )
+        window.location.reload()
+      } )
+    }
+  }
 
   async loadContract() {
     this.__handleLoading( true )
