@@ -6,7 +6,7 @@ const CONTRACTS = [
   {
     name: 'Rinkeby',
     networkVersion: '4',
-    address: '0x121d0f940a17ED33b0b90D961950aFbbE3e77fd7'
+    address: '0xdE3A79E6E5d2dFB25d8c5E01619df5959d476e74'
   }, {
     name: 'Kovan',
     networkVersion: '42',
@@ -28,7 +28,7 @@ class App {
 
   constructor() {
     if ( window.ethereum ) {
-      window.ethereum.on( 'chainChanged', (event) => {
+      window.ethereum.on( 'chainChanged', ( event ) => {
         // console.log( 'Changed', event )
         window.location.reload()
       } )
@@ -83,27 +83,47 @@ class App {
 
   __handleMintFormContent() {
     try {
-      document.getElementById( "mintBtn" )
-        .addEventListener( "click", async () => {
-          const tokenID = genRandomString( 10 )
-          console.log( 'clicking' )
-          try {
-            this.__handleLoading( true )
-            const data = await mintToken( tokenID, this.__contract )
-            console.log( data )
+      const tokenURIinput = document.getElementById( "tokenURIinput" )
+      const mintBtn = document.getElementById( "mintBtn" )
+      const mintForm = document.getElementById( "mintForm" )
 
-          } catch ( error ) {
-            console.error( error )
-            alert( 'Failed to mint. Please retry.' + ` ${error.message || ''}` )
-          } finally {
-            this.__handleLoading( false )
-            this.__handleBalanceEnquiry()
-            this.__handleNftSectionContent()
-          }
-        } )
+      mintForm.addEventListener( 'submit', ( event ) => {
+        event.preventDefault()
+        const value = tokenURIinput.value || ''
+        if ( !value ) return false
+        this.__handleSubmitMintForm( tokenURIinput.value || '' )
+      } )
+
+      tokenURIinput.addEventListener( "keyup", async function () {
+        const value = tokenURIinput.value || ''
+        if ( !value ) {
+          mintBtn.setAttribute( 'disabled', 'true' )
+        } else {
+          mintBtn.removeAttribute( 'disabled' )
+        }
+      } )
+      mintBtn.addEventListener( "click", async () => {
+        this.__handleSubmitMintForm( tokenURIinput.value || '' )
+      } )
     } catch ( error ) {
       console.error( error )
       this.__handleError( 'Something went wrong. Please try again' )
+    }
+  }
+
+  async __handleSubmitMintForm( tokenURI ) {
+    try {
+      this.__handleLoading( true )
+      const data = await mintToken( tokenURI, this.__contract )
+      console.log( data )
+
+    } catch ( error ) {
+      console.error( error )
+      alert( 'Failed to mint. Please retry.' + ` ${error.message || ''}` )
+    } finally {
+      this.__handleLoading( false )
+      this.__handleBalanceEnquiry()
+      this.__handleNftSectionContent()
     }
   }
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -7,9 +8,10 @@
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="./css/myNavBar.css" />
     <link rel="stylesheet" href="./css/mintForm.css" />
-    <link rel="stylesheet" href="./css/nftSection.css"/>
+    <link rel="stylesheet" href="./css/nftSection.css" />
     <title>myNft Project</title>
   </head>
+
   <body>
     <div class="myNav">
       <div class="navContainer">
@@ -33,10 +35,16 @@
         <div class="mint-form">
           <h2>Mint Token</h2>
           <p id="balance"></p>
-          <form class="from-body">
+          <form id="mintForm" class="from-body">
             <div>
-              <center>
-                <button id="mintBtn" type="button" class="btn">Mint</button>
+              <center class="form-center">
+                <div class="form-input-wrapper">
+                  <div class="form-input-inner">
+                    <input id="tokenURIinput" type="text" class="form-input" placeholder="Enter Token URI" />
+                    <fieldset class="form-input-fieldset"></fieldset>
+                  </div>
+                </div>
+                <button disabled id="mintBtn" type="button" class="btn">Mint</button>
               </center>
             </div>
           </form>
@@ -52,10 +60,8 @@
         </div>
       </div>
     </div>
-    <script
-      type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"
-    ></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script type="module" src="./js/main.js"></script>
   </body>
+
 </html>
