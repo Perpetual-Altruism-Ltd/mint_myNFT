@@ -10,7 +10,7 @@ const CONTRACTS = [
   }, {
     name: 'Kovan',
     networkVersion: '42',
-    address: '0x032A572996cfab0D678d0eB07c7D1d59F72f4Af2'
+    address: '0x5e615A3a84d293F1D2Cd90B211f794e86A7a6BD1'
   }, {
     name: 'Moonbase Alpha',
     networkVersion: '1287',
