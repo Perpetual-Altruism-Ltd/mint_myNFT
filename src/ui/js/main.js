@@ -6,11 +6,11 @@ const CONTRACTS = [
   {
     name: 'Rinkeby',
     networkVersion: '4',
-    address: '0x121d0f940a17ED33b0b90D961950aFbbE3e77fd7'
+    address: '0xdE3A79E6E5d2dFB25d8c5E01619df5959d476e74'
   }, {
     name: 'Kovan',
     networkVersion: '42',
-    address: '0x032A572996cfab0D678d0eB07c7D1d59F72f4Af2'
+    address: '0x5e615A3a84d293F1D2Cd90B211f794e86A7a6BD1'
   }, {
     name: 'Moonbase Alpha',
     networkVersion: '1287',
