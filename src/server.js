@@ -3,11 +3,14 @@ import { fileURLToPath } from 'url'
 import express from 'express'
 import compression from 'compression'
 import cors from 'cors'
+import dotenv from 'dotenv'
 
 const app = express()
 
 const __filename = fileURLToPath( import.meta.url )
 const __dirname = dirname( __filename )
+
+dotenv.config( { path: path.join( __dirname, '.env' ) } )
 
 const https_redirect = function ( req, res, next ) {
   if ( req.headers['x-forwarded-proto'] != 'https' ) {
@@ -18,7 +21,7 @@ const https_redirect = function ( req, res, next ) {
 }
 
 // app.use(https_redirect)
-app.use(cors())
+app.use( cors() )
 app.use( compression() )
 
 // in the dist directory
@@ -29,7 +32,7 @@ app.use( '/', express.static( __dirname + '/ui' ) )
 //   res.sendFile( applicationPath )
 // } )
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3005
 
 app.listen( PORT, () => {
   console.log( `App listening on port ${PORT}.` )
