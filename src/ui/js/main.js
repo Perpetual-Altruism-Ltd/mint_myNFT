@@ -114,9 +114,13 @@ class App {
   async __handleSubmitMintForm( tokenURI ) {
     try {
       this.__handleLoading( true )
-      const data = await mintToken( tokenURI, this.__contract )
-      console.log( data )
+      await mintToken( tokenURI, this.__contract )
 
+      const tokenURIinput = document.getElementById( "tokenURIinput" )
+      const mintBtn = document.getElementById( "mintBtn" )
+
+      tokenURIinput.value = ''
+      mintBtn.setAttribute( 'disabled', 'true' )
     } catch ( error ) {
       console.error( error )
       alert( 'Failed to mint. Please retry.' + ` ${error.message || ''}` )
@@ -133,13 +137,14 @@ class App {
       await this.__handleTokenMetaData()
       nftSection.innerHTML = ''
       this.__allMetadata.forEach( ( metadata ) => {
+        console.log( metadata )
         const cardElement = document.createElement( 'div' )
         cardElement.classList.add( 'nft-card' )
         cardElement.innerHTML = `
         <h3 class="nft-name">${metadata.name || 'No name'}</h3>
         <p class="nft-description">${metadata.description || 'No description'}</p>
         <p class="nft-token">Token: <strong>${metadata.token || 'N/A'}</strong></p>
-        <button class="nft-transfer-btn btn" data-token-id="${metadata.token}" style="display: none;">Transfer</button>
+        <button class="nft-transfer-btn btn" data-token-id="${metadata.token}" style="display: block;">Transfer</button>
         `;
         nftSection.appendChild( cardElement )
       } )
@@ -150,8 +155,6 @@ class App {
         transferElement.onclick = ( e ) => {
           this.__handleTransfer( e, token )
         }
-        let owner = await ownerOf( this.__contract, token )
-        transferElement.style.display = owner !== this.__defaultAccount ? 'none' : 'block'
       }
     } catch ( error ) {
       console.error( error )
@@ -194,8 +197,9 @@ class App {
 
     try {
       const myTokens = await getAllTheTokens( this.__contract, this.__defaultAccount )
-      console.log( 'Tokens', myTokens )
+      tokens = myTokens || []
 
+      return tokens
     } catch ( error ) {
       console.error( error )
     } finally {
