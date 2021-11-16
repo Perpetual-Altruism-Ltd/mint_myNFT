@@ -137,13 +137,13 @@ class App {
       await this.__handleTokenMetaData()
       nftSection.innerHTML = ''
       this.__allMetadata.forEach( ( metadata ) => {
-        console.log( metadata )
+        // console.log( metadata )
         const cardElement = document.createElement( 'div' )
         cardElement.classList.add( 'nft-card' )
         cardElement.innerHTML = `
         <h3 class="nft-name">${metadata.name || 'No name'}</h3>
         <p class="nft-description">${metadata.description || 'No description'}</p>
-        <p class="nft-token">Token: <strong>${metadata.token || 'N/A'}</strong></p>
+        <p class="nft-token">Token: <strong>${metadata.tokenUri || 'N/A'}</strong></p>
         <button class="nft-transfer-btn btn" data-token-id="${metadata.token}" style="display: block;">Transfer</button>
         `;
         nftSection.appendChild( cardElement )
@@ -214,14 +214,15 @@ class App {
     try {
       allTokens = await this.__getAllContractTokens()
       this.__allMetadata = []
-      for ( let token of allTokens ) {
+      for ( let tokenData of allTokens ) {
         // let tokenMeta = await getAllMetaData(this.allTokens[token]);
         // TODO: Get the actual token metadata from IPFS
         let tokenMeta = {
           _id: genRandomString(),
           name: null,
           description: null,
-          token: token,
+          token: tokenData.tokenId,
+          tokenUri: tokenData.tokenUri,
         }
 
         if ( tokenMeta._id ) this.__allMetadata = [...this.__allMetadata, tokenMeta]

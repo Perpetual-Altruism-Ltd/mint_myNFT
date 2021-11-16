@@ -27,7 +27,10 @@ export const getAllTheTokens = async ( contract ) => {
       let owner = await contract.methods.ownerOf( i ).call();
       if ( owner === web3.eth.defaultAccount ) {
         const token = await contract.methods.tokenURI( i ).call();
-        tokens = [...tokens, token];
+        tokens = [...tokens, {
+          tokenId: i,
+          tokenUri: token,
+        }];
       }
     }
   } catch ( error ) {
@@ -61,8 +64,9 @@ export const ownerOf = async ( contract, tokenId ) => {
 
 export const transferToken = async ( contract, tokenId, to ) => {
   await setDefaultAccount();
+  console.log( contract.methods )
   await contract.methods
-    ._transfer( web3.eth.defaultAccount, to, tokenId )
+    .transferFrom( web3.eth.defaultAccount, to, tokenId )
     .send( { from: web3.eth.defaultAccount } )
     .once( "receipt", ( receipt ) => console.log( receipt ) );
 };
