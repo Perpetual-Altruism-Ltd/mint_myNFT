@@ -20,13 +20,18 @@ export const setDefaultAccount = async () => {
 
 export const getAllTheTokens = async ( contract ) => {
   let tokens = [];
+  try {
+    const totalSupply = await contract.methods.mintedTokens().call();
 
-  const totalSupply = await contract.methods.totalSupply().call();
-
-  for ( let i = 0; i < totalSupply; i++ ) {
-    let token = await contract.methods.myTokens( i ).call();
-
-    tokens = [...tokens, token];
+    for ( let i = 1; i <= totalSupply; i++ ) {
+      let owner = await contract.methods.ownerOf( i ).call();
+      if ( owner === web3.eth.defaultAccount ) {
+        const token = await contract.methods.tokenURI( i ).call();
+        tokens = [...tokens, token];
+      }
+    }
+  } catch ( error ) {
+    console.error( error )
   }
   return tokens;
 };

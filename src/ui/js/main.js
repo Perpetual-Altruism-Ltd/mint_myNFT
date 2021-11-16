@@ -1,4 +1,4 @@
-import { balance, loadWeb3, setDefaultAccount, mintToken, transferToken, ownerOf } from "./myWeb3.js";
+import { balance, loadWeb3, setDefaultAccount, mintToken, transferToken, ownerOf, getAllTheTokens } from "./myWeb3.js";
 import MyNftToken from "./ImplERC721_metadata.json" assert { type: "json" };
 import { genRandomString } from "./utils.js";
 
@@ -62,7 +62,7 @@ class App {
       this.__handleNavBarContent()
       this.__handleMintFormContent()
       this.__handleBalanceEnquiry()
-      // this.__handleNftSectionContent()
+      this.__handleNftSectionContent()
     } catch ( error ) {
       console.error( error )
       this.__handleError( 'There was an issue initializing the application. Please try again' )
@@ -163,7 +163,6 @@ class App {
     // return true
     try {
       const currentBalance = await balance( this.__contract )
-      console.log(currentBalance)
       document.querySelector( '#balance' )
         .innerHTML = `Number of tokens this account has: <strong>${currentBalance}</strong>`;
     } catch ( error ) {
@@ -194,13 +193,8 @@ class App {
     let tokens = [];
 
     try {
-      const totalSupply = await this.__contract.methods.totalSupply().call()
-
-      let i = 0;
-      for ( i; i < totalSupply; i++ ) {
-        let token = await this.__contract.methods.myTokens( i ).call()
-        tokens = [...tokens, token]
-      }
+      const myTokens = await getAllTheTokens( this.__contract, this.__defaultAccount )
+      console.log( 'Tokens', myTokens )
 
     } catch ( error ) {
       console.error( error )
