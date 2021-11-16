@@ -210,6 +210,32 @@
 			},
 			{
 				"inputs": [],
+				"name": "mintedTokens",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "name",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "_name",
+						"type": "string"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "owner",
 				"outputs": [
 					{
@@ -307,6 +333,38 @@
 				"name": "setApprovalForAll",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes4",
+						"name": "interfaceId",
+						"type": "bytes4"
+					}
+				],
+				"name": "supportsInterface",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "symbol",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "_symbol",
+						"type": "string"
+					}
+				],
+				"stateMutability": "pure",
 				"type": "function"
 			},
 			{
@@ -459,6 +517,9 @@
 				"mint(string)": {
 					"notice": "Mint a token for msg.sender and return the tokenId of this token"
 				},
+				"name()": {
+					"notice": "A descriptive name for a collection of NFTs in this contract"
+				},
 				"ownerOf(uint256)": {
 					"notice": "Find the owner of an NFT"
 				},
@@ -470,6 +531,9 @@
 				},
 				"setApprovalForAll(address,bool)": {
 					"notice": "Enable or disable approval for a third party (\"operator\") to manage  all of `msg.sender`'s assets."
+				},
+				"symbol()": {
+					"notice": "An abbreviated name for NFTs in this contract"
 				},
 				"tokenURI(uint256)": {
 					"notice": "A distinct Uniform Resource Identifier (URI) for a given asset."
@@ -483,7 +547,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/Implementation/Token/ImplERC721.sol": "ImplERC721"
+			"contracts/ImplERC721.sol": "ImplERC721"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -497,20 +561,20 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/Implementation/ERC721.sol": {
-			"keccak256": "0xa6297f1856dad920fce8fd672cdc844ea5a8ab0ed28046ccdc717500ea75de23",
+		"contracts/ERC721.sol": {
+			"keccak256": "0x65dd41da5d50472d6ef2a8c76d102396a351f3813b2a1afadd736937e9f8ee98",
 			"license": "CC0-1.0",
 			"urls": [
-				"bzz-raw://38b70fd581a954de06eb47d6b0a92fdf32618a0787dbf7c6ac3a8f0efe238b44",
-				"dweb:/ipfs/QmTs8qdLPSYK3kGPb9Rt2eSJVczKBuYcZXeRZXdFPj2Kbp"
+				"bzz-raw://863d2d6f435040b6ea5148f81d13ae96afb415461e9adc27b20c798a82b4557a",
+				"dweb:/ipfs/QmQTAZwJzMQi5ipzb1djjUWmCXCWa62wjhYBQUNY7y8FT3"
 			]
 		},
-		"contracts/Implementation/Token/ImplERC721.sol": {
-			"keccak256": "0x105fca9aaae17da91b3b1fe301969f6f1b36619cfa66d4e8586fbc085582707b",
-			"license": "Unlicense",
+		"contracts/ImplERC721.sol": {
+			"keccak256": "0x2b1742c79b2bb1967b3681c5062aa3fb2733838f758e963b770971ff3d7abdfa",
+			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://ce16361a2a85a1d7991963224cd885fbc97bd0c26903fae4e0976f6d2f9ae065",
-				"dweb:/ipfs/QmTSCdLui3F4sC5aMNKmHu8MZx7C3597Wa3KT6wALh6aRM"
+				"bzz-raw://71388b3964bc22489f414f3e31be5972dbedc04ac147a5a9d4aac4520ceb8116",
+				"dweb:/ipfs/QmNq5ZD28S8EV1Cd3ypMX1rRp7E5SxKaYBAb1zYbduBBnL"
 			]
 		}
 	},

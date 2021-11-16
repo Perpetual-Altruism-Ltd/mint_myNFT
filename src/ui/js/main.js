@@ -6,15 +6,15 @@ const CONTRACTS = [
   {
     name: 'Rinkeby',
     networkVersion: '4',
-    address: '0xdE3A79E6E5d2dFB25d8c5E01619df5959d476e74'
+    address: '0xc4B7c55F0b60C89d6bbcAC972271aE8AD105EBf1'
   }, {
     name: 'Kovan',
     networkVersion: '42',
-    address: '0x5e615A3a84d293F1D2Cd90B211f794e86A7a6BD1'
+    address: '0xD6c21c9FaC193e722234d94302855885FC341Dd3'
   }, {
     name: 'Moonbase Alpha',
     networkVersion: '1287',
-    address: '0x8d61c9A974a4e67E2f405794Db0ff3C1EA13A77f'
+    address: '0x3c7267e087CE05890fE2B6fD95E6E313384815bA'
   },
 ]
 
