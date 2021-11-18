@@ -1,5 +1,6 @@
 import { balance, loadWeb3, setDefaultAccount, mintToken, transferToken, ownerOf, getAllTheTokens } from "./myWeb3.js";
 import MyNftToken from "./ImplERC721_metadata.json" assert { type: "json" };
+import Networks from "./networks.json" assert { type: "json" };
 import { genRandomString } from "./utils.js";
 
 const CONTRACTS = [
@@ -58,7 +59,7 @@ class App {
     try {
       this.__defaultAccount = await setDefaultAccount()
 
-      // Set the NavBar content
+      this.__handleNetworkSection()
       this.__handleNavBarContent()
       this.__handleMintFormContent()
       this.__handleBalanceEnquiry()
@@ -75,6 +76,32 @@ class App {
     try {
       document.querySelector( "#account" ).textContent =
         this.__defaultAccount !== null ? `Address: ${this.__defaultAccount}` : 'Address: N/A'
+    } catch ( error ) {
+      console.error( error )
+      this.__handleError( 'Something went wrong. Please try again' )
+    }
+  }
+
+  __handleNetworkSection() {
+    try {
+      const networkSelector = document.querySelector( '.network-selector' )
+      networkSelector.innerHTML = ''
+      for ( let network of Networks.networks ) {
+        const newOption = document.createElement( 'option' )
+        newOption.value = network.chainID
+        newOption.textContent = network.name || 'N/A'
+        if ( window.ethereum.networkVersion === `${network.chainID}` ) {
+          newOption.setAttribute( 'selected', 'true' )
+        }
+
+        networkSelector.appendChild( newOption )
+      }
+
+      networkSelector.addEventListener( 'change', ( event ) => {
+        const value = event.target.value
+        const chainIDSelected = '0x' + Number( value ).toString( 16 )
+        this.__promptSwitchChainDataToFetch( chainIDSelected )
+      } )
     } catch ( error ) {
       console.error( error )
       this.__handleError( 'Something went wrong. Please try again' )
@@ -137,13 +164,14 @@ class App {
       await this.__handleTokenMetaData()
       nftSection.innerHTML = ''
       this.__allMetadata.forEach( ( metadata ) => {
-        // console.log( metadata )
+        console.log( metadata )
         const cardElement = document.createElement( 'div' )
         cardElement.classList.add( 'nft-card' )
         cardElement.innerHTML = `
         <h3 class="nft-name">${metadata.name || 'No name'}</h3>
         <p class="nft-description">${metadata.description || 'No description'}</p>
-        <p class="nft-token">Token: <strong>${metadata.tokenUri || 'N/A'}</strong></p>
+        <p class="nft-token">Token ID: <strong>${metadata.token || 'N/A'}</strong></p>
+        <p class="nft-token">Token URI: <strong>${metadata.tokenUri || 'N/A'}</strong></p>
         <button class="nft-transfer-btn btn" data-token-id="${metadata.token}" style="display: block;">Transfer</button>
         `;
         nftSection.appendChild( cardElement )
@@ -231,6 +259,22 @@ class App {
       console.error( error )
     } finally {
       return allTokens
+    }
+  }
+
+  async __promptSwitchChainDataToFetch( ID ) {
+    try {
+      window.ethereum.request( {
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: ID }], // chainId must be in hexadecimal numbers
+      } ).then( ( res ) => {
+        console.log( "Network switched to " + ID + ". (DataToFetch)" );
+      } ).catch( ( res ) => {
+        console.error( "Network switch canceled or error. (DataToFetch): " + JSON.stringify( res ) );
+      } );
+    } catch ( error ) {
+      console.error( error )
+      this.__handleError( 'Something broke while attempting to switch networks' )
     }
   }
 
