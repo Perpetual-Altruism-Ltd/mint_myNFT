@@ -34,6 +34,7 @@ body {
   width: 100%;
   max-width: 900px;
   margin: 0px auto;
+  margin-bottom: 200px;
 }
 
 .item-wrapper {
@@ -60,5 +61,17 @@ body {
   width: 100%;
   animation-name: mui-auto-fill-cancel;
   animation-duration: 10ms;
-  padding: 16.5px 14px;
+  padding: 8px;
+}
+
+.item-wrapper.network-flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 42px 0;
+}
+
+.item-wrapper.network-flex .form-input-wrapper {
+  margin: 0 8px;
 }

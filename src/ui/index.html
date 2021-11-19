@@ -34,33 +34,76 @@
       <div class="content-container" style="display: none">
         <div class="network-section">
           <h2>Network Selector</h2>
-          <div class="item-wrapper">
-            <div class="form-input-wrapper">
-              <div class="form-input-inner">
-                <select class="network-selector"></select>
-                <fieldset class="form-input-fieldset"></fieldset>
+          <center>
+            <div class="item-wrapper network-flex">
+              <div class="form-input-wrapper">
+                <div class="form-input-inner">
+                  <select class="network-selector"></select>
+                  <fieldset class="form-input-fieldset"></fieldset>
+                </div>
+              </div>
+              <div class="form-input-wrapper">
+                <div class="form-input-inner">
+                  <input id="contractInput" type="text" class="form-input" placeholder="Enter Contract Address" />
+                  <fieldset class="form-input-fieldset"></fieldset>
+                </div>
               </div>
             </div>
-          </div>
+            <button disabled id="loadContractBtn" type="button" class="btn">Load Contract</button>
+            <!-- <button id="myNFTContractBtn" type="button" class="btn">Set myNFT Contract</button> -->
+          </center>
         </div>
-        <div class="mint-form">
-          <h2>Mint Token</h2>
-          <p id="balance"></p>
-          <form id="mintForm" class="from-body">
-            <div>
-              <center class="form-center">
-                <div class="form-input-wrapper">
-                  <div class="form-input-inner">
-                    <input id="tokenURIinput" type="text" class="form-input" placeholder="Enter Token URI" />
-                    <fieldset class="form-input-fieldset"></fieldset>
-                  </div>
+        <div class="myNFT-section" style="display: block;">
+          <div style="display: none;" class="generic-section">
+            <div class="token-box">
+              <div class="form-input-wrapper">
+                <div class="form-input-inner">
+                  <input id="tokenIdInput" type="text" class="form-input" placeholder="Enter Token ID" />
+                  <fieldset class="form-input-fieldset"></fieldset>
                 </div>
-                <button disabled id="mintBtn" type="button" class="btn">Mint</button>
-              </center>
+              </div>
+              <button disabled id="loadTokenDataBtn" type="button" class="btn">Load Token Data</button>
             </div>
-          </form>
+            <div class="generic-details">
+              <p>
+                <span>Contract Name: </span>
+                <strong id="OGContractName">N/A</strong>
+              </p>
+              <p>
+                <span>Contract Symbol: </span>
+                <strong id="OGContractSymbol">N/A</strong>
+              </p>
+              <p>
+                <span>Token Owner: </span>
+                <strong id="OGContractTokenOwner">N/A</strong>
+              </p>
+              <p>
+                <span>Token URI: </span>
+                <strong>
+                  <a id="OGTokenURI" href="#"></a>
+                </strong>
+              </p>
+            </div>
+          </div>
+          <div class="mint-form">
+            <h2>MyNFT Token Minting</h2>
+            <p id="balance"></p>
+            <form id="mintForm" class="from-body">
+              <div>
+                <center class="form-center">
+                  <div class="form-input-wrapper">
+                    <div class="form-input-inner">
+                      <input id="tokenURIinput" type="text" class="form-input" placeholder="Enter Token URI" />
+                      <fieldset class="form-input-fieldset"></fieldset>
+                    </div>
+                  </div>
+                  <button disabled id="mintBtn" type="button" class="btn">Mint</button>
+                </center>
+              </div>
+            </form>
+          </div>
+          <div class="nft-section"></div>
         </div>
-        <div class="nft-section"></div>
       </div>
     </div>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
