@@ -2,6 +2,9 @@ import { balance, loadWeb3, setDefaultAccount, mintToken, transferToken, ownerOf
 import MyNftToken from "./ImplERC721_metadata.json" assert { type: "json" };
 import Networks from "./networks.json" assert { type: "json" };
 import { genRandomString } from "./utils.js";
+import ERC721 from './ABI/ERC721.json'assert { type: "json" }
+import ERC165 from './ABI/ERC165.json'assert { type: "json" }
+import ERC721Metadata from './ABI/ERC721Metadata.json'assert { type: "json" }
 
 const CONTRACTS = [
   {
@@ -19,6 +22,11 @@ const CONTRACTS = [
   },
 ]
 
+const ABIS = {
+  ERC721: ERC721.abi,
+  ERC165: ERC165.abi,
+  ERC721Metadata: ERC721Metadata.abi,
+}
 class App {
   __isLoading = true
   __contract = null
@@ -26,6 +34,8 @@ class App {
   __defaultAccount = null
   __allTokens = []
   __allMetadata = []
+  __networks = Networks.networks
+  __contracts = {}
 
   constructor() {
     if ( window.ethereum ) {
@@ -36,17 +46,33 @@ class App {
     }
   }
 
-  async loadContract() {
+  async loadInitialization() {
     this.__handleLoading( true )
     try {
       await loadWeb3();
+      this.__initializeApp()
+      this.loadMyNFTContract()
+    } catch ( error ) {
+      console.error( error )
+      this.__handleError( 'There was an issue loading contract information. Please try again' )
+    } finally {
+      this.__handleLoading( false )
+    }
+  }
+
+  async loadMyNFTContract() {
+    this.__handleLoading( true )
+    try {
+      // await loadWeb3();
       const networkVersion = await web3.eth.net.getId()
       const contractObject = CONTRACTS.find( i => i.networkVersion === `${networkVersion}` )
       const abi = MyNftToken.output.abi;
       const address = contractObject ? contractObject.address : ''
 
-      this.__contract = new web3.eth.Contract( abi, address )
-      this.__initializeApp()
+      this.__contract = await new web3.eth.Contract( abi, address )
+
+      this.__handleBalanceEnquiry()
+      this.__handleNftSectionContent()
     } catch ( error ) {
       console.error( error )
       this.__handleError( 'There was an issue loading contract information. Please try again' )
@@ -62,8 +88,6 @@ class App {
       this.__handleNetworkSection()
       this.__handleNavBarContent()
       this.__handleMintFormContent()
-      this.__handleBalanceEnquiry()
-      this.__handleNftSectionContent()
     } catch ( error ) {
       console.error( error )
       this.__handleError( 'There was an issue initializing the application. Please try again' )
@@ -85,6 +109,35 @@ class App {
   __handleNetworkSection() {
     try {
       const networkSelector = document.querySelector( '.network-selector' )
+      const contractInput = document.getElementById( "contractInput" )
+      const loadContractBtn = document.getElementById( "loadContractBtn" )
+      const loadTokenDataBtn = document.getElementById( "loadTokenDataBtn" )
+      const tokenIdInput = document.getElementById( "tokenIdInput" )
+
+      contractInput.addEventListener( "change", async function () {
+        const value = contractInput.value || ''
+        if ( !value ) {
+          loadContractBtn.setAttribute( 'disabled', 'true' )
+        } else {
+          loadContractBtn.removeAttribute( 'disabled' )
+        }
+      } )
+      loadContractBtn.addEventListener( "click", async () => {
+        this.__loadTokenData( contractInput.value )
+      } )
+
+      tokenIdInput.addEventListener( "change", async function () {
+        const value = tokenIdInput.value || ''
+        if ( !value.length ) {
+          loadTokenDataBtn.setAttribute( 'disabled', 'true' )
+        } else {
+          loadTokenDataBtn.removeAttribute( 'disabled' )
+        }
+      } )
+      loadTokenDataBtn.addEventListener( "click", async () => {
+        this.__loadOtherTokenDetails()
+      } )
+
       networkSelector.innerHTML = ''
       for ( let network of Networks.networks ) {
         const newOption = document.createElement( 'option' )
@@ -121,7 +174,7 @@ class App {
         this.__handleSubmitMintForm( tokenURIinput.value || '' )
       } )
 
-      tokenURIinput.addEventListener( "keyup", async function () {
+      tokenURIinput.addEventListener( "change", async function () {
         const value = tokenURIinput.value || ''
         if ( !value ) {
           mintBtn.setAttribute( 'disabled', 'true' )
@@ -141,7 +194,7 @@ class App {
   async __handleSubmitMintForm( tokenURI ) {
     try {
       this.__handleLoading( true )
-      await mintToken( tokenURI, this.__contract )
+      await mintToken( tokenURI, this.__contracts.originalChainERC721Contract )
 
       const tokenURIinput = document.getElementById( "tokenURIinput" )
       const mintBtn = document.getElementById( "mintBtn" )
@@ -164,7 +217,7 @@ class App {
       await this.__handleTokenMetaData()
       nftSection.innerHTML = ''
       this.__allMetadata.forEach( ( metadata ) => {
-        console.log( metadata )
+        // console.log( metadata )
         const cardElement = document.createElement( 'div' )
         cardElement.classList.add( 'nft-card' )
         cardElement.innerHTML = `
@@ -278,6 +331,168 @@ class App {
     }
   }
 
+  async __loadTokenData( contractAddress ) {
+
+    const myNFTSection = document.querySelector( '.myNFT-section' )
+    const genericSection = document.querySelector( '.generic-section' )
+
+    //First we check that we have a connected wallet
+    if ( window.ethereum == undefined ) {
+      alert( "Please connect to a Wallet first" );
+      return;
+    }
+
+    if ( window.web3.currentProvider.selectedAddress == null ) {
+      alert( "Please connect to a Wallet first" );
+      return;
+    }
+
+
+
+    genericSection.style.display = 'block'
+    myNFTSection.style.display = 'block'
+    // Instantiate an ERC721 contract at the address
+    try {
+      this.__contracts.originalChainERC721Contract = new window.web3.eth.Contract( ABIS.ERC721, contractAddress );
+      this.__contracts.originalChainERC165Contract = new window.web3.eth.Contract( ABIS.ERC165, contractAddress );
+      this.__contracts.originalChainERC721MetadataContract = new window.web3.eth.Contract( ABIS.ERC721Metadata, contractAddress );
+    } catch ( err ) {
+      genericSection.style.display = 'none'
+      console.log( "Contract instantiation error: " + err );
+      this.__handleError( 'Contract instantiation error' )
+      return;
+    }
+
+    //Check if ERC721 contract
+    let isERC721 = await this.__isContractERC721( this.__contracts.originalChainERC165Contract, contractAddress );
+    if ( !isERC721 ) {
+      console.log( "This contract is NOT ERC721 compliant." );
+      alert( 'This contract is NOT ERC721 compliant.' )
+
+      return;
+    } else {
+      console.log( "This contract is ERC721 compliant." );
+      //Hide the message (Useful if fetch data triggered by network change, and thus no onchange triggered for ogWorl input which would hide the msg)
+
+    }
+
+    //Get the Contract Name
+    this.__getContractName();
+
+    //Get the Contract Symbol
+    this.__getContractSymbol();
+  }
+
+  async __loadOtherTokenDetails() {
+    try {
+      //Get the Token owner
+      this.__getTokenOwner();
+
+      //Get the Token URI
+      this.__getTokenURI();
+    } catch ( error ) {
+      console.error( error )
+      this.__handleError( 'Something went wrong. Please try again' )
+    }
+  }
+
+  async __getContractName() {
+    let content = "";
+    try {
+      content = await this.__contracts.originalChainERC721MetadataContract.methods.name().call();
+    } catch ( err ) {
+      //console.log(err);
+      console.log( "Could not get name() for: contractAddress " + this.__contracts.originalChainERC721MetadataContract._address + "   tokenID: " + document.getElementById( 'tokenIdInput' ).value );
+    }
+
+    //Display or not the html element
+    if ( content != "" ) {
+      document.getElementById( "OGContractName" ).innerHTML = content;
+    }
+  }
+
+  async __getContractSymbol() {
+    let content = "";
+    try {
+      content = await this.__contracts.originalChainERC721MetadataContract.methods.symbol().call();
+    } catch ( err ) {
+      //console.log(err);
+      console.log( "Could not get symbol() for: contractAddress " + this.__contracts.originalChainERC721MetadataContract._address + "   tokenID:" + document.getElementById( 'tokenIdInput' ).value );
+    }
+    //Display or not the ctrc symbol
+    if ( content != "" ) {
+      document.getElementById( "OGContractSymbol" ).innerHTML = content;
+    }
+  }
+
+  async __getTokenOwner() {
+    let content = "";
+    try {
+      content = await this.__contracts.originalChainERC721Contract.methods.ownerOf( document.getElementById( 'tokenIdInput' ).value ).call();
+    } catch ( err ) {
+      //console.log(err);
+      console.log( "Could not get ownerOf() for: contractAddress " + this.__contracts.originalChainERC721Contract._address + "   tokenID:" + document.getElementById( "inputOGTokenID" ).value );
+    }
+
+    //Display or not the owner
+    if ( content ) {
+      document.getElementById( "OGContractTokenOwner" ).innerHTML =
+        `${content} ${content === web3.eth.defaultAccount ? '<i>(Its you)</i>' : ''}`
+    }
+  }
+
+  async __getTokenURI() {
+    let content = "";
+    try {
+      content = await this.__contracts.originalChainERC721MetadataContract.methods.tokenURI( document.getElementById( 'tokenIdInput' ).value ).call();
+    } catch ( err ) {
+      //console.log(err);
+      console.log( "Could not get tokenURI() for: contractAddress " + contracts.originalChainERC721MetadataContract._address + "   tokenID:" + document.getElementById( 'tokenIdInput' ).value );
+    }
+
+    if ( content != "" ) {
+      //Display tokenURI
+      document.getElementById( "OGTokenURI" ).innerHTML = content;
+      document.getElementById( "OGTokenURI" ).href = content;
+      console.log( "TokenURI: " + content );
+    }
+  }
+
+  //Return weather the og world is an ERC721 contract
+  async __isContractERC721( contract, contractAddress ) {
+    //First we check that we have a connected wallet
+    if ( window.ethereum == undefined ) {
+      alert( "Please connect to a Wallet first" );
+      return false;
+    }
+
+    if ( window.web3.currentProvider.selectedAddress == null ) {
+      alert( "Please connect to a Wallet first" );
+      return false;
+    }
+
+    //Second, instanciate the contract through ERC165
+    try {
+      contract = new window.web3.eth.Contract( ABIS.ERC165, contractAddress );
+    }
+    catch ( err ) {
+      console.log( "Contract ERC165 instantiation error: " + err );
+      return false;
+    }
+
+    //Then call supportsInterface()
+    let isERC721;
+    try {
+      isERC721 = await contract.methods.supportsInterface( "0x80ac58cd" ).call();
+    } catch ( err ) {
+      console.log( "Call to supportsInterface() from contract ERC165 error: " + JSON.stringify( err ) );
+      return false;
+    }
+    return isERC721;
+  }
+
+
+
   __handleLoading( shouldLoad = true ) {
     if ( this.__error ) return true
     this.__isLoading = shouldLoad
@@ -306,7 +521,7 @@ class App {
     } else {
       loadingContainer.style.display = 'none'
       contentContainer.style.display = 'none'
-      errorContainer.style.display = 'true'
+      errorContainer.style.display = 'block'
       errorText.textContent = errorMessage
     }
   }
@@ -331,5 +546,5 @@ class App {
 
 const nftApp = new App()
 // Load the contract
-nftApp.loadContract()
+nftApp.loadInitialization()
 
