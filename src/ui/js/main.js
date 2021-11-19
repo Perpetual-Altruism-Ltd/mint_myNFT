@@ -71,6 +71,9 @@ class App {
 
       this.__contract = await new web3.eth.Contract( abi, address )
 
+      document.querySelector( '#contractAddress' )
+        .innerHTML = `Contract Address: <strong>${address}</strong>`;
+
       this.__handleBalanceEnquiry()
       this.__handleNftSectionContent()
     } catch ( error ) {

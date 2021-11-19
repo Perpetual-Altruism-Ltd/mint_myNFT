@@ -42,14 +42,15 @@
                   <fieldset class="form-input-fieldset"></fieldset>
                 </div>
               </div>
-              <div class="form-input-wrapper">
+              <div class="form-input-wrapper" style="display: none;">
                 <div class="form-input-inner">
                   <input id="contractInput" type="text" class="form-input" placeholder="Enter Contract Address" />
                   <fieldset class="form-input-fieldset"></fieldset>
                 </div>
               </div>
             </div>
-            <button disabled id="loadContractBtn" type="button" class="btn">Load Contract</button>
+            <button style="display: none;" disabled id="loadContractBtn" type="button" class="btn">Load
+              Contract</button>
             <!-- <button id="myNFTContractBtn" type="button" class="btn">Set myNFT Contract</button> -->
           </center>
         </div>
@@ -87,6 +88,7 @@
           </div>
           <div class="mint-form">
             <h2>MyNFT Token Minting</h2>
+            <p id="contractAddress"></p>
             <p id="balance"></p>
             <form id="mintForm" class="from-body">
               <div>
