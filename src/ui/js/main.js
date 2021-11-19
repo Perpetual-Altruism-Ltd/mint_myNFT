@@ -194,7 +194,7 @@ class App {
   async __handleSubmitMintForm( tokenURI ) {
     try {
       this.__handleLoading( true )
-      await mintToken( tokenURI, this.__contracts.originalChainERC721Contract )
+      await mintToken( tokenURI, this.__contract )
 
       const tokenURIinput = document.getElementById( "tokenURIinput" )
       const mintBtn = document.getElementById( "mintBtn" )

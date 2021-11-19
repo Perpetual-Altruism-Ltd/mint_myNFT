@@ -21,7 +21,6 @@ export const setDefaultAccount = async () => {
 export const getAllTheTokens = async ( contract ) => {
   let tokens = [];
   try {
-    console.log(contract.methods)
     const totalSupply = await contract.methods.mintedTokens().call();
 
     for ( let i = 1; i <= totalSupply; i++ ) {
