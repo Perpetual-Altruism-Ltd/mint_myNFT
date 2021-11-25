@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
 
-  <head>
+<html>
+	<head>
+
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,106 +11,30 @@
     <link rel="stylesheet" href="./css/mintForm.css" />
     <link rel="stylesheet" href="./css/nftSection.css" />
     <title>myNft Project</title>
-  </head>
+		<link rel="icon" type="image/png" href="/site/medias/myNFT_favicon-32x32.png">
 
-  <body>
-    <div class="myNav">
-      <div class="navContainer">
-        <h3>myNFT</h3>
-        <h3 id="account"></h3>
-      </div>
-    </div>
-    <div class="container">
-      <div class="loading-container">
-        <h6 class="loading-text">Loading. please wait...</h6>
-      </div>
-      <div class="error-container" style="display: none">
-        <h6 class="error-text"></h6>
-        <center style="margin-top: 50px">
-          <button type="button" class="btn" onClick="window.location.reload()">
-            Refresh
-          </button>
-        </center>
-      </div>
-      <div class="content-container" style="display: none">
-        <div class="network-section">
-          <h2>Network Selector</h2>
-          <center>
-            <div class="item-wrapper network-flex">
-              <div class="form-input-wrapper">
-                <div class="form-input-inner">
-                  <select class="network-selector"></select>
-                  <fieldset class="form-input-fieldset"></fieldset>
-                </div>
-              </div>
-              <div class="form-input-wrapper" style="display: none;">
-                <div class="form-input-inner">
-                  <input id="contractInput" type="text" class="form-input" placeholder="Enter Contract Address" />
-                  <fieldset class="form-input-fieldset"></fieldset>
-                </div>
-              </div>
-            </div>
-            <button style="display: none;" disabled id="loadContractBtn" type="button" class="btn">Load
-              Contract</button>
-            <!-- <button id="myNFTContractBtn" type="button" class="btn">Set myNFT Contract</button> -->
-          </center>
-        </div>
-        <div class="myNFT-section" style="display: block;">
-          <div style="display: none;" class="generic-section">
-            <div class="token-box">
-              <div class="form-input-wrapper">
-                <div class="form-input-inner">
-                  <input id="tokenIdInput" type="text" class="form-input" placeholder="Enter Token ID" />
-                  <fieldset class="form-input-fieldset"></fieldset>
-                </div>
-              </div>
-              <button disabled id="loadTokenDataBtn" type="button" class="btn">Load Token Data</button>
-            </div>
-            <div class="generic-details">
-              <p>
-                <span>Contract Name: </span>
-                <strong id="OGContractName">N/A</strong>
-              </p>
-              <p>
-                <span>Contract Symbol: </span>
-                <strong id="OGContractSymbol">N/A</strong>
-              </p>
-              <p>
-                <span>Token Owner: </span>
-                <strong id="OGContractTokenOwner">N/A</strong>
-              </p>
-              <p>
-                <span>Token URI: </span>
-                <strong>
-                  <a id="OGTokenURI" href="#"></a>
-                </strong>
-              </p>
-            </div>
-          </div>
-          <div class="mint-form">
-            <h2>MyNFT Token Minting</h2>
-            <p id="contractAddress"></p>
-            <p id="balance"></p>
-            <form id="mintForm" class="from-body">
-              <div>
-                <center class="form-center">
-                  <div class="form-input-wrapper">
-                    <div class="form-input-inner">
-                      <input id="tokenURIinput" type="text" class="form-input" placeholder="Enter Token URI" />
-                      <fieldset class="form-input-fieldset"></fieldset>
-                    </div>
-                  </div>
-                  <button disabled id="mintBtn" type="button" class="btn">Mint</button>
-                </center>
-              </div>
-            </form>
-          </div>
-          <div class="nft-section"></div>
-        </div>
-      </div>
-    </div>
+		<title></title>
+	</head>
+
+	<body>
+		<div class="bg_container">
+			<div class="bg_gradient">
+			</div>
+		</div>
+
+		<div class="content-pillar">
+			<div class="topBanner">
+
+			</div>
+
+			<div class="mynftBridgeTitle">myNFT Mint</div>
+
+			<div class="whitesheet" id="WhiteSheet">
+			</div><!-- End of Whitsheet -->
+		</div>
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+		<script type="application/javascript" src="/lib/axios/axios-min.js"></script>
     <script type="module" src="./js/main.js"></script>
-  </body>
-
+	</body>
 </html>
