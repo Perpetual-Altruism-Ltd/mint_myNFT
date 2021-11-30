@@ -28,7 +28,7 @@ h2 {
 }
 
 .form-Row input,
-textarea {
+.form-Row textarea {
   width: 100%;
 }
 
@@ -95,11 +95,7 @@ textarea {
 }
 
 #contractAddress {
-  margin: 0;
-  text-align: center;
-  font-size: 22px;
-  margin: 16px 0;
-  color: #981b4c;
+
 }
 
 .form-center {
