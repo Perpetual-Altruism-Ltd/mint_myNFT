@@ -597,7 +597,14 @@ const navigateTo = url => {
     router();
 };
 Model.navigateTo = navigateTo;
-
+//Return true if a provider is loaded.
+Model.isProviderLoaded = function(){
+  if(window.web3){
+    let userAccount = window.web3.currentProvider.selectedAddress;
+    //If web3 already injected
+    return userAccount != "" && window.web3.eth != undefined;
+  }else{return false;}
+}
 /* Document has loaded -  run the router! */
 router();
 
