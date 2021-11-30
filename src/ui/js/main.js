@@ -550,6 +550,9 @@ class App {
   }
 }
 
+/*========================================
+====SINGLE PAGE APPLICATION MANAGEMENT====
+==========================================*/
 
 const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
@@ -577,42 +580,23 @@ const router = async () => {
           history.pushState(null, null, '/mint_form');
       }
 
-      const getParams = match => {
-        const values = match.result.slice(1);
-        const keys = Array.from(match.route.path.matchAll(/:(\w+)/g)).map(result => result[1]);
-
-        return Object.fromEntries(keys.map((key, i) => {
-            return [key, values[i]];
-        }));
-      };
 
       /*Controller: update view */
       //Get and display the view's html
-      let view = new match.route.view(getParams(match));
+      let view = new match.route.view([]);
       view.getHtml(htmlContent => {
-        //Before displaying the new page, check if migData is filled, and if not, redirect to wallet_connection
-        //Exceptions for pages wallet_connection and migration_form which load themselves the provider
-        /*if(!Model.isProviderLoaded() &&
-          match.route.path != "/wallet_connection"){
-          console.log("No provider loaded. Redirecting to wallet_connection.");
-          navigateTo('/wallet_connection');
-        }else{*/
-          //Display the HTML view inside WhiteSheet
-          document.getElementById("WhiteSheet").innerHTML = htmlContent;
-          //Run the code associated to this view
-          view.initCode(Model);
-        //}
+        //Display the HTML view inside WhiteSheet
+        document.getElementById("WhiteSheet").innerHTML = htmlContent;
+        //Run the code associated to this view
+        view.initCode(Model);
       });
 }
 
-
-Model.isProviderLoaded = function(){
-  if(window.web3){
-    let userAccount = window.web3.currentProvider.selectedAddress;
-    //If web3 already injected
-    return userAccount != "" && window.web3.eth != undefined;
-  }else{return false;}
-}
+const navigateTo = url => {
+    history.pushState(null, null, url);
+    router();
+};
+Model.navigateTo = navigateTo;
 
 /* Document has loaded -  run the router! */
 router();
