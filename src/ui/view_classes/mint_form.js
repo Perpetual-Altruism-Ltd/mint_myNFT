@@ -12,9 +12,6 @@ export default class extends AbstractView {
     console.log("Hello from view_classes/mint_form.js");
 
     //=====Wallet Provider management=====
-    let displayConnectedWallet = function(){
-
-    }
     //autoconnect to metamask if injected
     let connectToMetamask = async function () {
       //set callback function called when a wallet is connected
@@ -22,7 +19,7 @@ export default class extends AbstractView {
       connectionCallback = function(){
         console.log("Wallet connected");
         //Display connected addr + ogNet & prefill it
-        displayConnectedWallet();
+        model.displayConnectedWallet();
       };
 
       //Connecting to metmask if injected
@@ -51,7 +48,7 @@ export default class extends AbstractView {
       else if(model.isProviderLoaded()){
         console.log("Westron already loaded, perfect.");
         //Display connected addr + ogNet & prefill it
-        displayConnectedWallet();
+        model.displayConnectedWallet();
       }
       //If metamask available: autoconnect without redirecting to connection page.
       else if (window.web3.__isMetaMaskShim__ && window.web3.currentProvider.selectedAddress != null) {

@@ -31,38 +31,43 @@ export default class extends AbstractView {
       }
     }
 
-    //If user want to disconnect his wallet, call disconnect from westron lib
-    //+ set wallet connection buttons listeners. This is required as the view (HTML content) has been loaded again
-    if(model.disconnectWallet){
-      connector.disconnection();
-      //set again buttons onClick functions
-      setConnectWalletButtonsListeners();
+    let walletProviderConnect = function(){
+      //If user want to disconnect his wallet, call disconnect from westron lib
+      //+ set wallet connection buttons listeners. This is required as the view (HTML content) has been loaded again
+      if(model.disconnectWallet){
+        connector.disconnection();
+        //set again buttons onClick functions
+        setConnectWalletButtonsListeners();
 
-      model.disconnectWallet = false;
-    }else{
-      //Load westron lib, to add the behaviour to connection buttons
-      loadWestron();
-    }
+        model.disconnectWallet = false;
+      }else{
+        //Load westron lib, to add the behaviour to connection buttons
+        loadWestron();
+      }
 
-    //Once loadWestron started, wait for it to finish by polling. Timeout after 50ms*100 = 5sec
-    //Then auto connect to metamask if wallet exists
-    let cmptr = 0;
-    let pollWestronLoaded = async function(){
-      try{
-        await endLoadMetamaskConnection();
-        console.log("Westron lib loaded after " + cmptr + " attempts.");
-      }catch(err){
-        cmptr++;
-        if(cmptr > 100){
-          console.log("Westron loading timed out.");
-          alert('It seems that you have no wallet provider installed. You can install metamask in few minutes by visiting https://metamask.io/')
-        }else {
-          setTimeout(pollWestronLoaded, 50);
+      //Once loadWestron started, wait for it to finish by polling. Timeout after 50ms*100 = 5sec
+      //Then auto connect to metamask if wallet exists
+      let cmptr = 0;
+      let pollWestronLoaded = async function(){
+        try{
+          await endLoadMetamaskConnection();
+          console.log("Westron lib loaded after " + cmptr + " attempts.");
+        }catch(err){
+          cmptr++;
+          if(cmptr > 100){
+            console.log("Westron loading timed out.");
+            alert('It seems that you have no wallet provider installed. You can install metamask in few minutes by visiting https://metamask.io/')
+          }else {
+            setTimeout(pollWestronLoaded, 50);
+          }
         }
       }
+      //Start polling for westron to be loaded
+      pollWestronLoaded();
     }
-    //Start polling for westron to be loaded
-    pollWestronLoaded();
+
+    walletProviderConnect();
+
   }
 
   async getHtml(callback){
