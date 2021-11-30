@@ -11,7 +11,7 @@ export default class extends AbstractView {
     //CODE
     console.log("Hello from view_classes/mint_form.js");
     document.getElementById("Example").addEventListener('click', function(){
-      model.navigateTo('watch_assets');
+      model.navigateTo('wallet_connection');
     })
   }
 
