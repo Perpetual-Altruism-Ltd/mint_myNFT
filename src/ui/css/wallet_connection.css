@@ -1,0 +1,139 @@
+#WalletConnectionDisplay{
+  align-items: center;
+}
+
+#ConnectionCenter{
+  margin-bottom: 5em;
+  max-width: 56em;
+}
+
+.Card{
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 1em 0em;
+  /*margin: 0vw 1em;*/
+}
+
+.CardLine{
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 0em 0em;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.CardTitle{
+  font-size: 2em;
+  margin: 2vw 0vw 2vw 0vw;/*To override CardLine margin */
+  text-align: center;
+  justify-content: center;
+  color: #333;
+}
+
+.CardLineWrap{
+  display: flex;
+  flex-flow: row wrap;
+  gap: 2em 4em;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.CenteredCardLine{
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 0vw 2vw;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.56rem;
+  /*margin-top: 5vh;
+  margin-bottom: 5vh;*/
+}
+
+.clickableRoundButton{
+    padding: 0.5em 1em;
+    border-radius: 30px;
+
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: #fff;
+    -webkit-transition: color .1s cubic-bezier(.455, .03, .515, .955),background-color .1s cubic-bezier(.455, .03, .515, .955);
+    transition: color .1s cubic-bezier(.455, .03, .515, .955),background-color .1s cubic-bezier(.455, .03, .515, .955);
+    color: #333;
+    background-color: #fff;
+    font-size: .88rem;
+    line-height: 1.5rem;
+    text-decoration: none;
+}
+.clickableRoundButton:hover{
+  /* TODO */
+}
+.clickableRoundButton:disabled, .clickableRoundButton[disabled]{
+  cursor: default;
+}
+
+/*use of absolute metrics (px) for width and height so that the icons do not adjust to screen size */
+.connectMetaMask{
+  background-image: url("../../medias/MetaMask_Icon.svg");
+  background-size: 55px;
+  background-position-x: 0vw;
+}
+.connectTorus{
+  background-image: url("../../medias/Torus_Icon.svg");
+  background-size: 55px;
+  background-position-x: 0.5vw;
+}
+.connectWalletConnect{
+  background-image: url("../../medias/WalletConnect_Icon.svg");
+  background-size: 55px;
+}
+.connectPortis{
+  background-image: url("../../medias/Portis_Icon.png");
+  background-size: 45px 55px;
+}
+.connectBitski{
+  background-image: url("../../medias/Bitski_Icon.svg");
+  background-size: 55px;
+}
+.connectFortmatic{
+  background-image: url("../../medias/Fortmatic_Icon.jpg");
+  background-size: 50px 55px;
+}
+.connectVenly{
+  background-image: url("../../medias/Venly_Icon.png");
+  background-size: 50px 55px;
+}
+.connectCoinbase{
+  background-image: url("../../medias/Coinbase_Icon.png");
+  background-size: 55px;
+}
+.requestWallet{
+  background-image: url("../../medias/RequestWallet_Icon.svg");
+  background-size: 40px;
+  background-color: #ccc;
+  border-width: 0;
+}
+.requestWallet:active{
+  background-color: #aaa;
+}
+
+.connectMetaMask,.connectTorus,.connectWalletConnect,.connectPortis,.connectBitski,.connectFortmatic,.connectVenly,.connectCoinbase,.requestWallet{
+  padding: 1em;
+  border-radius: 1em;
+  width: 16em;
+  height: 8em;
+  background-repeat: no-repeat;
+  font-weight: bold;
+  background-position-x: 0.75em;
+  background-position-y: center;
+  word-wrap: break-word;
+}
+
+.ConnectBtnTextContainer{
+  margin-left: 80px;
+}
