@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: Unlicense
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.9;
 
 //This contract only exist in order to run migration test. 
@@ -23,7 +23,7 @@ contract ImplERC721 is ERC721 {
     mapping(uint256 => string) internal memTokenURI; //TokenID => tokenURI
 
     // Total number of minted token
-    uint256 internal mintedTokens;
+    uint256 public mintedTokens;
 
     //Set the owner as the smart contract creator
     constructor(){
@@ -273,3 +273,4 @@ contract ImplERC721 is ERC721 {
     }
 
 }
+
