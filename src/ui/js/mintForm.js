@@ -36,12 +36,12 @@ class mintForm extends HTMLElement {
 const formTemplate = () => {
   return `
   <link rel="stylesheet" href="./css/mintForm.css"/>
-  
+
   <h2>Mint Token</h2>
   <p id="balance"></p>
   <form class="from-body">
-  
-    <div>  
+
+    <div>
       <center>
         <button id="mintBtn" type="button" class="btn">Mint</button>
       </center>
