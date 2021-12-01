@@ -14,6 +14,13 @@ import ERC721 from "./ABI/ERC721.json" assert { type: "json" };
 import ERC165 from "./ABI/ERC165.json" assert { type: "json" };
 import ERC721Metadata from "./ABI/ERC721Metadata.json" assert { type: "json" };
 
+import Model from './model.js';
+
+//Views
+import MintForm from '../view_classes/mint_form.js';
+import TokenDisplay from '../view_classes/token_display.js';
+import WalletConnection from '../view_classes/wallet_connection.js';
+
 const CONTRACTS = [
   {
     name: "Rinkeby",
@@ -620,10 +627,76 @@ class App {
   }
 }
 
+/*========================================
+====SINGLE PAGE APPLICATION MANAGEMENT====
+==========================================*/
+
+const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
+
+const router = async () => {
+      const routes = [
+          { path: "/mint_form", view: MintForm },
+          { path: "/watch_assets", view: TokenDisplay },
+          { path: "/wallet_connection", view: WalletConnection }
+      ];
+
+      const potentialMatches = routes.map(route => {
+            return {
+                route,
+                result: location.pathname.match(pathToRegex(route.path))
+            };
+      });
+
+      let match = potentialMatches.find(potentialMatch => potentialMatch.result !== null);
+      /* Route not found - return first route OR a specific "not-found" route */
+      if (!match) {
+          match = {
+              route: routes[0],
+              result: [location.pathname]
+          };
+          history.pushState(null, null, '/mint_form');
+      }
+
+
+      /*Controller: update view */
+      //Get and display the view's html
+      let view = new match.route.view([]);
+      view.getHtml(htmlContent => {
+        //Display the HTML view inside WhiteSheet
+        document.getElementById("WhiteSheet").innerHTML = htmlContent;
+        //Run the code associated to this view
+        view.initCode(Model);
+      });
+}
+
+const navigateTo = url => {
+    history.pushState(null, null, url);
+    router();
+};
+Model.navigateTo = navigateTo;
+//Return true if a provider is loaded.
+Model.isProviderLoaded = function(){
+  if(window.web3){
+    let userAccount = window.web3.currentProvider.selectedAddress;
+    //If web3 already injected
+    return userAccount != "" && window.web3.eth != undefined;
+  }else{return false;}
+}
+/* Document has loaded -  run the router! */
+router();
+
+/* call the router when the user goes a page backward*/
+window.addEventListener("popstate", function(event){
+  let userInsists = confirm('Do you really want to move from the page you are on?\nIf you have already registered the migration, you cannot modify it.');
+  if(userInsists){router();}
+});
+
 // window.customElements.define( "my-nav-bar", myNavBar );
 // window.customElements.define( "mint-from", mintForm );
 // window.customElements.define( "nft-section", nftSection );
 
-const nftApp = new App();
+
+//const nftApp = new App()
 // Load the contract
-nftApp.loadInitialization();
+//nftApp.loadInitialization()
+
