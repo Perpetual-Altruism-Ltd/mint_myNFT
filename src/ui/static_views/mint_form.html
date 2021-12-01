@@ -1,3 +1,5 @@
+<h1>MINT FORM</h1> 
+<!---
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,10 +7,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/main.css" />
-    <link rel="stylesheet" href="./css/myNavBar.css" />
-    <link rel="stylesheet" href="./css/mintForm.css" />
-    <link rel="stylesheet" href="./css/nftSection.css" />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/myNavBar.css" />
+    <link rel="stylesheet" href="../css/mintForm.css" />
+    <link rel="stylesheet" href="../css/nftSection.css" />
     <title>myNft Project</title>
   </head>
 
@@ -33,9 +35,9 @@
       </div>
       <div class="content-container" style="display: none">
         <h2>MyNFT Token Minting</h2>
-        <!---<p id="contractAddress"></p>--->
+       <p id="contractAddress"></p>
         <p id="balance"></p>
-        <!--- <div class="network-section">
+          <div class="network-section">
           <h2>Network Selector</h2>
           <center>
             <div class="item-wrapper network-flex">
@@ -56,7 +58,7 @@
               Contract</button>
             <button id="myNFTContractBtn" type="button" class="btn">Set myNFT Contract</button> 
           </center>
-        </div>--->
+        </div>
         <div class="myNFT-section" style="display: block;">
           <div style="display: none;" class="generic-section">
             <div class="token-box">
@@ -103,7 +105,7 @@
                     </div>
                   <button style="display: none;" disabled id="loadContractBtn" type="button" class="btn">Load
                     Contract</button>
-                  <!-- <button id="myNFTContractBtn" type="button" class="btn">Set myNFT Contract</button> -->
+                      <button id="myNFTContractBtn" type="button" class="btn">Set myNFT Contract</button> 
           
                 <label for="name">Name:</label>
                 <input type="text" name="name" id="name" maxlength="20" placeholder="Token Name"><br><br>
@@ -112,7 +114,7 @@
                 <label for="image">Select image:</label>
                 <input type="file" style="display: none;" id="selectedFile" onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])"><br><br>
                 <input type="button" value="Browse" onclick="document.getElementById('selectedFile').click();"/>
-                <img id="image"  width="100" height="100" src="img\default.png" /><br><br>
+                <img id="image"  width="100" height="100" src=".\medias\default.png" /><br><br>
                 <button type="button" id="mintBtn" class="btn">Mint</button>
                 <button type="button" id="tokensButton" class="btn">See my tokens</button>
               <div>
@@ -133,7 +135,7 @@
       </div>
     </div>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-    <script type="module" src="./js/main.js"></script>
+    <script type="module" src="../js/main.js"></script>
   </body>
 
-</html>
+</html>--->
