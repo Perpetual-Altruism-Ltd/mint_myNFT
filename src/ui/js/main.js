@@ -1,10 +1,11 @@
 import { balance, loadWeb3, setDefaultAccount, mintToken, transferToken, ownerOf, getAllTheTokens } from "./myWeb3.js";
-import MyNftToken from "./ImplERC721_metadata.json" assert { type: "json" };
+//import MyNftToken from "./ImplERC721_metadata.json" assert { type: "json" };
 import Networks from "./networks.json" assert { type: "json" };
 import { genRandomString } from "./utils.js";
 import ERC721 from './ABI/ERC721.json'assert { type: "json" }
 import ERC165 from './ABI/ERC165.json'assert { type: "json" }
 import ERC721Metadata from './ABI/ERC721Metadata.json'assert { type: "json" }
+import MintContract from './ABI/ImplERC721_metadata.json'assert { type: "json" }
 
 import Model from './model.js';
 
@@ -33,6 +34,7 @@ const ABIS = {
   ERC721: ERC721.abi,
   ERC165: ERC165.abi,
   ERC721Metadata: ERC721Metadata.abi,
+  MintContract: MintContract.abi,
 }
 class App {
   __isLoading = true
@@ -605,6 +607,11 @@ Model.isProviderLoaded = function(){
     return userAccount != "" && window.web3.eth != undefined;
   }else{return false;}
 }
+Model.displayConnectedWallet = function(){
+  console.log("displayConnectedWallet TODO");
+}
+Model.contractsData = CONTRACTS;
+Model.ABIS = ABIS;
 /* Document has loaded -  run the router! */
 router();
 
