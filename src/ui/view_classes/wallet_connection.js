@@ -8,9 +8,7 @@ export default class extends AbstractView {
 
   /*This function contain all the javascript code which will be executed when this view if selected */
   initCode(model){
-    //CODE
-    console.log("Hello from wallet_connection.js");
-
+    //Connect to metamask if available
     var endLoadMetamaskConnection = async function () {
       //set callback function called when a wallet is connected
       connectionCallback = function(){
@@ -30,7 +28,7 @@ export default class extends AbstractView {
           }
       }
     }
-
+    //Load westron library & connect to wallet provider
     let walletProviderConnect = function(){
       //If user want to disconnect his wallet, call disconnect from westron lib
       //+ set wallet connection buttons listeners. This is required as the view (HTML content) has been loaded again
@@ -66,8 +64,11 @@ export default class extends AbstractView {
       pollWestronLoaded();
     }
 
-    walletProviderConnect();
+    document.getElementById("RequestWalletBtn").addEventListener('click', function(){
+      window.open("mailto:bridge@mynft.com?subject=Network%20request");
+    });
 
+    walletProviderConnect();
   }
 
   async getHtml(callback){
