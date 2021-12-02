@@ -7,35 +7,36 @@ import {
   ownerOf,
   getAllTheTokens,
 } from "./myWeb3.js";
-import MyNftToken from "./ImplERC721_metadata.json" assert { type: "json" };
+
+import MyNftToken from "../../contracts/artifacts/ImplERC721_metadata.json" assert { type: "json" };
 import Networks from "./networks.json" assert { type: "json" };
 import { genRandomString } from "./utils.js";
-import ERC721 from "./ABI/ERC721.json" assert { type: "json" };
-import ERC165 from "./ABI/ERC165.json" assert { type: "json" };
-import ERC721Metadata from "./ABI/ERC721Metadata.json" assert { type: "json" };
+import ERC721 from "../../contracts/artifacts/ERC721.json" assert { type: "json" };
+import ERC165 from "../../contracts/artifacts/ERC165.json" assert { type: "json" };
+import ERC721Metadata from "../../contracts/artifacts/ERC721Metadata.json" assert { type: "json" };
 
-import Model from './model.js';
+import Model from "./model.js";
 
 //Views
-import MintForm from '../view_classes/mint_form.js';
-import TokenDisplay from '../view_classes/token_display.js';
-import WalletConnection from '../view_classes/wallet_connection.js';
+import MintForm from "../view_classes/mint_form.js";
+import TokenDisplay from "../view_classes/token_display.js";
+import WalletConnection from "../view_classes/wallet_connection.js";
 
 const CONTRACTS = [
   {
     name: "Rinkeby",
     networkVersion: "4",
-    address: "0xc4B7c55F0b60C89d6bbcAC972271aE8AD105EBf1",
+    address: "0x5aFC791CeCeAd8185d9d0C190784E64262Bac275",
   },
   {
     name: "Kovan",
     networkVersion: "42",
-    address: "0xD6c21c9FaC193e722234d94302855885FC341Dd3",
+    address: "0x7cf01c77FCf173a69007A891beEc298D84235158",
   },
   {
     name: "Moonbase Alpha",
     networkVersion: "1287",
-    address: "0x3c7267e087CE05890fE2B6fD95E6E313384815bA",
+    address: "0x245b72b53ed93Cda919eD6e2C36bC888acFd6606",
   },
 ];
 
@@ -44,6 +45,7 @@ const ABIS = {
   ERC165: ERC165.abi,
   ERC721Metadata: ERC721Metadata.abi,
 };
+
 class App {
   __isLoading = true;
   __contract = null;
@@ -631,72 +633,78 @@ class App {
 ====SINGLE PAGE APPLICATION MANAGEMENT====
 ==========================================*/
 
-const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
+const pathToRegex = (path) =>
+  new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
 const router = async () => {
-      const routes = [
-          { path: "/mint_form", view: MintForm },
-          { path: "/watch_assets", view: TokenDisplay },
-          { path: "/wallet_connection", view: WalletConnection }
-      ];
+  const routes = [
+    { path: "/mint_form", view: MintForm },
+    { path: "/watch_assets", view: TokenDisplay },
+    { path: "/wallet_connection", view: WalletConnection },
+  ];
 
-      const potentialMatches = routes.map(route => {
-            return {
-                route,
-                result: location.pathname.match(pathToRegex(route.path))
-            };
-      });
+  const potentialMatches = routes.map((route) => {
+    return {
+      route,
+      result: location.pathname.match(pathToRegex(route.path)),
+    };
+  });
 
-      let match = potentialMatches.find(potentialMatch => potentialMatch.result !== null);
-      /* Route not found - return first route OR a specific "not-found" route */
-      if (!match) {
-          match = {
-              route: routes[0],
-              result: [location.pathname]
-          };
-          history.pushState(null, null, '/mint_form');
-      }
+  let match = potentialMatches.find(
+    (potentialMatch) => potentialMatch.result !== null
+  );
+  /* Route not found - return first route OR a specific "not-found" route */
+  if (!match) {
+    match = {
+      route: routes[0],
+      result: [location.pathname],
+    };
+    history.pushState(null, null, "/mint_form");
+  }
 
+  /*Controller: update view */
+  //Get and display the view's html
+  let view = new match.route.view([]);
+  view.getHtml((htmlContent) => {
+    //Display the HTML view inside WhiteSheet
+    document.getElementById("WhiteSheet").innerHTML = htmlContent;
+    //Run the code associated to this view
+    view.initCode(Model);
+  });
+};
 
-      /*Controller: update view */
-      //Get and display the view's html
-      let view = new match.route.view([]);
-      view.getHtml(htmlContent => {
-        //Display the HTML view inside WhiteSheet
-        document.getElementById("WhiteSheet").innerHTML = htmlContent;
-        //Run the code associated to this view
-        view.initCode(Model);
-      });
-}
-
-const navigateTo = url => {
-    history.pushState(null, null, url);
-    router();
+const navigateTo = (url) => {
+  history.pushState(null, null, url);
+  router();
 };
 Model.navigateTo = navigateTo;
 //Return true if a provider is loaded.
-Model.isProviderLoaded = function(){
-  if(window.web3){
+Model.isProviderLoaded = function () {
+  if (window.web3) {
     let userAccount = window.web3.currentProvider.selectedAddress;
     //If web3 already injected
     return userAccount != "" && window.web3.eth != undefined;
-  }else{return false;}
-}
+  } else {
+    return false;
+  }
+};
 /* Document has loaded -  run the router! */
 router();
 
 /* call the router when the user goes a page backward*/
-window.addEventListener("popstate", function(event){
-  let userInsists = confirm('Do you really want to move from the page you are on?\nIf you have already registered the migration, you cannot modify it.');
-  if(userInsists){router();}
+window.addEventListener("popstate", function (event) {
+  let userInsists = confirm(
+    "Do you really want to move from the page you are on?\nIf you have already registered the migration, you cannot modify it."
+  );
+  if (userInsists) {
+    router();
+  }
 });
 
 // window.customElements.define( "my-nav-bar", myNavBar );
 // window.customElements.define( "mint-from", mintForm );
 // window.customElements.define( "nft-section", nftSection );
 
-
 //const nftApp = new App()
 // Load the contract
 //nftApp.loadInitialization()
-
