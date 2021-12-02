@@ -1,6 +1,6 @@
 // import { getMetaDataUrI } from "../js/myWeb3.js";
 
-export const getUserMetadata = async (userAddress) => {
+export const getUserNFTs = async (userAddress) => {
   const respone = await axios.get(
     `https://mathomhouse.mynft.com/api/nfts/publicKey/${userAddress}`
   );
