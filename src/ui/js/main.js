@@ -608,7 +608,8 @@ Model.isProviderLoaded = function(){
   }else{return false;}
 }
 Model.displayConnectedWallet = function(){
-  console.log("displayConnectedWallet TODO");
+  let userAccountAddr =  window.web3.currentProvider.selectedAddress;
+  document.getElementById("ConnectedAccountAddr").textContent = userAccountAddr;
 }
 Model.contractsData = CONTRACTS;
 Model.ABIS = ABIS;
