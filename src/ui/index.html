@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-	<head>
-
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -26,20 +25,27 @@
 			</div>
 		</div>
 
+		<div class="WalletInfoBanner">
+			<div class="TextDescription">Your address: <span id="ConnectedAccountAddr" class="TextData"></span></div>
+			<div class="TextDescription">Connected wallet: <span id="ConnectedWalletName" class="TextData"></span></div>
+			<div class="TextDescription">Selected network: <span id="SelectedNetworkName" class="TextData"></span></div>
+			<button id="DisconnectWalletBtn" class="btn">Disconnect wallet</button>
+		</div>
+
 		<div class="content-pillar">
 			<div class="topBanner">
-
+				<a href="https://mynft.com"><div class="mynftLogoTop"></div></a>
 			</div>
 
-			<div class="mynftBridgeTitle">myNFT Mint</div>
+			<div class="mynftMintTitle">myNFT Mint</div>
 
 			<div class="whitesheet" id="WhiteSheet">
 			</div><!-- End of Whitsheet -->
 		</div>
 
-    <!--<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-		 <script type="application/javascript" src="/lib/axios/axios-min.js"></script> -->
+    <!--<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>-->
+		<script type="application/javascript" src="/lib/axios/axios-min.js"></script>
 		<script type="application/javascript" src="/lib/westron/loader.js"></script>
     <script type="module" src="/js/main.js"></script>
-	</body>
+  </body>
 </html>

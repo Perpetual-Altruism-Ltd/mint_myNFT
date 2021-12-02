@@ -6,11 +6,6 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [],
-				"stateMutability": "nonpayable",
-				"type": "constructor"
-			},
-			{
 				"anonymous": false,
 				"inputs": [
 					{
@@ -168,88 +163,6 @@
 			{
 				"inputs": [
 					{
-						"internalType": "string",
-						"name": "_tokenURI",
-						"type": "string"
-					}
-				],
-				"name": "mint",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "string",
-						"name": "_tokenURI",
-						"type": "string"
-					},
-					{
-						"internalType": "address",
-						"name": "_owner",
-						"type": "address"
-					}
-				],
-				"name": "mintFor",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "mintedTokens",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "name",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "_name",
-						"type": "string"
-					}
-				],
-				"stateMutability": "pure",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "owner",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "uint256",
 						"name": "_tokenId",
 						"type": "uint256"
@@ -308,7 +221,7 @@
 					},
 					{
 						"internalType": "bytes",
-						"name": "_data",
+						"name": "data",
 						"type": "bytes"
 					}
 				],
@@ -338,57 +251,6 @@
 			{
 				"inputs": [
 					{
-						"internalType": "bytes4",
-						"name": "interfaceId",
-						"type": "bytes4"
-					}
-				],
-				"name": "supportsInterface",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "pure",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "symbol",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "_symbol",
-						"type": "string"
-					}
-				],
-				"stateMutability": "pure",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_tokenId",
-						"type": "uint256"
-					}
-				],
-				"name": "tokenURI",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "",
-						"type": "string"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "address",
 						"name": "_from",
 						"type": "address"
@@ -411,6 +273,18 @@
 			}
 		],
 		"devdoc": {
+			"details": "See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md  Note: the ERC-165 identifier for this interface is 0x80ac58cd",
+			"events": {
+				"Approval(address,address,uint256)": {
+					"details": "This emits when the approved address for an NFT is changed or  reaffirmed. The zero address indicates there is no approved address.  When a Transfer event emits, this also indicates that the approved  address for that NFT (if any) is reset to none."
+				},
+				"ApprovalForAll(address,address,bool)": {
+					"details": "This emits when an operator is enabled or disabled for an owner.  The operator can manage all NFTs of the owner."
+				},
+				"Transfer(address,address,uint256)": {
+					"details": "This emits when ownership of any NFT changes by any mechanism.  This event emits when NFTs are created (`from` == 0) and destroyed  (`to` == 0). Exception: during contract creation, any number of NFTs  may be created and assigned without emitting Transfer. At the time of  any transfer, the approved address for that NFT (if any) is reset to none."
+				}
+			},
 			"kind": "dev",
 			"methods": {
 				"approve(address,uint256)": {
@@ -447,11 +321,6 @@
 						"_0": "True if `_operator` is an approved operator for `_owner`, false otherwise"
 					}
 				},
-				"mint(string)": {
-					"returns": {
-						"_0": "the newly minted tokenId"
-					}
-				},
 				"ownerOf(uint256)": {
 					"details": "NFTs assigned to zero address are considered invalid, and queries  about them do throw.",
 					"params": {
@@ -472,10 +341,10 @@
 				"safeTransferFrom(address,address,uint256,bytes)": {
 					"details": "Throws unless `msg.sender` is the current owner, an authorized  operator, or the approved address for this NFT. Throws if `_from` is  not the current owner. Throws if `_to` is the zero address. Throws if  `_tokenId` is not a valid NFT. When transfer is complete, this function  checks if `_to` is a smart contract (code size > 0). If so, it calls  `onERC721Received` on `_to` and throws if the return value is not  `bytes4(keccak256(\"onERC721Received(address,address,uint256,bytes)\"))`.",
 					"params": {
-						"_data": "Additional data with no specified format, sent in call to `_to`",
 						"_from": "The current owner of the NFT",
 						"_to": "The new owner",
-						"_tokenId": "The NFT to transfer"
+						"_tokenId": "The NFT to transfer",
+						"data": "Additional data with no specified format, sent in call to `_to`"
 					}
 				},
 				"setApprovalForAll(address,bool)": {
@@ -484,9 +353,6 @@
 						"_approved": "True if the operator is approved, false to revoke approval",
 						"_operator": "Address to add to the set of authorized operators."
 					}
-				},
-				"tokenURI(uint256)": {
-					"details": "Throws if `_tokenId` is not a valid NFT. URIs are defined in RFC  3986. The URI may point to a JSON file that conforms to the \"ERC721  Metadata JSON Schema\"."
 				},
 				"transferFrom(address,address,uint256)": {
 					"details": "Throws unless `msg.sender` is the current owner, an authorized  operator, or the approved address for this NFT. Throws if `_from` is  not the current owner. Throws if `_to` is the zero address. Throws if  `_tokenId` is not a valid NFT.",
@@ -497,6 +363,7 @@
 					}
 				}
 			},
+			"title": "ERC-721 Non-Fungible Token Standard",
 			"version": 1
 		},
 		"userdoc": {
@@ -514,12 +381,6 @@
 				"isApprovedForAll(address,address)": {
 					"notice": "Query if an address is an authorized operator for another address"
 				},
-				"mint(string)": {
-					"notice": "Mint a token for msg.sender and return the tokenId of this token"
-				},
-				"name()": {
-					"notice": "A descriptive name for a collection of NFTs in this contract"
-				},
 				"ownerOf(uint256)": {
 					"notice": "Find the owner of an NFT"
 				},
@@ -532,12 +393,6 @@
 				"setApprovalForAll(address,bool)": {
 					"notice": "Enable or disable approval for a third party (\"operator\") to manage  all of `msg.sender`'s assets."
 				},
-				"symbol()": {
-					"notice": "An abbreviated name for NFTs in this contract"
-				},
-				"tokenURI(uint256)": {
-					"notice": "A distinct Uniform Resource Identifier (URI) for a given asset."
-				},
 				"transferFrom(address,address,uint256)": {
 					"notice": "Transfer ownership of an NFT -- THE CALLER IS RESPONSIBLE  TO CONFIRM THAT `_to` IS CAPABLE OF RECEIVING NFTS OR ELSE  THEY MAY BE PERMANENTLY LOST"
 				}
@@ -547,7 +402,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/ImplERC721.sol": "ImplERC721"
+			"src/contracts/ERC721.sol": "ERC721"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -561,20 +416,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/ERC721.sol": {
-			"keccak256": "0x65dd41da5d50472d6ef2a8c76d102396a351f3813b2a1afadd736937e9f8ee98",
+		"src/contracts/ERC721.sol": {
+			"keccak256": "0x7b7b74b6e1d1497c80e17fef2f02a7d43e91a53a1422d3d6dd8e5f7dd68c13f1",
 			"license": "CC0-1.0",
 			"urls": [
-				"bzz-raw://863d2d6f435040b6ea5148f81d13ae96afb415461e9adc27b20c798a82b4557a",
-				"dweb:/ipfs/QmQTAZwJzMQi5ipzb1djjUWmCXCWa62wjhYBQUNY7y8FT3"
-			]
-		},
-		"contracts/ImplERC721.sol": {
-			"keccak256": "0x2b1742c79b2bb1967b3681c5062aa3fb2733838f758e963b770971ff3d7abdfa",
-			"license": "UNLICENSED",
-			"urls": [
-				"bzz-raw://71388b3964bc22489f414f3e31be5972dbedc04ac147a5a9d4aac4520ceb8116",
-				"dweb:/ipfs/QmNq5ZD28S8EV1Cd3ypMX1rRp7E5SxKaYBAb1zYbduBBnL"
+				"bzz-raw://53c7ccc76625c48c55547c939502565d12d31a51b3f5b3a38767f125565ed707",
+				"dweb:/ipfs/QmV5vpjKK2AGwF8WdmhbNJw6QaUrXoSPaodQUSFXJpdda3"
 			]
 		}
 	},

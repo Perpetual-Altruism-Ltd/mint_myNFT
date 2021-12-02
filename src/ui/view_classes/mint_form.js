@@ -82,6 +82,39 @@ export default class extends AbstractView {
       }
     }
 
+    //=====Wallet provider interactions=====
+    //This function mint a token given a tokenURI.
+    //It retrieve the current network from the wallet provider
+    let mintTokenOnBlockchain = async function(tokenURI){
+      //retrieve data from provider & contract data
+      let selectedChain = window.web3.currentProvider.chainId;
+      let userAccountAddr =  window.web3.currentProvider.selectedAddress;
+      let mintContractAddr = getMintContractAddrFromNetworkId(selectedChain);
+
+      if(mintContractAddr){
+        try{
+          let mintContract = new window.web3.eth.Contract( model.ABIS.MintContract, mintContractAddr );
+          let res = await mintContract.methods.mint(tokenURI).send({from: userAccountAddr, gas: 200000});
+        }catch(err){
+          console.error("mintToken error:" + err);
+        }
+      }else{
+        console.error("The network " + selectedChain + " is not supported.");
+      }
+    }
+    //Retrieve the corresponding contract address from the network in input.
+    //Fetches this info from model.contractsData
+    let getMintContractAddrFromNetworkId = function(netId){
+      let contractAddr = "";
+      model.contractsData.forEach((ctr, i) => {
+        if(parseInt(ctr.networkVersion) == parseInt(netId)){
+          contractAddr = ctr.address;
+        }
+      });
+      return contractAddr;
+    }
+    //setTimeout(()=>{mintTokenOnBlockchain("https://ipfs.infura.io/ipfs/QmazJuJMfmkMLFmwBzQcnkHmzy6b9WE3cQdJcTFStvq16M");}, 2000);
+
     document.getElementById("Example").addEventListener('click', function(){
       //Indicate to wallet_connection that we want to disconnect wallet provider
       model.disconnectWallet = true;
