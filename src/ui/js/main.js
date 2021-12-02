@@ -8,12 +8,12 @@ import {
   getAllTheTokens,
 } from "./myWeb3.js";
 
-import MintContract from "../../contracts/artifacts/ImplERC721_metadata.json" assert { type: "json" };
+import MintContract from "./ABI/ImplERC721_metadata.json" assert { type: "json" };
 import Networks from "./networks.json" assert { type: "json" };
 import { genRandomString } from "./utils.js";
-import ERC721 from "../../contracts/artifacts/ERC721.json" assert { type: "json" };
-import ERC165 from "../../contracts/artifacts/ERC165.json" assert { type: "json" };
-import ERC721Metadata from "../../contracts/artifacts/ERC721Metadata.json" assert { type: "json" };
+import ERC721 from "./ABI/ERC721.json" assert { type: "json" };
+import ERC165 from "./ABI/ERC165.json" assert { type: "json" };
+import ERC721Metadata from "./ABI/ERC721Metadata.json" assert { type: "json" };
 
 import Model from "./model.js";
 
@@ -45,7 +45,7 @@ const ABIS = {
   ERC165: ERC165.abi,
   ERC721Metadata: ERC721Metadata.abi,
   MintContract: MintContract.abi,
-}
+};
 class App {
   __isLoading = true;
   __contract = null;
@@ -684,15 +684,17 @@ Model.isProviderLoaded = function () {
     let userAccount = window.web3.currentProvider.selectedAddress;
     //If web3 already injected
     return userAccount != "" && window.web3.eth != undefined;
-  }else{return false;}
-}
-Model.getConnectedAddr = function(){
+  } else {
+    return false;
+  }
+};
+Model.getConnectedAddr = function () {
   return window.web3.currentProvider.selectedAddress;
-}
-Model.displayConnectedWallet = function(){
-  let userAccountAddr =  Model.getConnectedAddr();
+};
+Model.displayConnectedWallet = function () {
+  let userAccountAddr = Model.getConnectedAddr();
   document.getElementById("ConnectedAccountAddr").textContent = userAccountAddr;
-}
+};
 
 Model.contractsData = CONTRACTS;
 Model.ABIS = ABIS;
