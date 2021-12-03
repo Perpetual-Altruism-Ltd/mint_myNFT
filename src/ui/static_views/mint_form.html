@@ -1,18 +1,18 @@
-<div class="mint-form">
-  <form id="mintForm" class="from-body">
-    <label for="name">Select the Network:</label>
+<div class="mint-form-container">
+    <label for="name">Select the Network</label>
     <select class="network-selector"></select>
-    <fieldset class="form-input-fieldset"></fieldset><br><br>
-      <label for="name">Name:</label>
-      <input type="text" name="name" id="name" maxlength="20" placeholder="Token Name"><br><br>
-      <label for="description">Description:</label>
-      <textarea name="description" rows="3" cols="30" placeholder="Token Description"></textarea><br><br>
-      <label for="image">Select image:</label>
-      <input type="file" style="display: none;" id="selectedFile" onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])"><br><br>
-      <input type="button" value="Browse" onclick="document.getElementById('selectedFile').click();"/>
-      <img id="image"  width="100" height="100" src=".\medias\default.png" /><br><br>
-      <button type="button" id="mintBtn" class="btn">Mint</button>
-      <button type="button" id="tokensButton" class="btn">See my tokens</button>
-  </form>
+    <!-- <fieldset class="form-input-fieldset"></fieldset> -->
+    <label for="name">Name</label>
+    <input type="text" name="name" id="name" maxlength="20" placeholder="Give your NFT a name">
+    <label for="description">Description</label>
+    <textarea name="description" rows="3" cols="30" placeholder="What makes your NFT unique?"></textarea>
+    <input type="file" style="display: none;" id="selectedFile" onchange="document.getElementById('nftimage').src = window.URL.createObjectURL(this.files[0])">
+    <input type="button" id="browseButton" value="Select image" onclick="document.getElementById('selectedFile').click();"/>
+    <img id="nftimage"  width="200" height="200" src=".\medias\default.png" class="nft-image mint-form-items"/>
 </div>
+<div class="mint-form-buttons-container">
+    <button type="button" id="mintButton" class="">Mint</button>
+    <button id="tokensButton" class=""><span>See my tokens</span></button>
+</div>
+
 
