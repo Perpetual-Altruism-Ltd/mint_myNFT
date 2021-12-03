@@ -1,4 +1,5 @@
 import AbstractView from './AbstractView.js';
+import Networks from "../js/networks.json" assert { type: "json" };
 
 export default class extends AbstractView {
   constructor(params) {
@@ -10,6 +11,7 @@ export default class extends AbstractView {
   initCode(model){
     //CODE
     console.log("Hello from view_classes/mint_form.js");
+    networkSelector();
 
     //=====Wallet Provider management=====
     //autoconnect to metamask if injected
@@ -122,6 +124,55 @@ export default class extends AbstractView {
     })
 
     walletProviderConnect();
+    
+    
+    //=====NetworkSelector=====
+    function networkSelector(){
+      try{
+        console.log("networkselect");
+        const networkSelector = document.querySelector(".network-selector");
+        networkSelector.innerHTML = "";
+        for (let network of Networks.networks) {
+          const newOption = document.createElement("option");
+          newOption.value = network.chainID;
+          newOption.textContent = network.name || "N/A";
+          if (window.ethereum.networkVersion === `${network.chainID}`) {
+            newOption.setAttribute("selected", "true");
+          }
+  
+          networkSelector.appendChild(newOption);
+        }
+
+        networkSelector.addEventListener("change", (event) => {
+          const value = event.target.value;
+          const chainIDSelected = "0x" + Number(value).toString(16);
+          __promptSwitchChainDataToFetch(chainIDSelected);
+        });
+      
+      }catch (error) {
+        //console.error(error);
+        console.log("error");
+      }
+    }
+
+    function __promptSwitchChainDataToFetch(ID) {
+    
+      window.ethereum
+        .request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: ID }], // chainId must be in hexadecimal numbers
+        })
+        .then((res) => {
+          console.log("Network switched to " + ID + ". (DataToFetch)");
+        })
+        .catch((res) => {
+          console.error(
+            "Network switch canceled or error. (DataToFetch): " +
+              JSON.stringify(res)
+          );
+        });
+  }
+    
   }
 
   async getHtml(callback){
@@ -135,4 +186,6 @@ export default class extends AbstractView {
     xhr.open('GET', '/static_views/mint_form.html');
     xhr.send();
   }
+
+  
 }
