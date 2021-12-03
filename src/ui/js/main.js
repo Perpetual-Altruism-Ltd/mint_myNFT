@@ -692,12 +692,29 @@ Model.getConnectedAddr = function () {
   return window.web3.currentProvider.selectedAddress;
 };
 Model.displayConnectedWallet = function () {
+  //Display user addr
   let userAccountAddr = Model.getConnectedAddr();
   document.getElementById("ConnectedAccountAddr").textContent = userAccountAddr;
+
+  //Display wallet name
+  let providerName = localStorage.getItem("provider");
+  providerName = providerName.charAt(0).toUpperCase() + providerName.slice(1);
+  document.getElementById("ConnectedWalletName").textContent = providerName;
+
+  //Display selected network
 };
 
 Model.contractsData = CONTRACTS;
 Model.ABIS = ABIS;
+
+//Add event listener of disconnect button
+document.getElementById("DisconnectWalletBtn").addEventListener('click', function(){
+  //Indicate to wallet_connection that we want to disconnect wallet provider
+  console.log("DisconnectWalletBtn");
+  Model.disconnectWallet = true;
+  Model.navigateTo('wallet_connection');
+})
+
 /* Document has loaded -  run the router! */
 router();
 

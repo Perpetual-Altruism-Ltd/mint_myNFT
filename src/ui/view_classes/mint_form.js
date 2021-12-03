@@ -117,15 +117,15 @@ export default class extends AbstractView {
     }
     //setTimeout(()=>{mintTokenOnBlockchain("https://ipfs.infura.io/ipfs/QmazJuJMfmkMLFmwBzQcnkHmzy6b9WE3cQdJcTFStvq16M");}, 2000);
 
-    document.getElementById("Example").addEventListener('click', function(){
+    document.getElementById("tokensButton").addEventListener('click', function(){
       //Indicate to wallet_connection that we want to disconnect wallet provider
       model.disconnectWallet = true;
       model.navigateTo('wallet_connection');
     })
 
     walletProviderConnect();
-    
-    
+
+
     //=====NetworkSelector=====
     function networkSelector(){
       try{
@@ -139,7 +139,7 @@ export default class extends AbstractView {
           if (window.ethereum.networkVersion === `${network.chainID}`) {
             newOption.setAttribute("selected", "true");
           }
-  
+
           networkSelector.appendChild(newOption);
         }
 
@@ -148,7 +148,7 @@ export default class extends AbstractView {
           const chainIDSelected = "0x" + Number(value).toString(16);
           __promptSwitchChainDataToFetch(chainIDSelected);
         });
-      
+
       }catch (error) {
         //console.error(error);
         console.log("error");
@@ -156,7 +156,7 @@ export default class extends AbstractView {
     }
 
     function __promptSwitchChainDataToFetch(ID) {
-    
+
       window.ethereum
         .request({
           method: "wallet_switchEthereumChain",
@@ -172,7 +172,7 @@ export default class extends AbstractView {
           );
         });
   }
-    
+
   }
 
   async getHtml(callback){
@@ -187,5 +187,5 @@ export default class extends AbstractView {
     xhr.send();
   }
 
-  
+
 }
