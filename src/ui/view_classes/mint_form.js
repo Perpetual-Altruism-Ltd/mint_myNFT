@@ -11,7 +11,6 @@ export default class extends AbstractView {
   initCode(model){
     //CODE
     console.log("Hello from view_classes/mint_form.js");
-    networkSelector();
 
     //=====Wallet Provider management=====
     //autoconnect to metamask if injected
@@ -117,6 +116,8 @@ export default class extends AbstractView {
     }
     //setTimeout(()=>{mintTokenOnBlockchain("https://ipfs.infura.io/ipfs/QmazJuJMfmkMLFmwBzQcnkHmzy6b9WE3cQdJcTFStvq16M");}, 2000);
 
+    networkSelector();
+
     document.getElementById("Example").addEventListener('click', function(){
       //Indicate to wallet_connection that we want to disconnect wallet provider
       model.disconnectWallet = true;
@@ -125,11 +126,9 @@ export default class extends AbstractView {
 
     walletProviderConnect();
     
-    
     //=====NetworkSelector=====
     function networkSelector(){
       try{
-        console.log("networkselect");
         const networkSelector = document.querySelector(".network-selector");
         networkSelector.innerHTML = "";
         for (let network of Networks.networks) {
@@ -138,25 +137,27 @@ export default class extends AbstractView {
           newOption.textContent = network.name || "N/A";
           if (window.ethereum.networkVersion === `${network.chainID}`) {
             newOption.setAttribute("selected", "true");
+            const defaultChainID = "0x" + network.chainID.toString(16);
+            displayContractAddress(defaultChainID);
           }
-  
           networkSelector.appendChild(newOption);
         }
 
         networkSelector.addEventListener("change", (event) => {
           const value = event.target.value;
           const chainIDSelected = "0x" + Number(value).toString(16);
+          console.log(chainIDSelected);
           __promptSwitchChainDataToFetch(chainIDSelected);
+          displayContractAddress(chainIDSelected);
         });
       
       }catch (error) {
-        //console.error(error);
+        console.error(error);
         console.log("error");
       }
     }
 
     function __promptSwitchChainDataToFetch(ID) {
-    
       window.ethereum
         .request({
           method: "wallet_switchEthereumChain",
@@ -171,8 +172,14 @@ export default class extends AbstractView {
               JSON.stringify(res)
           );
         });
-  }
-    
+    }
+
+    function displayContractAddress(chainIDSelected){
+      let contractAddress = getMintContractAddrFromNetworkId(chainIDSelected);
+      document.querySelector("#contractAddress").value =  contractAddress;
+    }
+
+
   }
 
   async getHtml(callback){

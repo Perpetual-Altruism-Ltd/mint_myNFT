@@ -1,10 +1,11 @@
 <div class="mint-form-container">
-    <label for="name">Select the Network</label>
+    <label for="name"><strong>Select the Network</strong></label>
     <select class="network-selector"></select>
-    <!-- <fieldset class="form-input-fieldset"></fieldset> -->
-    <label for="name">Name</label>
+    <label id="contract"><strong>Contract Address</strong></label>
+    <input type="text" id="contractAddress" readonly>
+    <label for="name"><strong>Name</strong></label>
     <input type="text" name="name" id="name" maxlength="20" placeholder="Give your NFT a name">
-    <label for="description">Description</label>
+    <label for="description"><strong>Description</strong></label>
     <textarea name="description" rows="3" cols="30" placeholder="What makes your NFT unique?"></textarea>
     <input type="file" style="display: none;" id="selectedFile" onchange="document.getElementById('nftimage').src = window.URL.createObjectURL(this.files[0])">
     <input type="button" id="browseButton" value="Select image" onclick="document.getElementById('selectedFile').click();"/>
