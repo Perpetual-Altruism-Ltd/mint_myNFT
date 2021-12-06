@@ -12,7 +12,6 @@ export default class extends AbstractView {
   initCode(model) {
     //CODE
     console.log("Hello from view_classes/mint_form.js");
-    networkSelector();
 
     //=====Wallet Provider management=====
     //autoconnect to metamask if injected
@@ -171,6 +170,14 @@ export default class extends AbstractView {
 
     document.getElementById("selectedFile").onchange = fileHandler;
 
+    document
+      .getElementById("browseButton")
+      .addEventListener("click", function () {
+        document.getElementById("selectedFile").click();
+      });
+
+    networkSelector();
+
     document.getElementById("mintButton").onclick = addMetadataAndMint;
 
     //setTimeout(()=>{mintTokenOnBlockchain("https://ipfs.infura.io/ipfs/QmazJuJMfmkMLFmwBzQcnkHmzy6b9WE3cQdJcTFStvq16M");}, 2000);
@@ -201,6 +208,8 @@ export default class extends AbstractView {
           newOption.textContent = network.name || "N/A";
           if (window.ethereum.networkVersion === `${network.chainID}`) {
             newOption.setAttribute("selected", "true");
+            const defaultChainID = "0x" + network.chainID.toString(16);
+            displayContractAddress(defaultChainID);
           }
 
           networkSelector.appendChild(newOption);
@@ -209,7 +218,9 @@ export default class extends AbstractView {
         networkSelector.addEventListener("change", (event) => {
           const value = event.target.value;
           const chainIDSelected = "0x" + Number(value).toString(16);
+          console.log(chainIDSelected);
           __promptSwitchChainDataToFetch(chainIDSelected);
+          displayContractAddress(chainIDSelected);
         });
       } catch (error) {
         console.error(error);
@@ -230,7 +241,15 @@ export default class extends AbstractView {
             "Network switch canceled or error. (DataToFetch): " +
               JSON.stringify(res)
           );
+          let chainID = window.ethereum.networkVersion;
+          document.querySelector(".network-selector").value = chainID;
+          displayContractAddress(chainID);
         });
+    }
+
+    function displayContractAddress(chainIDSelected) {
+      let contractAddress = getMintContractAddrFromNetworkId(chainIDSelected);
+      document.querySelector("#contractAddress").value = contractAddress;
     }
   }
 
