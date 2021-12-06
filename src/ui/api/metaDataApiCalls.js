@@ -14,13 +14,3 @@ export const addMetaData = async (body) => {
 
   return response;
 };
-
-export const transferNFT = async (ID, body) => {
-  const response = await axios.post(
-    `https://mathomhouse.mynft.com/api/nfts/transferNFT/${ID}`,
-    body,
-    { headers: { "Content-Type": "application/json" } }
-  );
-
-  return response;
-};
