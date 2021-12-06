@@ -13,14 +13,6 @@ export default class extends AbstractView {
     //CODE
     console.log("Hello from view_classes/mint_form.js");
 
-    document.getElementById('browseButton').addEventListener("click", function() {
-      document.getElementById('selectedFile').click();
-    });
-
-    document.getElementById('selectedFile').addEventListener("change", function() {
-      document.getElementById('nftimage').src = window.URL.createObjectURL(this.files[0]);
-    });
-
     //=====Wallet Provider management=====
     //autoconnect to metamask if injected
     let connectToMetamask = async function () {
@@ -178,10 +170,17 @@ export default class extends AbstractView {
 
     document.getElementById("selectedFile").onchange = fileHandler;
 
+    document
+      .getElementById("browseButton")
+      .addEventListener("click", function () {
+        document.getElementById("selectedFile").click();
+      });
+
+    networkSelector();
+
     document.getElementById("mintButton").onclick = addMetadataAndMint;
 
     //setTimeout(()=>{mintTokenOnBlockchain("https://ipfs.infura.io/ipfs/QmazJuJMfmkMLFmwBzQcnkHmzy6b9WE3cQdJcTFStvq16M");}, 2000);
-
 
     document
       .getElementById("DisconnectWalletBtn")
@@ -240,20 +239,18 @@ export default class extends AbstractView {
         .catch((res) => {
           console.error(
             "Network switch canceled or error. (DataToFetch): " +
-              JSON.stringify(res) 
+              JSON.stringify(res)
           );
           let chainID = window.ethereum.networkVersion;
           document.querySelector(".network-selector").value = chainID;
-          displayContractAddress(chainID);   
+          displayContractAddress(chainID);
         });
     }
 
-    function displayContractAddress(chainIDSelected){
+    function displayContractAddress(chainIDSelected) {
       let contractAddress = getMintContractAddrFromNetworkId(chainIDSelected);
-      document.querySelector("#contractAddress").value =  contractAddress;
+      document.querySelector("#contractAddress").value = contractAddress;
     }
-
-    
   }
 
   async getHtml(callback) {
