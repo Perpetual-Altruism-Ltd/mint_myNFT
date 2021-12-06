@@ -126,7 +126,7 @@ export default class extends AbstractView {
 
     walletProviderConnect();
     
-    //=====NetworkSelector=====
+    //=====NetworkSelector=====//
     function networkSelector(){
       try{
         const networkSelector = document.querySelector(".network-selector");
@@ -153,7 +153,6 @@ export default class extends AbstractView {
       
       }catch (error) {
         console.error(error);
-        console.log("error");
       }
     }
 
@@ -169,8 +168,11 @@ export default class extends AbstractView {
         .catch((res) => {
           console.error(
             "Network switch canceled or error. (DataToFetch): " +
-              JSON.stringify(res)
+              JSON.stringify(res) 
           );
+          let chainID = window.ethereum.networkVersion;
+          document.querySelector(".network-selector").value = chainID;
+          displayContractAddress(chainID);   
         });
     }
 
@@ -178,7 +180,6 @@ export default class extends AbstractView {
       let contractAddress = getMintContractAddrFromNetworkId(chainIDSelected);
       document.querySelector("#contractAddress").value =  contractAddress;
     }
-
 
   }
 
