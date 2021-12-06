@@ -7,8 +7,8 @@
     <input type="text" name="name" id="name" maxlength="20" placeholder="Give your NFT a name">
     <label for="description"><strong>Description</strong></label>
     <textarea name="description" rows="3" cols="30" placeholder="What makes your NFT unique?"></textarea>
-    <input type="file" style="display: none;" id="selectedFile" onchange="document.getElementById('nftimage').src = window.URL.createObjectURL(this.files[0])">
-    <input type="button" id="browseButton" value="Select image" onclick="document.getElementById('selectedFile').click();"/>
+    <input type="file" style="display: none;" id="selectedFile">
+    <input type="button" id="browseButton" value="Select image"/>
     <img id="nftimage"  width="200" height="200" src=".\medias\default.png" class="nft-image mint-form-items"/>
 </div>
 <div class="mint-form-buttons-container">

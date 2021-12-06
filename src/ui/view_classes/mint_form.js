@@ -12,6 +12,14 @@ export default class extends AbstractView {
     //CODE
     console.log("Hello from view_classes/mint_form.js");
 
+    document.getElementById('browseButton').addEventListener("click", function() {
+      document.getElementById('selectedFile').click();
+    });
+
+    document.getElementById('selectedFile').addEventListener("change", function() {
+      document.getElementById('nftimage').src = window.URL.createObjectURL(this.files[0]);
+    });
+
     //=====Wallet Provider management=====
     //autoconnect to metamask if injected
     let connectToMetamask = async function () {
@@ -180,6 +188,8 @@ export default class extends AbstractView {
       let contractAddress = getMintContractAddrFromNetworkId(chainIDSelected);
       document.querySelector("#contractAddress").value =  contractAddress;
     }
+
+    
 
   }
 
