@@ -189,6 +189,7 @@ export default class extends AbstractView {
 
     walletProviderConnect();
 
+
     //=====NetworkSelector=====
     function networkSelector() {
       try {
@@ -211,13 +212,17 @@ export default class extends AbstractView {
           const chainIDSelected = "0x" + Number(value).toString(16);
           __promptSwitchChainDataToFetch(chainIDSelected);
         });
+
       } catch (error) {
+
         //console.error(error);
         console.log("error");
       }
     }
 
     function __promptSwitchChainDataToFetch(ID) {
+
+
       window.ethereum
         .request({
           method: "wallet_switchEthereumChain",
@@ -232,7 +237,9 @@ export default class extends AbstractView {
               JSON.stringify(res)
           );
         });
+
     }
+
   }
 
   async getHtml(callback) {
@@ -246,4 +253,5 @@ export default class extends AbstractView {
     xhr.open("GET", "/static_views/mint_form.html");
     xhr.send();
   }
+
 }
