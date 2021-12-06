@@ -1,4 +1,5 @@
-import AbstractView from './AbstractView.js';
+import { getUserNFTs } from "../api/metaDataApiCalls.js";
+import AbstractView from "./AbstractView.js";
 
 export default class extends AbstractView {
   constructor(params) {
@@ -7,20 +8,36 @@ export default class extends AbstractView {
   }
 
   /*This function contain all the javascript code which will be executed when this view if selected */
-  initCode(model){
+  initCode(model) {
     //CODE
-    console.log("Hello from token_display.js");
+
+    //Get User NFT-s and display
+
+    const displayTokens = async () => {
+      let userAccountAddr = web3.currentProvider.selectedAddress;
+      try {
+        const { data } = await getUserNFTs(userAccountAddr);
+
+        // data.forEach(nft => {
+
+        // });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    displayTokens();
   }
 
-  async getHtml(callback){
+  async getHtml(callback) {
     const xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
         let htmlContent = xhr.response;
         callback(htmlContent);
       }
     };
-    xhr.open('GET', '/static_views/token_display.html');
+    xhr.open("GET", "/static_views/token_display.html");
     xhr.send();
   }
 }
