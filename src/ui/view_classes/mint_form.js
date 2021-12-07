@@ -194,6 +194,7 @@ export default class extends AbstractView {
       model.navigateTo("watch_assets");
     };
 
+
     walletProviderConnect();
 
     //=====NetworkSelector=====
@@ -253,7 +254,8 @@ export default class extends AbstractView {
 
     function formValidator(){
       var fields = ["name", "description", "file"];
-
+      var correctFields = 0;
+      var ready = false;
       var i, l = fields.length;
       var fieldname;
       for (i = 0; i < l; i++) {
@@ -263,11 +265,16 @@ export default class extends AbstractView {
           document.getElementById(errorType).innerHTML = "Please enter a valid " + fieldname +"." ;
         }
         else{
-          if(document.getElementById(errorType).innerHTML != null){
+          correctFields++;
+          if(document.getElementById(errorType).innerHTML != ""){
             document.getElementById(errorType).innerHTML = " ";
           }
         }
       }
+      if(correctFields == fields.length ){
+        ready = true;
+      }
+      return ready;
     }
     
   }
