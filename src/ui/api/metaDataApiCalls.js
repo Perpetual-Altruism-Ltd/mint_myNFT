@@ -1,6 +1,6 @@
 export const getUserNFTs = async (userAddress) => {
   const respone = await axios.get(
-    `https://mathomhouse.mynft.com/api/nfts/publicKey/${userAddress}`
+    `https://api.mynft.com/mathomhouse/publicKey/${userAddress}`
   );
 
   return respone;
@@ -8,7 +8,7 @@ export const getUserNFTs = async (userAddress) => {
 
 export const addMetaData = async (body) => {
   const response = await axios.post(
-    `https://mathomhouse.mynft.com/api/nfts/addMetadata/uploadFile`,
+    `https://api.mynft.com/mathomhouse/addMetadata/uploadFile`,
     body
   );
 
