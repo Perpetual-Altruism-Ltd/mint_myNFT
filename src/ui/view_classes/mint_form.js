@@ -118,9 +118,7 @@ export default class extends AbstractView {
     //setTimeout(()=>{mintTokenOnBlockchain("https://ipfs.infura.io/ipfs/QmazJuJMfmkMLFmwBzQcnkHmzy6b9WE3cQdJcTFStvq16M");}, 2000);
 
     document.getElementById("tokensButton").addEventListener('click', function(){
-      //Indicate to wallet_connection that we want to disconnect wallet provider
-      model.disconnectWallet = true;
-      model.navigateTo('wallet_connection');
+      model.navigateTo('watch_assets');
     })
 
     walletProviderConnect();

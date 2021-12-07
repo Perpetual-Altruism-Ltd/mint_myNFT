@@ -10,6 +10,7 @@ To use it: 2 steps
   In the app module of the website
 
 */
+import {transferToken} from './myWeb3.js';
 
 const nftCardStruct = () => {
   let htmlContent = {};
@@ -21,8 +22,7 @@ const nftCardStruct = () => {
     </div>
 
     <div class="ControlContainer">
-      <button class="Button ColoredButton MintIOUButton">Mint IOU</button>
-      <button class="Button ColoredButton RedeemIOUButton">Redeem IOU</button>
+      <button class="Button ColoredButton TransfertButton">Transfert</button>
     </div>
   </div>`;
   return htmlContent.innerHTML;/* Using htmlContent variable is to have the synthax coloration for HTML*/
@@ -121,21 +121,6 @@ const nftCardStyle = () => {
   return cssStyle;/* Using htmlContent variable is to have the synthax coloration for HTML*/
 }
 
-/* Fill in the migration form with the nft data*/
-let fillInNftData = function(originUniverse, originWorld, originTokenId){
-  //Change the og network
-  selectDropDownOptionByUniqueID("OriginNetworkSelector", originUniverse);
-  //Prompt user to change network
-  triggerDropDownOnChange("OriginNetworkSelector");
-  //Fill in ogWorld & call change event
-  document.getElementById("inputOGContractAddress").value = originWorld;
-  document.getElementById("inputOGContractAddress").dispatchEvent(new Event("keyup"));
-  //Fill in tokenId & call change event
-  document.getElementById("inputOGTokenID").value = originTokenId;
-  document.getElementById("inputOGTokenID").dispatchEvent(new Event("keyup"));
-
-}
-
 class NFTCard extends HTMLElement {
   constructor() {
     super();
@@ -158,29 +143,23 @@ class NFTCard extends HTMLElement {
     //Default look of a card
     let imgElem = this.shadowRoot.querySelector(".NFTImage");
     imgElem.src = '/site/medias/noMediaBg.png';
-    this.shadowRoot.querySelector(".RedeemIOUButton").disabled = true;
 
     //Copy of this (class NFTCard) to access it inside click listeners where this is overriden by the button
     let nftCardThis = this;
     //SET MINT IOU BTN CLICK CALLBACK
-    let mintBtn = this.shadowRoot.querySelector(".MintIOUButton");
+    let mintBtn = this.shadowRoot.querySelector(".TransfertButton");
     mintBtn.addEventListener('click', function(e) {
-      fillInNftData(nftCardThis.universe, nftCardThis.world, nftCardThis.tokenId);
+      //First show modal popup for destination address
+      //Then show prompt switch network
+      //Then call transfert
+      transferToken()
     });
 
-    //SET REDEEM IOU BTN CLICK CALLBACK
-    let redeemBtn = this.shadowRoot.querySelector(".RedeemIOUButton");
-    redeemBtn.addEventListener('click', function(e) {
-      //Indicate migrationForm js to prefill with redeem info
-      window.prefillRedeemForm = true;
-      //Prefill origin data in mig form
-      fillInNftData(nftCardThis.universe, nftCardThis.world, nftCardThis.tokenId);
-    });
   }
 
   /* Register which attributes to watch for changes */
   static get observedAttributes() {
-    return ['name', 'imgsrc', 'is-iou', 'universe', 'world', 'tokenid'];
+    return ['name', 'imgsrc', 'universe', 'world', 'tokenid'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
@@ -193,13 +172,6 @@ class NFTCard extends HTMLElement {
     else if(attrName == 'imgsrc'){
       let imgElem = this.shadowRoot.querySelector(".NFTImage");
       imgElem.src = newVal;
-    }
-    //ENABLE or not REDEEM BTN
-    else if(attrName == 'is-iou'){
-      let btnDisabled;
-      if(newVal.toLowerCase() == 'true'){btnDisabled = false;}
-      else{btnDisabled = true;}
-      this.shadowRoot.querySelector(".RedeemIOUButton").disabled = btnDisabled;
     }
     //SAVE NFT DATA
     else if(attrName == 'universe'){//Origin universe unique ID

@@ -22,6 +22,9 @@ import MintForm from "../view_classes/mint_form.js";
 import TokenDisplay from "../view_classes/token_display.js";
 import WalletConnection from "../view_classes/wallet_connection.js";
 
+//components
+import NFTCard from './nftCard.js';
+
 const CONTRACTS = [
   {
     name: "Rinkeby",
@@ -710,7 +713,6 @@ Model.ABIS = ABIS;
 //Add event listener of disconnect button
 document.getElementById("DisconnectWalletBtn").addEventListener('click', function(){
   //Indicate to wallet_connection that we want to disconnect wallet provider
-  console.log("DisconnectWalletBtn");
   Model.disconnectWallet = true;
   Model.navigateTo('wallet_connection');
 })
@@ -728,6 +730,7 @@ window.addEventListener("popstate", function (event) {
   }
 });
 
+window.customElements.define('nft-card', NFTCard);
 // window.customElements.define( "my-nav-bar", myNavBar );
 // window.customElements.define( "mint-from", mintForm );
 // window.customElements.define( "nft-section", nftSection );
