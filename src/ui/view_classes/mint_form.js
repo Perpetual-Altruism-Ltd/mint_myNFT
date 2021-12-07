@@ -52,7 +52,7 @@ export default class extends AbstractView {
       //HANDLE WALLET CONNECTION
       //If web3 already injected
       if (!window.web3) {
-        model.navigateTo("/migration_finished");
+        model.navigateTo("/wallet_connection");
       } else if (model.isProviderLoaded()) {
         console.log("Westron already loaded, perfect.");
         //Display connected addr + ogNet & prefill it
@@ -86,8 +86,6 @@ export default class extends AbstractView {
       }
       //Redirect to wallet_connection page
       else {
-        document.getElementById("ConnectedAccountAddr").textContent =
-          "Wallet not connected. Redirect to connection page.";
         console.log("Westron lib not loaded. Redirecting to wallet_connection");
         model.navigateTo("wallet_connection");
         return; //To stop javascript execution in initCode() function

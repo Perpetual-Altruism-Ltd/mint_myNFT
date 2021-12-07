@@ -1,3 +1,5 @@
+import {showModalPopup, hideModalPopup} from "./modalPopup.js"
+
 /*
 =====HTML ELEMENT=====
 To put inside the page where you want to display an NFT card
@@ -10,7 +12,7 @@ To use it: 2 steps
   In the app module of the website
 
 */
-import {transferToken} from './myWeb3.js';
+import {transferNFT} from './myWeb3.js';
 
 const nftCardStruct = () => {
   let htmlContent = {};
@@ -24,6 +26,7 @@ const nftCardStruct = () => {
     <div class="ControlContainer">
       <button class="Button ColoredButton TransfertButton">Transfert</button>
     </div>
+
   </div>`;
   return htmlContent.innerHTML;/* Using htmlContent variable is to have the synthax coloration for HTML*/
 }
@@ -115,11 +118,10 @@ const nftCardStyle = () => {
   .ColoredButton.Selected{
     background-image: linear-gradient(to right, #bf1560 0%, #bf1560 100%);
   }
-
-
 `;
   return cssStyle;/* Using htmlContent variable is to have the synthax coloration for HTML*/
 }
+
 
 class NFTCard extends HTMLElement {
   constructor() {
@@ -144,18 +146,26 @@ class NFTCard extends HTMLElement {
     let imgElem = this.shadowRoot.querySelector(".NFTImage");
     imgElem.src = '/site/medias/noMediaBg.png';
 
-    //Copy of this (class NFTCard) to access it inside click listeners where this is overriden by the button
-    let nftCardThis = this;
-    //SET MINT IOU BTN CLICK CALLBACK
-    let mintBtn = this.shadowRoot.querySelector(".TransfertButton");
-    mintBtn.addEventListener('click', function(e) {
-      //First show modal popup for destination address
+    //SET transfert btn callback
+    let transfertBtn = this.shadowRoot.querySelector(".TransfertButton");
+    transfertBtn.addEventListener('click', (e) => {
+      //First show modal popup for user to input the destination address
+      showModalPopup();
+
       //Then show prompt switch network
       //Then call transfert
-      transferToken(this.world, )
+      transferNFT(this.world, this.tokenId, this.receiver);
     });
 
+    window.onclick = (event) => {
+      if (event.target.id == "ModalBackground") {
+        hideModalPopup();
+      }
+    }
+
   }
+
+
 
   /* Register which attributes to watch for changes */
   static get observedAttributes() {
