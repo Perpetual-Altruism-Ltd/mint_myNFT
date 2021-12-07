@@ -47,7 +47,7 @@ const ABIS = {
   ERC721: ERC721.abi,
   ERC165: ERC165.abi,
   ERC721Metadata: ERC721Metadata.abi,
-  MintContract: MintContract.abi,
+  MintContract: MintContract.output.abi,
 };
 class App {
   __isLoading = true;

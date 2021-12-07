@@ -152,7 +152,7 @@ class NFTCard extends HTMLElement {
       //First show modal popup for destination address
       //Then show prompt switch network
       //Then call transfert
-      transferToken()
+      transferToken(this.world, )
     });
 
   }
