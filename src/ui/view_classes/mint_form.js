@@ -199,7 +199,6 @@ export default class extends AbstractView {
     //=====NetworkSelector=====
     function networkSelector() {
       try {
-        console.log("networkselect");
         const networkSelector = document.querySelector(".network-selector");
         networkSelector.innerHTML = "";
         for (let network of Networks.networks) {
@@ -251,6 +250,26 @@ export default class extends AbstractView {
       let contractAddress = getMintContractAddrFromNetworkId(chainIDSelected);
       document.querySelector("#contractAddress").value = contractAddress;
     }
+
+    function formValidator(){
+      var fields = ["name", "description", "file"];
+
+      var i, l = fields.length;
+      var fieldname;
+      for (i = 0; i < l; i++) {
+        fieldname = fields[i];
+        var errorType = fieldname + "Error" ;
+        if (document.forms["mintForm"][fieldname].value === "") {
+          document.getElementById(errorType).innerHTML = "Please enter a valid " + fieldname +"." ;
+        }
+        else{
+          if(document.getElementById(errorType).innerHTML != null){
+            document.getElementById(errorType).innerHTML = " ";
+          }
+        }
+      }
+    }
+    
   }
 
   async getHtml(callback) {

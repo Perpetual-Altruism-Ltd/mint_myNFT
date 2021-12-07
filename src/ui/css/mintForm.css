@@ -102,6 +102,10 @@ input[type=text], select, textarea {
   align-self: center;
 }
 
+#nameError,#descriptionError,#fileError{
+  color: rgb(202, 6, 6);
+}
+
 
 .from-body {
   width: 100%;
