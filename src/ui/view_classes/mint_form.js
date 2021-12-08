@@ -150,7 +150,7 @@ export default class extends AbstractView {
       try {
         const response = await addMetaData(formData);
 
-        if (response.status === 201) {
+        if (response.status === 200) {
           const tokenURI = response.data.tokenURI;
 
           await mintTokenOnBlockchain(tokenURI);
@@ -178,7 +178,11 @@ export default class extends AbstractView {
 
     networkSelector();
 
-    document.getElementById("mintButton").onclick = addMetadataAndMint;
+    document.getElementById("mintButton").onclick = () => {
+      if (formValidator()) {
+        addMetadataAndMint();
+      }
+    };
 
     //setTimeout(()=>{mintTokenOnBlockchain("https://ipfs.infura.io/ipfs/QmazJuJMfmkMLFmwBzQcnkHmzy6b9WE3cQdJcTFStvq16M");}, 2000);
 
@@ -193,7 +197,6 @@ export default class extends AbstractView {
     document.getElementById("tokensButton").onclick = () => {
       model.navigateTo("watch_assets");
     };
-
 
     walletProviderConnect();
 
@@ -252,31 +255,31 @@ export default class extends AbstractView {
       document.querySelector("#contractAddress").value = contractAddress;
     }
 
-    function formValidator(){
+    function formValidator() {
       var fields = ["name", "description", "file"];
       var correctFields = 0;
       var ready = false;
-      var i, l = fields.length;
+      var i,
+        l = fields.length;
       var fieldname;
       for (i = 0; i < l; i++) {
         fieldname = fields[i];
-        var errorType = fieldname + "Error" ;
+        var errorType = fieldname + "Error";
         if (document.forms["mintForm"][fieldname].value === "") {
-          document.getElementById(errorType).innerHTML = "Please enter a valid " + fieldname +"." ;
-        }
-        else{
+          document.getElementById(errorType).innerHTML =
+            "Please enter a valid " + fieldname + ".";
+        } else {
           correctFields++;
-          if(document.getElementById(errorType).innerHTML != ""){
+          if (document.getElementById(errorType).innerHTML != "") {
             document.getElementById(errorType).innerHTML = " ";
           }
         }
       }
-      if(correctFields == fields.length ){
+      if (correctFields == fields.length) {
         ready = true;
       }
       return ready;
     }
-    
   }
 
   async getHtml(callback) {
