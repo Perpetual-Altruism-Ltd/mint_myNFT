@@ -1,5 +1,5 @@
 import AbstractView from "./AbstractView.js";
-import Networks from "../js/networks.json" assert { type: "json" };
+import Networks from "../config/networks.json" assert { type: "json" };
 import { addMetaData } from "../api/metaDataApiCalls.js";
 
 export default class extends AbstractView {

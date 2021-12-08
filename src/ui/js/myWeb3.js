@@ -1,6 +1,14 @@
+import MintContract from "./ABI/ImplERC721_metadata.json" assert { type: "json" };
 
 export let transferNFT = async function(contractAddr, tokenId, toAddr){
   console.log("Transfert to " + toAddr + " of token " + tokenId + " from " + contractAddr);
+  //Create contract from contract addr
+  let mintContract = new web3.eth.Contract(
+    MintContract.output.abi,
+    contractAddr
+  );
+  //Call transfert
+  await transferToken(mintContract, tokenId, toAddr);
 }
 
 export const loadWeb3 = async () => {

@@ -9,7 +9,7 @@ import {
 } from "./myWeb3.js";
 
 import MintContract from "./ABI/ImplERC721_metadata.json" assert { type: "json" };
-import Networks from "./networks.json" assert { type: "json" };
+import Networks from "../config/networks.json" assert { type: "json" };
 import { genRandomString } from "./utils.js";
 import ERC721 from "./ABI/ERC721.json" assert { type: "json" };
 import ERC165 from "./ABI/ERC165.json" assert { type: "json" };

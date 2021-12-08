@@ -1,4 +1,5 @@
-import {showModalPopup, hideModalPopup} from "./modalPopup.js"
+import {showModalPopup, hideModalPopup, showModalMsg} from "./modalPopup.js"
+import Networks from "../config/networks.json" assert { type: "json" };
 
 /*
 =====HTML ELEMENT=====
@@ -122,6 +123,40 @@ const nftCardStyle = () => {
   return cssStyle;/* Using htmlContent variable is to have the synthax coloration for HTML*/
 }
 
+async function promptSwitchChainThenTransfert(ID, worldAddr, tokenId, receiverAddr) {
+  window.ethereum
+    .request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: ID }], // chainId must be in hexadecimal numbers
+    })
+    .then(async (res) => {
+      console.log("Network switched to " + ID + ".");
+      //Then call transfert
+      try{
+        await transferNFT(worldAddr, tokenId, receiverAddr);
+        showModalMsg(true, "The transfert was processed successfully.", 'green');
+        setTimeout(hideModalPopup, 5000);
+      }catch(err){
+        showModalMsg(true, "The transfert didn't work. Make sure the address is correct (without white spaces) and to accept your wallet provider's prompt to switch network.", 'red');
+      }
+
+    })
+    .catch((res) => {
+      console.error("Network switch canceled or error: " + JSON.stringify(res));
+      showModalMsg(true, "Make sure to change to the correct network, which is " + ID, 'red');
+    });
+}
+
+function getChainIdFromUniqueId(uniqueId){
+  let chainId = "";
+  Networks.networks.forEach((net, i) => {
+    if(net.uniqueId == uniqueId){
+      chainId = '0x' + net.chainID.toString(16);
+      return chainId;
+    }
+  });
+  return chainId;
+}
 
 class NFTCard extends HTMLElement {
   constructor() {
@@ -152,9 +187,22 @@ class NFTCard extends HTMLElement {
       //First show modal popup for user to input the destination address
       showModalPopup();
 
-      //Then show prompt switch network
-      //Then call transfert
-      transferNFT(this.world, this.tokenId, this.receiver);
+      //Setup the "send" btn listener (Which is different for each NFT card transfert popup)
+      let sendBtn = document.getElementById("ModalSendTokenBtn");
+      sendBtn.addEventListener('click', (e) => {
+        //Hide error msg
+        showModalMsg(false, "");
+
+        //Retrieve recipient addr from input
+        let receiverAddr = document.getElementById("ReceiverAddrInput").value;
+
+        //Retrieve chainId from uniqueId
+        let chainId = getChainIdFromUniqueId(this.universe);
+
+        console.log("Sending to " + receiverAddr + " on chain " + chainId);
+        //Once user click send, prompt switch network
+        promptSwitchChainThenTransfert(chainId, this.world, this.tokenId, receiverAddr);
+      })
     });
 
     window.onclick = (event) => {
