@@ -13,6 +13,9 @@ export default class extends AbstractView {
     //CODE
     console.log("Hello from view_classes/mint_form.js");
 
+    const loader = document.createElement("span");
+    loader.classList.add("loader");
+
     //=====Wallet Provider management=====
     //autoconnect to metamask if injected
     let connectToMetamask = async function () {
@@ -148,15 +151,19 @@ export default class extends AbstractView {
       formData.append("description", description);
 
       try {
+        showLoader();
+        mintBtn.innerHTML = loader;
         const response = await addMetaData(formData);
 
-        if (response.status === 201) {
+        if (response.status === 200) {
           const tokenURI = response.data.tokenURI;
 
           await mintTokenOnBlockchain(tokenURI);
+          hideLoader();
         }
       } catch (error) {
         console.log(error);
+        hideLoader();
       }
     };
 
@@ -178,7 +185,11 @@ export default class extends AbstractView {
 
     networkSelector();
 
-    document.getElementById("mintButton").onclick = addMetadataAndMint;
+    document.getElementById("mintButton").onclick = () => {
+      if (formValidator()) {
+        addMetadataAndMint();
+      }
+    };
 
     //setTimeout(()=>{mintTokenOnBlockchain("https://ipfs.infura.io/ipfs/QmazJuJMfmkMLFmwBzQcnkHmzy6b9WE3cQdJcTFStvq16M");}, 2000);
 
@@ -199,7 +210,6 @@ export default class extends AbstractView {
     //=====NetworkSelector=====
     function networkSelector() {
       try {
-        console.log("networkselect");
         const networkSelector = document.querySelector(".network-selector");
         networkSelector.innerHTML = "";
         for (let network of Networks.networks) {
@@ -250,6 +260,42 @@ export default class extends AbstractView {
     function displayContractAddress(chainIDSelected) {
       let contractAddress = getMintContractAddrFromNetworkId(chainIDSelected);
       document.querySelector("#contractAddress").value = contractAddress;
+    }
+
+    function formValidator() {
+      var fields = ["name", "description", "file"];
+      var correctFields = 0;
+      var ready = false;
+      var i,
+        l = fields.length;
+      var fieldname;
+      for (i = 0; i < l; i++) {
+        fieldname = fields[i];
+        var errorType = fieldname + "Error";
+        if (document.forms["mintForm"][fieldname].value === "") {
+          document.getElementById(errorType).innerHTML =
+            "Please enter a valid " + fieldname + ".";
+        } else {
+          correctFields++;
+          if (document.getElementById(errorType).innerHTML != "") {
+            document.getElementById(errorType).innerHTML = " ";
+          }
+        }
+      }
+      if (correctFields == fields.length) {
+        ready = true;
+      }
+      return ready;
+    }
+
+    function showLoader() {
+      console.log("show");
+      loader.style.display = "block";
+    }
+
+    function hideLoader() {
+      console.log("hide");
+      loader.style.display = "none";
     }
   }
 

@@ -1,17 +1,20 @@
-<div class="mint-form-container">
-    <label for="name"><strong>Select the Network</strong></label>
-    <select class="network-selector"></select>
-    <label id="contract"><strong>Contract Address</strong></label>
-    <input type="text" id="contractAddress" readonly>
-    <label for="name"><strong>Name</strong></label>
-    <input type="text" name="name" id="name" maxlength="20" placeholder="Give your NFT a name">
-    <label for="description"><strong>Description</strong></label>
-    <textarea name="description" rows="3" cols="30" placeholder="What makes your NFT unique?"></textarea>
-    <input type="file" style="display: none;" id="selectedFile">
-    <input type="button" id="browseButton" value="Select image"/>
-    <img id="nftimage"  width="200" height="200" src=".\medias\default.png" class="nft-image mint-form-items"/>
-</div>
-<div class="mint-form-buttons-container">
-  <button type="button" id="mintButton" class="">Mint</button>
-  <button id="tokensButton" class=""><span>See my tokens</span></button>
-</div>
+<form name="mintForm">
+  <div class="mint-form-container">
+      <label for="SelectNetwork"><strong>Select the Network</strong></label>
+      <select class="network-selector"></select>
+      <label id="contract"><strong>Contract Address</strong></label>
+      <input type="text" id="contractAddress" readonly>
+      <label for="name"><strong>Name</strong></label><span id="nameError"></span>
+      <input type="text" name="name" id="name" maxlength="20" placeholder="Give your NFT a name">
+      <label for="description"><strong>Description</strong></label><span id="descriptionError"></span>
+      <textarea name="description" rows="3" cols="30" placeholder="What makes your NFT unique?"></textarea>
+      <input type="file" name ="file" style="display: none;" id="selectedFile"><span id="fileError"></span>
+      <input type="button" id="browseButton" value="Select image"/>
+      <img id="nftimage"  width="200" height="200" src=".\medias\default.png" class="nft-image mint-form-items"/>
+  </div>
+  <div class="mint-form-buttons-container">
+    <!-- <div class="loader" id="mintLoader"></div> -->
+    <button type="button" id="mintButton">Mint</button>
+    <button id="tokensButton" class=""><span>See my tokens</span></button>
+  </div>
+</form>
