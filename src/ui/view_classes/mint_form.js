@@ -13,6 +13,9 @@ export default class extends AbstractView {
     //CODE
     console.log("Hello from view_classes/mint_form.js");
 
+    const loader = document.createElement("span");
+    loader.classList.add("loader");
+
     //=====Wallet Provider management=====
     //autoconnect to metamask if injected
     let connectToMetamask = async function () {
@@ -148,15 +151,19 @@ export default class extends AbstractView {
       formData.append("description", description);
 
       try {
+        showLoader();
+        mintBtn.innerHTML = loader;
         const response = await addMetaData(formData);
 
         if (response.status === 200) {
           const tokenURI = response.data.tokenURI;
 
           await mintTokenOnBlockchain(tokenURI);
+          hideLoader();
         }
       } catch (error) {
         console.log(error);
+        hideLoader();
       }
     };
 
@@ -283,13 +290,11 @@ export default class extends AbstractView {
 
     function showLoader() {
       console.log("show");
-      const loader = document.getElementById("mintLoader");
       loader.style.display = "block";
     }
 
     function hideLoader() {
       console.log("hide");
-      const loader = document.getElementById("mintLoader");
       loader.style.display = "none";
     }
   }
