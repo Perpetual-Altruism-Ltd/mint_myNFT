@@ -24,6 +24,8 @@
   font-size: 20px;
   cursor: pointer;
   transition-duration: 0.4s;
+  display: flex;
+  align-items: center;
 }
 
 #mintButton:hover {
@@ -116,14 +118,16 @@ textarea {
 }
 
 .loader {
-  border: 10px solid #e9e6e6;
+  border: 7px solid #e9e6e6;
   border-radius: 50%;
-  border-top: 10px solid #342362;
-  width: 20px;
-  height: 20px;
+  border-top: 7px solid #342362;
+  width: 10px;
+  height: 10px;
   animation: spin 2s linear infinite;
-  /* display: none;*/
+  /* display: none; */
   margin-right: auto;
+  display: inline-block;
+  margin-left: 5px;
 }
 
 @keyframes spin {
