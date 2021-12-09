@@ -13,7 +13,6 @@ export default class extends AbstractView {
     //CODE
     console.log("Hello from view_classes/mint_form.js");
 
-
     //
     const name = document.querySelector(".mint-form-container #name");
     const description = document.querySelector(".mint-form-container textarea");
@@ -23,9 +22,8 @@ export default class extends AbstractView {
     const browseButton = document.getElementById("browseButton");
     const DisconnectWalletBtn = document.getElementById("DisconnectWalletBtn");
     const tokensButton = document.getElementById("tokensButton");
-    const loader = document.createElement("span");
+    const loader = document.createElement("div");
     loader.classList.add("loader");
-
 
     //=====Wallet Provider management=====
     //autoconnect to metamask if injected
@@ -160,10 +158,9 @@ export default class extends AbstractView {
       formData.append("description", description.value);
 
       try {
-
         mintBtn.setAttribute("disabled", true);
         showLoader();
-        mintBtn.innerHTML = loader;
+        mintBtn.appendChild(loader);
 
         const response = await addMetaData(formData);
 
@@ -172,16 +169,14 @@ export default class extends AbstractView {
 
           await mintTokenOnBlockchain(tokenURI);
 
-
           mintBtn.disabled = false;
-           hideLoader();
+          hideLoader();
         }
       } catch (error) {
         console.log(error);
 
-        mintBtn.disabled = false; 
+        mintBtn.disabled = false;
         hideLoader();
-
       }
     };
 
@@ -196,14 +191,11 @@ export default class extends AbstractView {
       document.getElementById("selectedFile").click();
     });
 
-
-
-   mintBtn.onclick = () => {
+    mintBtn.onclick = () => {
       if (formValidator()) {
         addMetadataAndMint();
       }
     };
-
 
     DisconnectWalletBtn.addEventListener("click", function () {
       //Indicate to wallet_connection that we want to disconnect wallet provider
