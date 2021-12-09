@@ -9,8 +9,8 @@
 .mint-form-buttons-container {
   display: flex;
   flex-direction: row;
+  gap: 28%;
   justify-content: flex-end;
-  gap: 25%;
 }
 
 #mintButton {
@@ -113,6 +113,26 @@ textarea {
 #descriptionError,
 #fileError {
   color: rgb(202, 6, 6);
+}
+
+.loader {
+  border: 10px solid #e9e6e6;
+  border-radius: 50%;
+  border-top: 10px solid #342362;
+  width: 20px;
+  height: 20px;
+  animation: spin 2s linear infinite;
+  /* display: none;*/
+  margin-left: auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .from-body {

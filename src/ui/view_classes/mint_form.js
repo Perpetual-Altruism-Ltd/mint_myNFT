@@ -280,6 +280,18 @@ export default class extends AbstractView {
       }
       return ready;
     }
+
+    function showLoader() {
+      console.log("show");
+      const loader = document.getElementById("mintLoader");
+      loader.style.display = "block";
+    }
+
+    function hideLoader() {
+      console.log("hide");
+      const loader = document.getElementById("mintLoader");
+      loader.style.display = "none";
+    }
   }
 
   async getHtml(callback) {
