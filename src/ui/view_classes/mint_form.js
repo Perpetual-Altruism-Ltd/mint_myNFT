@@ -13,8 +13,19 @@ export default class extends AbstractView {
     //CODE
     console.log("Hello from view_classes/mint_form.js");
 
+
+    //
+    const name = document.querySelector(".mint-form-container #name");
+    const description = document.querySelector(".mint-form-container textarea");
+    const nftImage = document.getElementById("nftimage");
+    const mintBtn = document.getElementById("mintButton");
+    const selectedFileInput = document.getElementById("selectedFile");
+    const browseButton = document.getElementById("browseButton");
+    const DisconnectWalletBtn = document.getElementById("DisconnectWalletBtn");
+    const tokensButton = document.getElementById("tokensButton");
     const loader = document.createElement("span");
     loader.classList.add("loader");
+
 
     //=====Wallet Provider management=====
     //autoconnect to metamask if injected
@@ -116,6 +127,11 @@ export default class extends AbstractView {
           await mintContract.methods
             .mint(tokenURI)
             .send({ from: userAccountAddr, gas: 200000 });
+
+          name.value = "";
+          description.value = "";
+          nftImage.src = "./medias/default.png";
+          selectedFileInput.value = "";
         } catch (err) {
           console.error("mintToken error:" + err);
         }
@@ -135,75 +151,71 @@ export default class extends AbstractView {
       return contractAddr;
     };
 
-    let nftImage = "";
-
     //Add metadata to Mathom and mint token to blockchain
     const addMetadataAndMint = async () => {
-      const name = document.querySelector(".mint-form-container #name").value;
-      const description = document.querySelector(
-        ".mint-form-container textarea"
-      ).value;
-
       const formData = new FormData();
 
-      formData.append("file", nftImage);
-      formData.append("name", name);
-      formData.append("description", description);
+      formData.append("file", selectedFileInput.files[0]);
+      formData.append("name", name.value);
+      formData.append("description", description.value);
 
       try {
+
+        mintBtn.setAttribute("disabled", true);
         showLoader();
         mintBtn.innerHTML = loader;
+
         const response = await addMetaData(formData);
 
         if (response.status === 200) {
           const tokenURI = response.data.tokenURI;
 
           await mintTokenOnBlockchain(tokenURI);
-          hideLoader();
+
+
+          mintBtn.disabled = false;
+           hideLoader();
         }
       } catch (error) {
         console.log(error);
+
+        mintBtn.disabled = false; 
         hideLoader();
+
       }
     };
 
     // Handle image upload
     const fileHandler = (e) => {
-      document.getElementById("nftimage").src = window.URL.createObjectURL(
-        e.target.files[0]
-      );
-      nftImage = e.target.files[0];
+      nftImage.src = window.URL.createObjectURL(e.target.files[0]);
     };
 
-    document.getElementById("selectedFile").onchange = fileHandler;
+    selectedFileInput.onchange = fileHandler;
 
-    document
-      .getElementById("browseButton")
-      .addEventListener("click", function () {
-        document.getElementById("selectedFile").click();
-      });
+    browseButton.addEventListener("click", function () {
+      document.getElementById("selectedFile").click();
+    });
 
-    networkSelector();
 
-    document.getElementById("mintButton").onclick = () => {
+
+   mintBtn.onclick = () => {
       if (formValidator()) {
         addMetadataAndMint();
       }
     };
 
-    //setTimeout(()=>{mintTokenOnBlockchain("https://ipfs.infura.io/ipfs/QmazJuJMfmkMLFmwBzQcnkHmzy6b9WE3cQdJcTFStvq16M");}, 2000);
 
-    document
-      .getElementById("DisconnectWalletBtn")
-      .addEventListener("click", function () {
-        //Indicate to wallet_connection that we want to disconnect wallet provider
-        model.disconnectWallet = true;
-        model.navigateTo("wallet_connection");
-      });
+    DisconnectWalletBtn.addEventListener("click", function () {
+      //Indicate to wallet_connection that we want to disconnect wallet provider
+      model.disconnectWallet = true;
+      model.navigateTo("wallet_connection");
+    });
 
-    document.getElementById("tokensButton").onclick = () => {
+    tokensButton.onclick = () => {
       model.navigateTo("watch_assets");
     };
+
+    networkSelector();
 
     walletProviderConnect();
 
