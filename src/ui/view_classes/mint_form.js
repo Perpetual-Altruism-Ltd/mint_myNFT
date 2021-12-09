@@ -23,7 +23,10 @@ export default class extends AbstractView {
     const DisconnectWalletBtn = document.getElementById("DisconnectWalletBtn");
     const tokensButton = document.getElementById("tokensButton");
     const loader = document.createElement("div");
+
     loader.classList.add("loader");
+
+    mintBtn.appendChild(loader);
 
     //=====Wallet Provider management=====
     //autoconnect to metamask if injected
@@ -160,7 +163,6 @@ export default class extends AbstractView {
       try {
         mintBtn.setAttribute("disabled", true);
         showLoader();
-        mintBtn.appendChild(loader);
 
         const response = await addMetaData(formData);
 
@@ -294,7 +296,7 @@ export default class extends AbstractView {
 
     function showLoader() {
       console.log("show");
-      loader.style.display = "block";
+      loader.style.display = "inline-block";
     }
 
     function hideLoader() {
