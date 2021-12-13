@@ -13,6 +13,21 @@ export default class extends AbstractView {
     //CODE
     console.log("Hello from view_classes/mint_form.js");
 
+    //
+    const name = document.querySelector(".mint-form-container #name");
+    const description = document.querySelector(".mint-form-container textarea");
+    const nftImage = document.getElementById("nftimage");
+    const mintBtn = document.getElementById("mintButton");
+    const selectedFileInput = document.getElementById("selectedFile");
+    const browseButton = document.getElementById("browseButton");
+    const DisconnectWalletBtn = document.getElementById("DisconnectWalletBtn");
+    const tokensButton = document.getElementById("tokensButton");
+    const loader = document.createElement("div");
+
+    loader.classList.add("loader");
+
+    mintBtn.appendChild(loader);
+
     //=====Wallet Provider management=====
     //autoconnect to metamask if injected
     let connectToMetamask = async function () {
@@ -111,6 +126,11 @@ export default class extends AbstractView {
           await mintContract.methods
             .mint(tokenURI)
             .send({ from: userAccountAddr, gas: 200000 });
+
+          name.value = "";
+          description.value = "";
+          nftImage.src = "./medias/default.png";
+          selectedFileInput.value = "";
         } catch (err) {
           console.error("mintToken error:" + err);
         }
@@ -130,66 +150,64 @@ export default class extends AbstractView {
       return contractAddr;
     };
 
-    let nftImage = "";
-
     //Add metadata to Mathom and mint token to blockchain
     const addMetadataAndMint = async () => {
-      const name = document.querySelector(".mint-form-container #name").value;
-      const description = document.querySelector(
-        ".mint-form-container textarea"
-      ).value;
-
       const formData = new FormData();
 
-      formData.append("file", nftImage);
-      formData.append("name", name);
-      formData.append("description", description);
+      formData.append("file", selectedFileInput.files[0]);
+      formData.append("name", name.value);
+      formData.append("description", description.value);
 
       try {
+        mintBtn.setAttribute("disabled", true);
+        showLoader();
+
         const response = await addMetaData(formData);
 
-        if (response.status === 201) {
+        if (response.status === 200) {
           const tokenURI = response.data.tokenURI;
 
           await mintTokenOnBlockchain(tokenURI);
+
+          mintBtn.disabled = false;
+          hideLoader();
         }
       } catch (error) {
         console.log(error);
+
+        mintBtn.disabled = false;
+        hideLoader();
       }
     };
 
     // Handle image upload
     const fileHandler = (e) => {
-      document.getElementById("nftimage").src = window.URL.createObjectURL(
-        e.target.files[0]
-      );
-      nftImage = e.target.files[0];
+      nftImage.src = window.URL.createObjectURL(e.target.files[0]);
     };
 
-    document.getElementById("selectedFile").onchange = fileHandler;
+    selectedFileInput.onchange = fileHandler;
 
-    document
-      .getElementById("browseButton")
-      .addEventListener("click", function () {
-        document.getElementById("selectedFile").click();
-      });
+    browseButton.addEventListener("click", function () {
+      document.getElementById("selectedFile").click();
+    });
+
+    mintBtn.onclick = () => {
+      if (formValidator()) {
+        addMetadataAndMint();
+      }
+    };
+
+    tokensButton.onclick = () => {
+      model.navigateTo("watch_assets");
+    };
 
     networkSelector();
-
-    document.getElementById("mintButton").onclick = addMetadataAndMint;
-
-    //setTimeout(()=>{mintTokenOnBlockchain("https://ipfs.infura.io/ipfs/QmazJuJMfmkMLFmwBzQcnkHmzy6b9WE3cQdJcTFStvq16M");}, 2000);
-
-    document.getElementById("tokensButton").addEventListener('click', function(){
-      model.navigateTo('watch_assets');
-    })
 
     walletProviderConnect();
 
     //=====NetworkSelector=====
     function networkSelector() {
       try {
-        console.log("networkselect");
         const networkSelector = document.querySelector(".network-selector");
         networkSelector.innerHTML = "";
         for (let network of Networks.networks) {
@@ -240,6 +258,42 @@ export default class extends AbstractView {
     function displayContractAddress(chainIDSelected) {
       let contractAddress = getMintContractAddrFromNetworkId(chainIDSelected);
       document.querySelector("#contractAddress").value = contractAddress;
+    }
+
+    function formValidator() {
+      var fields = ["name", "description", "file"];
+      var correctFields = 0;
+      var ready = false;
+      var i,
+        l = fields.length;
+      var fieldname;
+      for (i = 0; i < l; i++) {
+        fieldname = fields[i];
+        var errorType = fieldname + "Error";
+        if (document.forms["mintForm"][fieldname].value === "") {
+          document.getElementById(errorType).innerHTML =
+            "Please enter a valid " + fieldname + ".";
+        } else {
+          correctFields++;
+          if (document.getElementById(errorType).innerHTML != "") {
+            document.getElementById(errorType).innerHTML = " ";
+          }
+        }
+      }
+      if (correctFields == fields.length) {
+        ready = true;
+      }
+      return ready;
+    }
+
+    function showLoader() {
+      console.log("show");
+      loader.style.display = "inline-block";
+    }
+
+    function hideLoader() {
+      console.log("hide");
+      loader.style.display = "none";
     }
   }
 

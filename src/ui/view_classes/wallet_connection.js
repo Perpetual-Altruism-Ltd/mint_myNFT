@@ -30,6 +30,8 @@ export default class extends AbstractView {
     }
     //Load westron library & connect to wallet provider
     let walletProviderConnect = function(){
+      console.log("model.disconnectWallet");
+      console.log(model.disconnectWallet);
       //If user want to disconnect his wallet, call disconnect from westron lib
       //+ set wallet connection buttons listeners. This is required as the view (HTML content) has been loaded again
       if(model.disconnectWallet){
@@ -69,6 +71,7 @@ export default class extends AbstractView {
     });
 
     walletProviderConnect();
+    console.log("End of wallet_connnection");
   }
 
   async getHtml(callback){

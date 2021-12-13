@@ -29,17 +29,17 @@ const CONTRACTS = [
   {
     name: "Rinkeby",
     networkVersion: "4",
-    address: "0x5aFC791CeCeAd8185d9d0C190784E64262Bac275",
+    address: "0x884893350c528c636f4B4B31dC94e60d3F1Db2B0",
   },
   {
     name: "Kovan",
     networkVersion: "42",
-    address: "0x7cf01c77FCf173a69007A891beEc298D84235158",
+    address: "0xe5B4f556Bef9CF17A3445c46465d02aEFECaa1f3",
   },
   {
     name: "Moonbase Alpha",
     networkVersion: "1287",
-    address: "0x245b72b53ed93Cda919eD6e2C36bC888acFd6606",
+    address: "0xa70E0d53Be8b15A3190e7Ef30eFB0C24047946E9",
   },
 ];
 
@@ -711,11 +711,14 @@ Model.contractsData = CONTRACTS;
 Model.ABIS = ABIS;
 
 //Add event listener of disconnect button
-document.getElementById("DisconnectWalletBtn").addEventListener('click', function(){
-  //Indicate to wallet_connection that we want to disconnect wallet provider
-  Model.disconnectWallet = true;
-  Model.navigateTo('wallet_connection');
-})
+document
+  .getElementById("DisconnectWalletBtn")
+  .addEventListener("click", function () {
+    //Indicate to wallet_connection that we want to disconnect wallet provider
+    console.log("DisconnectWalletBtn");
+    Model.disconnectWallet = true;
+    Model.navigateTo("wallet_connection");
+  });
 
 /* Document has loaded -  run the router! */
 router();
