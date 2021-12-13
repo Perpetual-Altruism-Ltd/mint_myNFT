@@ -199,12 +199,6 @@ export default class extends AbstractView {
       }
     };
 
-    DisconnectWalletBtn.addEventListener("click", function () {
-      //Indicate to wallet_connection that we want to disconnect wallet provider
-      model.disconnectWallet = true;
-      model.navigateTo("wallet_connection");
-    });
-
     tokensButton.onclick = () => {
       model.navigateTo("watch_assets");
     };
