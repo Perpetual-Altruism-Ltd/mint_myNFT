@@ -25,7 +25,7 @@ const nftCardStruct = () => {
     </div>
 
     <div class="ControlContainer">
-      <button class="Button ColoredButton TransfertButton">Transfert</button>
+      <button class="Button ColoredButton transferButton">Transfer</button>
     </div>
 
   </div>`;
@@ -123,7 +123,7 @@ const nftCardStyle = () => {
   return cssStyle;/* Using htmlContent variable is to have the synthax coloration for HTML*/
 }
 
-async function promptSwitchChainThenTransfert(ID, worldAddr, tokenId, receiverAddr) {
+async function promptSwitchChainThentransfer(ID, worldAddr, tokenId, receiverAddr) {
   window.ethereum
     .request({
       method: "wallet_switchEthereumChain",
@@ -131,21 +131,21 @@ async function promptSwitchChainThenTransfert(ID, worldAddr, tokenId, receiverAd
     })
     .then(async (res) => {
       console.log("Network switched to " + ID + ".");
-      //Then call transfert
+      //Then call transfer
       try{
-        showModalMsg(true, "Please wait while the transfert is being processed.", '#363');
+        showModalMsg(true, "Please wait while the transfer is being processed.", '#363');
         let execStatus = await transferNFT(worldAddr, tokenId, receiverAddr);
         if(execStatus == 'rejected'){
-          showModalMsg(true, "To proceed the transfert, you need to accept it in your wallet provider. If you saw an error, please contact our team.", 'red');
+          showModalMsg(true, "To proceed the transfer, you need to accept it in your wallet provider. If you saw an error, please contact our team.", 'red');
         }else if(execStatus == 'error'){
           showModalMsg(true, "An error occured, please contact our team to get support.", 'red');
         }else if(execStatus == 'ok'){
-          showModalMsg(true, "The transfert was processed successfully.", 'green');
+          showModalMsg(true, "The transfer was processed successfully.", 'green');
         }else{
           showModalMsg(true, "An error occured, please contact our team to get support.", 'red');
         }
       }catch(err){
-        showModalMsg(true, "The transfert didn't work. Make sure the address is correct (without white spaces).", 'red');
+        showModalMsg(true, "The transfer didn't work. Make sure the address is correct (without white spaces).", 'red');
       }
 
     })
@@ -190,9 +190,9 @@ class NFTCard extends HTMLElement {
     let imgElem = this.shadowRoot.querySelector(".NFTImage");
     imgElem.src = '/site/medias/noMediaBg.png';
 
-    //SET transfert btn callback
-    let transfertBtn = this.shadowRoot.querySelector(".TransfertButton");
-    transfertBtn.addEventListener('click', (e) => {
+    //SET transfer btn callback
+    let transferBtn = this.shadowRoot.querySelector(".transferButton");
+    transferBtn.addEventListener('click', (e) => {
       //First show modal popup for user to input the destination address
       showModalPopup();
 
@@ -202,7 +202,7 @@ class NFTCard extends HTMLElement {
       //Retrieve chainId from uniqueId
       let chainId = getChainIdFromUniqueId(this.universe);
 
-      //If token data are all available, enable transfert
+      //If token data are all available, enable transfer
       if(chainId && this.world && this.tokenId){
         //Enable send btn of modal popup
         sendBtn.disabled = false;
@@ -218,7 +218,7 @@ class NFTCard extends HTMLElement {
           console.log("Sending to " + receiverAddr + " on chain " + chainId);
 
           //Once user click send, prompt switch network
-          promptSwitchChainThenTransfert(chainId, this.world, this.tokenId, receiverAddr);
+          promptSwitchChainThentransfer(chainId, this.world, this.tokenId, receiverAddr);
         });
       }else{
         //Corrupted token data: disable send btn of modal popup & display msg
