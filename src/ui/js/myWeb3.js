@@ -8,7 +8,7 @@ export let transferNFT = async function(contractAddr, tokenId, toAddr){
     contractAddr
   );
   //Call transfert
-  await transferToken(mintContract, tokenId, toAddr);
+  return await transferToken(mintContract, tokenId, toAddr);
 }
 
 export const loadWeb3 = async () => {
@@ -79,11 +79,19 @@ export const ownerOf = async (contract, tokenId) => {
   return owner;
 };
 
+//Returns 0 if transaction rejected by user; -1 if error occured, and 1 any other time.
 export const transferToken = async (contract, tokenId, to) => {
   await setDefaultAccount();
-  console.log(contract.methods);
+  
+  let returnVal = 'ok';
   await contract.methods
     .transferFrom(web3.eth.defaultAccount, to, tokenId)
     .send({ from: web3.eth.defaultAccount })
-    .once("receipt", (receipt) => console.log(receipt));
+    .once("receipt", (receipt) => console.log(receipt))
+    .catch((res) => {
+      //Catch cancel error code
+      if(res.code == 4001){returnVal = 'rejected';}
+      else {returnVal = 'error';}
+    });
+    return returnVal;
 };

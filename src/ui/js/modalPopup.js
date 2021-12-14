@@ -36,7 +36,6 @@ export let hideModalPopup = function(){
 }
 
 export let showModalMsg = function(show, txt, color){
-  console.log("Show error msg");
   let modalErrElem = document.querySelector("#ModalMsg");
   modalErrElem.innerHTML = txt;
   modalErrElem.style.display = show ? 'flex' : 'none';

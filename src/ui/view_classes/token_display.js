@@ -18,6 +18,9 @@ export default class extends AbstractView {
         console.log("Wallet connected");
         //Display connected addr + ogNet & prefill it
         model.displayConnectedWallet();
+
+        //Fetch all users tokens
+        fetchUserNFTCollection();
       };
 
       //Connecting to metmask if injected
@@ -52,6 +55,9 @@ export default class extends AbstractView {
         console.log("Westron already loaded, perfect.");
         //Display connected addr + ogNet & prefill it
         model.displayConnectedWallet();
+
+        //Fetch all users tokens
+        fetchUserNFTCollection();
       }
       //If metamask available: autoconnect without redirecting to connection page.
       else if (
@@ -110,11 +116,18 @@ export default class extends AbstractView {
         let response = await getUserNFTs(userAccount);
         if(response.status == 200){
           let nftList = response.data;
-          for(let nft of nftList){
-            let mdata = nft.metadata;
+          //If user has no NFT at all
+          if(nftList.httpStatusCode == 404){
+            document.getElementById("EmptyCollecMsg").style.display = "block";
+          }
+          //If user has at least one NFT, display them
+          else{
+            for(let nft of nftList){
+              let mdata = nft.metadata;
 
-            //Add nft to nft collection
-            addNFTToCollection(mdata.name, nft.universe, nft.world, nft.tokenId, mdata.image);
+              //Add nft to nft collection
+              addNFTToCollection(mdata.name, nft.universe, nft.world, nft.tokenId, mdata.image);
+            }
           }
         }else{
           console.log(response.status + ' : ' + response.statusText);
@@ -125,7 +138,6 @@ export default class extends AbstractView {
     }
 
     walletProviderConnect();
-    fetchUserNFTCollection();
 
 
     document.getElementById("MintFormBtn").addEventListener('click', function(){

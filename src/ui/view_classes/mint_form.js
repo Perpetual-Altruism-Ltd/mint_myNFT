@@ -125,7 +125,13 @@ export default class extends AbstractView {
 
           await mintContract.methods
             .mint(tokenURI)
-            .send({ from: userAccountAddr, gas: 200000 });
+            .send({ from: userAccountAddr, gas: 200000 })
+            .then((res) => {
+              showMintMessage("Minting processed successfully!", '#050');
+            })
+            .catch((err) => {
+              showMintMessage("Minting processed aborted. Please contact our team if the issue persist.", '#500');
+            });
 
           name.value = "";
           description.value = "";
@@ -294,6 +300,12 @@ export default class extends AbstractView {
     function hideLoader() {
       console.log("hide");
       loader.style.display = "none";
+    }
+
+    function showMintMessage(txt, clr){
+      let textElem =  document.getElementById("MintMsgElement");
+      textElem.innerHTML = txt;
+      textElem.style.color = clr;
     }
   }
 
