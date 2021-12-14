@@ -720,6 +720,9 @@ document
     Model.navigateTo("wallet_connection");
   });
 
+document.getElementById("ReportBugBtn").addEventListener('click', function() {
+  window.open("mailto:bridge@mynft.com?subject=Mint%20bug%20report");
+})
 /* Document has loaded -  run the router! */
 router();
 
