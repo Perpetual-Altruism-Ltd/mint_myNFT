@@ -303,12 +303,6 @@ export default class extends AbstractView {
       console.log("hide");
       loader.style.display = "none";
     }
-
-    document
-      .getElementById("testCloudkit")
-      .addEventListener("click", function () {
-        addMetaDataCloudkit();
-      });
   }
 
   async getHtml(callback) {
