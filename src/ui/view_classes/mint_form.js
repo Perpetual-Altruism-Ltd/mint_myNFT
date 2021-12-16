@@ -1,6 +1,6 @@
 import AbstractView from "./AbstractView.js";
 import Networks from "../js/networks.json" assert { type: "json" };
-import { addMetaData } from "../api/metaDataApiCalls.js";
+import { addMetaData, addMetaDataCloudkit } from "../api/metaDataApiCalls.js";
 
 export default class extends AbstractView {
   constructor(params) {
@@ -303,6 +303,12 @@ export default class extends AbstractView {
       console.log("hide");
       loader.style.display = "none";
     }
+
+    document
+      .getElementById("testCloudkit")
+      .addEventListener("click", function () {
+        addMetaDataCloudkit();
+      });
   }
 
   async getHtml(callback) {
