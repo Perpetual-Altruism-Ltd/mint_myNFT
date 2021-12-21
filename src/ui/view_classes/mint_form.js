@@ -1,5 +1,5 @@
 import AbstractView from "./AbstractView.js";
-import Networks from "../js/networks.json" assert { type: "json" };
+import Networks from "../config/networks.json" assert { type: "json" };
 import { addMetaData } from "../api/metaDataApiCalls.js";
 
 export default class extends AbstractView {
@@ -67,7 +67,7 @@ export default class extends AbstractView {
       //HANDLE WALLET CONNECTION
       //If web3 already injected
       if (!window.web3) {
-        model.navigateTo("/migration_finished");
+        model.navigateTo("/wallet_connection");
       } else if (model.isProviderLoaded()) {
         console.log("Westron already loaded, perfect.");
         //Display connected addr + ogNet & prefill it
@@ -101,8 +101,6 @@ export default class extends AbstractView {
       }
       //Redirect to wallet_connection page
       else {
-        document.getElementById("ConnectedAccountAddr").textContent =
-          "Wallet not connected. Redirect to connection page.";
         console.log("Westron lib not loaded. Redirecting to wallet_connection");
         model.navigateTo("wallet_connection");
         return; //To stop javascript execution in initCode() function
@@ -127,7 +125,13 @@ export default class extends AbstractView {
 
           await mintContract.methods
             .mint(tokenURI)
-            .send({ from: userAccountAddr, gas: 200000 });
+            .send({ from: userAccountAddr, gas: 200000 })
+            .then((res) => {
+              showMintMessage("Minting processed successfully!", '#050');
+            })
+            .catch((err) => {
+              showMintMessage("Minting processed aborted. Please contact our team if the issue persist.", '#500');
+            });
 
           name.value = "";
           description.value = "";
@@ -198,12 +202,6 @@ export default class extends AbstractView {
         addMetadataAndMint();
       }
     };
-
-    DisconnectWalletBtn.addEventListener("click", function () {
-      //Indicate to wallet_connection that we want to disconnect wallet provider
-      model.disconnectWallet = true;
-      model.navigateTo("wallet_connection");
-    });
 
     tokensButton.onclick = () => {
       model.navigateTo("watch_assets");
@@ -302,6 +300,12 @@ export default class extends AbstractView {
     function hideLoader() {
       console.log("hide");
       loader.style.display = "none";
+    }
+
+    function showMintMessage(txt, clr){
+      let textElem =  document.getElementById("MintMsgElement");
+      textElem.innerHTML = txt;
+      textElem.style.color = clr;
     }
   }
 

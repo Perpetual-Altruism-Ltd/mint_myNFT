@@ -23,9 +23,15 @@ body{
   color: #fff;
   margin-left: 2em;
 }
-
+#DisconnectWalletBtn{
+  margin-top: 0.5em;
+}
+#ReportBugBtn{
+  margin-bottom: 0.5em;
+}
 .WalletInfoBanner{
   position: absolute;
+  top: 0.5em;
   text-align: right;
   width: 98%;
 }

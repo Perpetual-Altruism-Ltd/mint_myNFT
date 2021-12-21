@@ -9,7 +9,7 @@ import {
 } from "./myWeb3.js";
 
 import MintContract from "./ABI/ImplERC721_metadata.json" assert { type: "json" };
-import Networks from "./networks.json" assert { type: "json" };
+import Networks from "../config/networks.json" assert { type: "json" };
 import { genRandomString } from "./utils.js";
 import ERC721 from "./ABI/ERC721.json" assert { type: "json" };
 import ERC165 from "./ABI/ERC165.json" assert { type: "json" };
@@ -21,6 +21,9 @@ import Model from "./model.js";
 import MintForm from "../view_classes/mint_form.js";
 import TokenDisplay from "../view_classes/token_display.js";
 import WalletConnection from "../view_classes/wallet_connection.js";
+
+//components
+import NFTCard from './nftCard.js';
 
 const CONTRACTS = [
   {
@@ -717,6 +720,9 @@ document
     Model.navigateTo("wallet_connection");
   });
 
+document.getElementById("ReportBugBtn").addEventListener('click', function() {
+  window.open("mailto:bridge@mynft.com?subject=Mint%20bug%20report");
+})
 /* Document has loaded -  run the router! */
 router();
 
@@ -730,6 +736,7 @@ window.addEventListener("popstate", function (event) {
   }
 });
 
+window.customElements.define('nft-card', NFTCard);
 // window.customElements.define( "my-nav-bar", myNavBar );
 // window.customElements.define( "mint-from", mintForm );
 // window.customElements.define( "nft-section", nftSection );
