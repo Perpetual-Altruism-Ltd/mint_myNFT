@@ -127,10 +127,13 @@ export default class extends AbstractView {
             .mint(tokenURI)
             .send({ from: userAccountAddr, gas: 200000 })
             .then((res) => {
-              showMintMessage("Minting processed successfully!", '#050');
+              showMintMessage("Minting processed successfully!", "#050");
             })
             .catch((err) => {
-              showMintMessage("Minting processed aborted. Please contact our team if the issue persist.", '#500');
+              showMintMessage(
+                "Minting processed aborted. Please contact our team if the issue persist.",
+                "#500"
+              );
             });
 
           name.value = "";
@@ -170,7 +173,7 @@ export default class extends AbstractView {
 
         const response = await addMetaData(formData);
 
-        if (response.status === 200) {
+        if (response.status === 201) {
           const tokenURI = response.data.tokenURI;
 
           await mintTokenOnBlockchain(tokenURI);
@@ -302,8 +305,8 @@ export default class extends AbstractView {
       loader.style.display = "none";
     }
 
-    function showMintMessage(txt, clr){
-      let textElem =  document.getElementById("MintMsgElement");
+    function showMintMessage(txt, clr) {
+      let textElem = document.getElementById("MintMsgElement");
       textElem.innerHTML = txt;
       textElem.style.color = clr;
     }
