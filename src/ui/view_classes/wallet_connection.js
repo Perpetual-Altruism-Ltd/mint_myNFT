@@ -9,7 +9,10 @@ export default class extends AbstractView {
   /*This function contain all the javascript code which will be executed when this view if selected */
   initCode(model){
     //Connect to metamask if available
-    var endLoadMetamaskConnection = async function () {
+    //NOPE! bad idea for people with multiple wallets
+    //If you do want to auto-connect to metamask, just check if window.ethereum exists -> do the connector stuff. make sure to inject it at window.ethereum.
+
+    /*var endLoadMetamaskConnection = async function () {
       //set callback function called when a wallet is connected
       connectionCallback = function(){
         console.log("Wallet connected");
@@ -27,7 +30,12 @@ export default class extends AbstractView {
               connector.disconnection();
           }
       }
-    }
+    }*/
+    //Probably a better idea to just hand this into the loadWestron function. I'll probably do that at some point.
+    window.connectionCallback = function(){
+      console.log("Wallet connected");
+      model.navigateTo('/mint_form');
+    };
     //Load westron library & connect to wallet provider
     let walletProviderConnect = function(){
       console.log("model.disconnectWallet");
@@ -35,7 +43,7 @@ export default class extends AbstractView {
       //If user want to disconnect his wallet, call disconnect from westron lib
       //+ set wallet connection buttons listeners. This is required as the view (HTML content) has been loaded again
       if(model.disconnectWallet){
-        connector.disconnection();
+        window.connector.disconnection();
         //set again buttons onClick functions
         setConnectWalletButtonsListeners();
 
@@ -46,11 +54,11 @@ export default class extends AbstractView {
       }
 
       //Once loadWestron started, wait for it to finish by polling. Timeout after 50ms*100 = 5sec
-      //Then auto connect to metamask if wallet exists
-      let cmptr = 0;
-      let pollWestronLoaded = async function(){
+      //Then auto connect to metamask if wallet exists NOTE: doesn't actually happen anymore.
+      /*let pollWestronLoaded = async function(){
+        let cmptr = 0;
         try{
-          await endLoadMetamaskConnection();
+          await loadWestron();
           console.log("Westron lib loaded after " + cmptr + " attempts.");
         }catch(err){
           cmptr++;
@@ -63,7 +71,7 @@ export default class extends AbstractView {
         }
       }
       //Start polling for westron to be loaded
-      pollWestronLoaded();
+      pollWestronLoaded();*/
     }
 
     document.getElementById("RequestWalletBtn").addEventListener('click', function(){

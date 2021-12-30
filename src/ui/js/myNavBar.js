@@ -14,7 +14,7 @@ class myNavBar extends HTMLElement {
     let account = "";
 
     setDefaultAccount().then(() => {
-      account = web3.eth.defaultAccount;
+      account = window.connector.web3.eth.defaultAccount;
 
       this.shadowRoot.querySelector("#account").innerHTML =
         account !== null ? `Address: ${account}` : "Address: N/A";

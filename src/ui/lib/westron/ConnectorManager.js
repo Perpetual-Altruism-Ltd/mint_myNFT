@@ -149,14 +149,15 @@ class MetamaskConnector extends ConnectorManager {
 				}
 			});
 
+			//MODIF BY NICO. Need to change chain during the migration process to retrieve data from origin and then from destination chain, so must not reload.
+			//This seems like a comment from the bridge page; shouldn't be too relevant here.
 			/*ethereum.on('chainChanged', (chainId) => {
 				// The metamask provider emits this event when the currently connected chain changes.
 				// All RPC requests are submitted to the currently connected chain. Therefore, it's critical to keep track
 				// of the current chain ID by listening for this event.
 				// We strongly recommend reloading the page on chain changed, unless you have good reason not to.
 				console.log("*** Event chainChanged emmited ***");
-				//MODIF BY NICO. Need to change chain during the migration process to retrieve data from origin and then from destination chain, so must not reload.
-				//window.location.reload();
+				window.location.reload();
 			});*/
 
 			ethereum.on('message', (providerMessage) => {
@@ -301,7 +302,7 @@ class BitskiConnector extends ConnectorManager {
 	}
 
 	async loadLibraries() {
-		await ConnectorManager.loadLibrary("https://cdn.jsdelivr.net/npm/bitski@0.11.0-beta.4/dist/bitski.min.js");
+		await ConnectorManager.loadLibrary("https://cdn.jsdelivr.net/npm/bitski@0.11.0-beta.5/dist/bitski.min.js");
 	}
 
 	async connection() {
@@ -340,7 +341,7 @@ class WalletConnectConnector extends ConnectorManager {
 	}
 
 	async loadLibraries() {
-		await ConnectorManager.loadLibrary("https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.4.1/dist/umd/index.min.js");
+		await ConnectorManager.loadLibrary("https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.6/dist/umd/index.min.js");
 	}
 
 	async connection() {
@@ -426,17 +427,24 @@ class FortmaticConnector extends ConnectorManager {
 class VenlyConnector extends ConnectorManager {
 
 	async loadLibraries() {
-		await ConnectorManager.loadLibrary("./web3-arkane-provider.js");
+		await ConnectorManager.loadLibrary("https://cdn.jsdelivr.net/npm/@venly/web3-provider@0.24/dist/web3-provider.js");
 	}
 
 	async connection() {
 
 		try {
-			const provider = await Arkane.createArkaneProviderEngine({
+			/*const provider = await Arkane.createArkaneProviderEngine({
 				clientId: 'myNFT',
 				environment: 'staging',
 				secretType: 'ETHEREUM'
+			});*/
+
+			const provider = await Venly.createProviderEngine({
+				clientId: 'myNFT',
+				environment: 'staging',
+				secretType:"ETHEREUM"
 			});
+			this.venly=provider;
 
 			this.web3 = new Web3(provider);
 			this.connected = true;
@@ -464,7 +472,7 @@ class VenlyConnector extends ConnectorManager {
 	}
 
 	async disconnection() {
-		Arkane.ac.auth.logout();
+		Venly.venlyConnect.logout();
 		this.init();
 	}
 
@@ -479,7 +487,7 @@ class CoinbaseConnector extends ConnectorManager {
 	}
 
 	async loadLibraries() {
-		await ConnectorManager.loadLibrary("./bundlewalletlink.js");
+		await ConnectorManager.loadLibrary("./bundlewalletlink2-2-10.js");
 	}
 
 	async connection() {

@@ -12,6 +12,7 @@ export default class extends AbstractView {
     //=====Wallet Provider management=====
     //autoconnect to metamask if injected
     let connectToMetamask = async function () {
+      /*
       //set callback function called when a wallet is connected
       //HERE connectionCallback undefined because provider not loaded yet
       connectionCallback = function () {
@@ -25,11 +26,11 @@ export default class extends AbstractView {
 
       //Connecting to metmask if injected
       if (
-        window.web3.__isMetaMaskShim__ &&
-        window.web3.currentProvider.selectedAddress != null
+        window.connector &&
+        window.connector.web3.currentProvider.selectedAddress != null
       ) {
-        if (connector == null || !connector.isConnected) {
-          connector = await ConnectorManager.instantiate(
+        if (window.connector == null || !window.connector.isConnected) {
+          window.connector = await ConnectorManager.instantiate(
             ConnectorManager.providers.METAMASK
           );
           connectedButton = connectMetaMaskButton;
@@ -45,14 +46,16 @@ export default class extends AbstractView {
         model.navigateTo("wallet_connection");
         return; //To stop javascript execution in initCode() function
       }
+      */
     };
     let walletProviderConnect = function () {
       //HANDLE WALLET CONNECTION
       //If web3 already injected
-      if (!window.web3) {
+      if (!model.isProviderLoaded()) {
         model.navigateTo("/wallet_connection");
-      } else if (model.isProviderLoaded()) {
-        console.log("Westron already loaded, perfect.");
+        console.log("PROVIDER NOT LOADED");
+      } else {
+        console.log("Connector already loaded, perfect.");
         //Display connected addr + ogNet & prefill it
         model.displayConnectedWallet();
 
@@ -60,7 +63,7 @@ export default class extends AbstractView {
         fetchUserNFTCollection();
       }
       //If metamask available: autoconnect without redirecting to connection page.
-      else if (
+      /*else if (
         window.web3.__isMetaMaskShim__ &&
         window.web3.currentProvider.selectedAddress != null
       ) {
@@ -90,7 +93,7 @@ export default class extends AbstractView {
         console.log("Westron lib not loaded. Redirecting to wallet_connection");
         model.navigateTo("wallet_connection");
         return; //To stop javascript execution in initCode() function
-      }
+      }*/
     };
 
     //Call to Mathom API to get the list of all NFT of the user
