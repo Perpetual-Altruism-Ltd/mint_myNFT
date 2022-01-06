@@ -303,6 +303,30 @@ export default class extends AbstractView {
       console.log("hide");
       loader.style.display = "none";
     }
+
+    document
+      .getElementById("testCloudkit")
+      .addEventListener("click", function () {
+        setMetadataCloudkit();
+      });
+
+    //Add metadata to Cloudkit
+    const setMetadataCloudkit = async () => {
+      const formData = new FormData();
+
+      formData.append("name", name.value);
+      formData.append("description", description.value);
+      formData.append("file", selectedFileInput.value);
+
+      try {
+        const response = await addMetaDataCloudkit(formData);
+
+        if (response.status === 200) {
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
   }
 
   async getHtml(callback) {
