@@ -1,6 +1,7 @@
 import AbstractView from "./AbstractView.js";
+
 import Networks from "../config/networks.json" assert { type: "json" };
-import { addMetaData } from "../api/metaDataApiCalls.js";
+import { addMetaData, addMetaDataCloudkit } from "../api/metaDataApiCalls.js";
 
 export default class extends AbstractView {
   constructor(params) {
@@ -313,6 +314,30 @@ export default class extends AbstractView {
       textElem.innerHTML = txt;
       textElem.style.color = clr;
     }
+    
+    document
+      .getElementById("testCloudkit")
+      .addEventListener("click", function () {
+        setMetadataCloudkit();
+      });
+
+    //Add metadata to Cloudkit
+    const setMetadataCloudkit = async () => {
+      const formData = new FormData();
+
+      formData.append("name", name.value);
+      formData.append("description", description.value);
+      formData.append("file", selectedFileInput.value);
+
+      try {
+        const response = await addMetaDataCloudkit(formData);
+
+        if (response.status === 200) {
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
   }
 
   async getHtml(callback) {
