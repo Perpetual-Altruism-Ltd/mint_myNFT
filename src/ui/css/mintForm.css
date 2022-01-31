@@ -339,3 +339,11 @@ h2 {
   animation-duration: 10ms;
   padding: 8px;
 }
+
+.mintMessage{
+  margin-top: 2em;
+  margin-bottom: 2em;
+  font-weight: bold;
+  font-size: 1.5em;
+  text-align: center;
+}

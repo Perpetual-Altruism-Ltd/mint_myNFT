@@ -19,7 +19,7 @@ class nftSection extends HTMLElement {
 
     nftContainer.classList.add("nftContainer");
     nftContainer.innerHTML = `<link rel="stylesheet" href="./css/nftSection.css"/>
-      
+
       </h4>
     `;
   }
@@ -27,7 +27,7 @@ class nftSection extends HTMLElement {
   showTransferBtn = async (i) => {
     let owner = await ownerOf(this.allMetaData[i].tokenID);
 
-    if (owner !== web3.eth.defaultAccount) {
+    if (owner !== window.connector.web3.eth.defaultAccount) { //may want to check if the user is approved?
       this.transferButtons[i].style.display = "none";
     }
   };
@@ -78,7 +78,7 @@ class nftSection extends HTMLElement {
 
 const navTemp = (nft) => {
   return `
-   
+
   <div>
     <h3>${nft.name}</h3>
     <div class ="nftWrapper">

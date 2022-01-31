@@ -1,3 +1,6 @@
+import {showModalPopup, hideModalPopup, showModalMsg} from "./modalPopup.js"
+import Networks from "../config/networks.json" assert { type: "json" };
+
 /*
 =====HTML ELEMENT=====
 To put inside the page where you want to display an NFT card
@@ -10,6 +13,7 @@ To use it: 2 steps
   In the app module of the website
 
 */
+import {transferNFT} from './myWeb3.js';
 
 const nftCardStruct = () => {
   let htmlContent = {};
@@ -21,9 +25,9 @@ const nftCardStruct = () => {
     </div>
 
     <div class="ControlContainer">
-      <button class="Button ColoredButton MintIOUButton">Mint IOU</button>
-      <button class="Button ColoredButton RedeemIOUButton">Redeem IOU</button>
+      <button class="Button ColoredButton transferButton">Transfer</button>
     </div>
+
   </div>`;
   return htmlContent.innerHTML;/* Using htmlContent variable is to have the synthax coloration for HTML*/
 }
@@ -115,25 +119,52 @@ const nftCardStyle = () => {
   .ColoredButton.Selected{
     background-image: linear-gradient(to right, #bf1560 0%, #bf1560 100%);
   }
-
-
 `;
   return cssStyle;/* Using htmlContent variable is to have the synthax coloration for HTML*/
 }
 
-/* Fill in the migration form with the nft data*/
-let fillInNftData = function(originUniverse, originWorld, originTokenId){
-  //Change the og network
-  selectDropDownOptionByUniqueID("OriginNetworkSelector", originUniverse);
-  //Prompt user to change network
-  triggerDropDownOnChange("OriginNetworkSelector");
-  //Fill in ogWorld & call change event
-  document.getElementById("inputOGContractAddress").value = originWorld;
-  document.getElementById("inputOGContractAddress").dispatchEvent(new Event("keyup"));
-  //Fill in tokenId & call change event
-  document.getElementById("inputOGTokenID").value = originTokenId;
-  document.getElementById("inputOGTokenID").dispatchEvent(new Event("keyup"));
+async function promptSwitchChainThentransfer(ID, worldAddr, tokenId, receiverAddr) {
+  window.ethereum
+    .request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: ID }], // chainId must be in hexadecimal numbers
+    })
+    .then(async (res) => {
+      console.log("Network switched to " + ID + ".");
+      //Then call transfer
+      try{
+        showModalMsg(true, "Please wait while the transfer is being processed.", '#363');
+        let execStatus = await transferNFT(worldAddr, tokenId, receiverAddr);
+        if(execStatus == 'rejected'){
+          showModalMsg(true, "To proceed the transfer, you need to accept it in your wallet provider. If you saw an error, please contact our team.", 'red');
+        }else if(execStatus == 'error'){
+          showModalMsg(true, "An error occured, please contact our team to get support.", 'red');
+        }else if(execStatus == 'ok'){
+          showModalMsg(true, "The transfer was processed successfully.", 'green');
+        }else{
+          showModalMsg(true, "An error occured, please contact our team to get support.", 'red');
+        }
+      }catch(err){
+        showModalMsg(true, "The transfer didn't work. Make sure the address is correct (without white spaces).", 'red');
+      }
 
+    })
+    .catch((res) => {
+      console.error("Network switch canceled or error: " + JSON.stringify(res));
+      console.log("Target network is: " + ID);
+      showModalMsg(true, "Make sure to accept your wallet provider's prompt to switch network.", 'red');
+    });
+}
+
+function getChainIdFromUniqueId(uniqueId){
+  let chainId = "";
+  Networks.networks.forEach((net, i) => {
+    if(net.uniqueId == uniqueId){
+      chainId = '0x' + net.chainID.toString(16);
+      return chainId;
+    }
+  });
+  return chainId;
 }
 
 class NFTCard extends HTMLElement {
@@ -158,29 +189,58 @@ class NFTCard extends HTMLElement {
     //Default look of a card
     let imgElem = this.shadowRoot.querySelector(".NFTImage");
     imgElem.src = '/site/medias/noMediaBg.png';
-    this.shadowRoot.querySelector(".RedeemIOUButton").disabled = true;
 
-    //Copy of this (class NFTCard) to access it inside click listeners where this is overriden by the button
-    let nftCardThis = this;
-    //SET MINT IOU BTN CLICK CALLBACK
-    let mintBtn = this.shadowRoot.querySelector(".MintIOUButton");
-    mintBtn.addEventListener('click', function(e) {
-      fillInNftData(nftCardThis.universe, nftCardThis.world, nftCardThis.tokenId);
+    //SET transfer btn callback
+    let transferBtn = this.shadowRoot.querySelector(".transferButton");
+    transferBtn.addEventListener('click', (e) => {
+      //First show modal popup for user to input the destination address
+      showModalPopup();
+
+      //Setup the "send" btn listener of the modal (Which is a different function for each NFT card)
+      let sendBtn = document.getElementById("ModalSendTokenBtn");
+
+      //Retrieve chainId from uniqueId
+      let chainId = getChainIdFromUniqueId(this.universe);
+
+      //If token data are all available, enable transfer
+      if(chainId && this.world && this.tokenId){
+        //Enable send btn of modal popup
+        sendBtn.disabled = false;
+
+        //Set the send btn callback function
+        sendBtn.addEventListener('click', (e) => {
+          //Hide error msg
+          showModalMsg(false, "");
+
+          //Retrieve recipient addr from input
+          let receiverAddr = document.getElementById("ReceiverAddrInput").value;
+
+          console.log("Sending to " + receiverAddr + " on chain " + chainId);
+
+          //Once user click send, prompt switch network
+          promptSwitchChainThentransfer(chainId, this.world, this.tokenId, receiverAddr);
+        });
+      }else{
+        //Corrupted token data: disable send btn of modal popup & display msg
+        sendBtn.disabled = true;
+        showModalMsg(true, "This token has corrupted informations. Please contact our team to get this issue solved.", 'red');
+      }
+
     });
 
-    //SET REDEEM IOU BTN CLICK CALLBACK
-    let redeemBtn = this.shadowRoot.querySelector(".RedeemIOUButton");
-    redeemBtn.addEventListener('click', function(e) {
-      //Indicate migrationForm js to prefill with redeem info
-      window.prefillRedeemForm = true;
-      //Prefill origin data in mig form
-      fillInNftData(nftCardThis.universe, nftCardThis.world, nftCardThis.tokenId);
-    });
+    window.onclick = (event) => {
+      if (event.target.id == "ModalBackground") {
+        hideModalPopup();
+      }
+    }
+
   }
+
+
 
   /* Register which attributes to watch for changes */
   static get observedAttributes() {
-    return ['name', 'imgsrc', 'is-iou', 'universe', 'world', 'tokenid'];
+    return ['name', 'imgsrc', 'universe', 'world', 'tokenid'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
@@ -193,13 +253,6 @@ class NFTCard extends HTMLElement {
     else if(attrName == 'imgsrc'){
       let imgElem = this.shadowRoot.querySelector(".NFTImage");
       imgElem.src = newVal;
-    }
-    //ENABLE or not REDEEM BTN
-    else if(attrName == 'is-iou'){
-      let btnDisabled;
-      if(newVal.toLowerCase() == 'true'){btnDisabled = false;}
-      else{btnDisabled = true;}
-      this.shadowRoot.querySelector(".RedeemIOUButton").disabled = btnDisabled;
     }
     //SAVE NFT DATA
     else if(attrName == 'universe'){//Origin universe unique ID

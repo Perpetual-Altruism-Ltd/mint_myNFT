@@ -1,5 +1,6 @@
 import AbstractView from "./AbstractView.js";
-import Networks from "../js/networks.json" assert { type: "json" };
+
+import Networks from "../config/networks.json" assert { type: "json" };
 import { addMetaData, addMetaDataCloudkit } from "../api/metaDataApiCalls.js";
 
 export default class extends AbstractView {
@@ -33,30 +34,23 @@ export default class extends AbstractView {
     let connectToMetamask = async function () {
       //set callback function called when a wallet is connected
       //HERE connectionCallback undefined because provider not loaded yet
-      connectionCallback = function () {
+      //just return to wallet_connection, model.displayConnectedWallet may misbehave on the wallet_connection page...
+      //if you wanna fix -> window.connectionCallback= [...]
+      //and then go fix up the walletConnection page so it checks before overwriting.
+      /*connectionCallback = function () {
         console.log("Wallet connected");
         //Display connected addr + ogNet & prefill it
         model.displayConnectedWallet();
-      };
+      };*/
 
-      //Connecting to metmask if injected
-      if (
-        window.web3.__isMetaMaskShim__ &&
-        window.web3.currentProvider.selectedAddress != null
-      ) {
-        if (connector == null || !connector.isConnected) {
-          connector = await ConnectorManager.instantiate(
-            ConnectorManager.providers.METAMASK
-          );
-          connectedButton = connectMetaMaskButton;
-          providerConnected = "MetaMask";
-          connection();
-        } else {
-          connector.disconnection();
-        }
-      } else {
+
+      //checking connector
+      if(model.isProviderLoaded()){
+        model.displayConnectedWallet();
+      }
+      else{
         console.log(
-          "Metamask not injected. Redirecting to wallet_connection page."
+          "Westron not loaded yet.. Redirecting to wallet_connection page."
         );
         model.navigateTo("wallet_connection");
         return; //To stop javascript execution in initCode() function
@@ -65,18 +59,20 @@ export default class extends AbstractView {
 
     let walletProviderConnect = function () {
       //HANDLE WALLET CONNECTION
-      //If web3 already injected
-      if (!window.web3) {
-        model.navigateTo("/migration_finished");
-      } else if (model.isProviderLoaded()) {
-        console.log("Westron already loaded, perfect.");
+      //If connector already injected
+      if (!model.isProviderLoaded()) {
+        console.log("walletProviderConnect failed");
+        model.navigateTo("/wallet_connection");
+      } else{
+        console.log("Connector already loaded, perfect.");
         //Display connected addr + ogNet & prefill it
         model.displayConnectedWallet();
       }
+
       //If metamask available: autoconnect without redirecting to connection page.
-      else if (
-        window.web3.__isMetaMaskShim__ &&
-        window.web3.currentProvider.selectedAddress != null
+      //was starting to try and fix this.... this is better left commented, and just handled by the connection page.
+      /*else if (
+        window.connector && window.connector!= null && !window.connector.connected
       ) {
         console.log("Metamask detected. Auto connect.");
         loadWestron();
@@ -101,12 +97,10 @@ export default class extends AbstractView {
       }
       //Redirect to wallet_connection page
       else {
-        document.getElementById("ConnectedAccountAddr").textContent =
-          "Wallet not connected. Redirect to connection page.";
         console.log("Westron lib not loaded. Redirecting to wallet_connection");
         model.navigateTo("wallet_connection");
         return; //To stop javascript execution in initCode() function
-      }
+      }*/
     };
 
     //=====Wallet provider interactions=====
@@ -114,20 +108,29 @@ export default class extends AbstractView {
     //It retrieve the current network from the wallet provider
     let mintTokenOnBlockchain = async function (tokenURI) {
       //retrieve data from provider & contract data
-      let selectedChain = web3.currentProvider.chainId;
-      let userAccountAddr = web3.currentProvider.selectedAddress;
+      let selectedChain = await window.connector.web3.eth.getChainId();
+      let userAccountAddr = window.connector.web3.currentProvider.selectedAddress;
       let mintContractAddr = getMintContractAddrFromNetworkId(selectedChain);
 
       if (mintContractAddr) {
         try {
-          let mintContract = new web3.eth.Contract(
+          let mintContract = new window.connector.web3.eth.Contract(
             model.ABIS.MintContract,
             mintContractAddr
           );
 
           await mintContract.methods
             .mint(tokenURI)
-            .send({ from: userAccountAddr, gas: 200000 });
+            .send({ from: userAccountAddr, gas: 200000 })
+            .then((res) => {
+              showMintMessage("Minting processed successfully!", "#050");
+            })
+            .catch((err) => {
+              showMintMessage(
+                "Minting processed aborted. Please contact our team if the issue persist.",
+                "#500"
+              );
+            });
 
           name.value = "";
           description.value = "";
@@ -166,7 +169,7 @@ export default class extends AbstractView {
 
         const response = await addMetaData(formData);
 
-        if (response.status === 200) {
+        if (response.status === 201) {
           const tokenURI = response.data.tokenURI;
 
           await mintTokenOnBlockchain(tokenURI);
@@ -199,22 +202,19 @@ export default class extends AbstractView {
       }
     };
 
-    DisconnectWalletBtn.addEventListener("click", function () {
-      //Indicate to wallet_connection that we want to disconnect wallet provider
-      model.disconnectWallet = true;
-      model.navigateTo("wallet_connection");
-    });
-
-    tokensButton.onclick = () => {
+    tokensButton.onclick = (e) => {
+      e.preventDefault();
       model.navigateTo("watch_assets");
     };
 
-    networkSelector();
-
     walletProviderConnect();
 
+    networkSelector();
+
+
     //=====NetworkSelector=====
-    function networkSelector() {
+    async function networkSelector() {
+      console.log("NetworkSelecting");
       try {
         const networkSelector = document.querySelector(".network-selector");
         networkSelector.innerHTML = "";
@@ -222,10 +222,12 @@ export default class extends AbstractView {
           const newOption = document.createElement("option");
           newOption.value = network.chainID;
           newOption.textContent = network.name || "N/A";
-          if (window.ethereum.networkVersion === `${network.chainID}`) {
+          let chainID=await window.connector.web3.eth.getChainId();
+          if (chainID == `${network.chainID}`) {// === -> == bc === wasn't working....? i'm guessing it just returns a different type.
             newOption.setAttribute("selected", "true");
             const defaultChainID = "0x" + network.chainID.toString(16);
-            displayContractAddress(defaultChainID);
+            console.log("Displaying");
+            displayContractAddress(defaultChainID); // should probably add a break in here. For now it's fine though.
           }
 
           networkSelector.appendChild(newOption);
@@ -243,8 +245,8 @@ export default class extends AbstractView {
       }
     }
 
-    function __promptSwitchChainDataToFetch(ID) {
-      window.ethereum
+    async function __promptSwitchChainDataToFetch(ID) {
+      window.connector.web3.currentProvider
         .request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: ID }], // chainId must be in hexadecimal numbers
@@ -257,9 +259,12 @@ export default class extends AbstractView {
             "Network switch canceled or error. (DataToFetch): " +
               JSON.stringify(res)
           );
-          let chainID = window.ethereum.networkVersion;
-          document.querySelector(".network-selector").value = chainID;
-          displayContractAddress(chainID);
+          window.connector.web3.getChainId().then((chainID)=>
+            {
+              document.querySelector(".network-selector").value = chainID;
+              displayContractAddress(chainID);
+            },
+          (badResponse)=>{});
         });
     }
 
@@ -304,6 +309,12 @@ export default class extends AbstractView {
       loader.style.display = "none";
     }
 
+    function showMintMessage(txt, clr) {
+      let textElem = document.getElementById("MintMsgElement");
+      textElem.innerHTML = txt;
+      textElem.style.color = clr;
+    }
+    
     document
       .getElementById("testCloudkit")
       .addEventListener("click", function () {

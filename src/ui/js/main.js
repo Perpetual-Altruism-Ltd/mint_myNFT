@@ -9,7 +9,7 @@ import {
 } from "./myWeb3.js";
 
 import MintContract from "./ABI/ImplERC721_metadata.json" assert { type: "json" };
-import Networks from "./networks.json" assert { type: "json" };
+import Networks from "../config/networks.json" assert { type: "json" };
 import { genRandomString } from "./utils.js";
 import ERC721 from "./ABI/ERC721.json" assert { type: "json" };
 import ERC165 from "./ABI/ERC165.json" assert { type: "json" };
@@ -21,6 +21,9 @@ import Model from "./model.js";
 import MintForm from "../view_classes/mint_form.js";
 import TokenDisplay from "../view_classes/token_display.js";
 import WalletConnection from "../view_classes/wallet_connection.js";
+
+//components
+import NFTCard from './nftCard.js';
 
 const CONTRACTS = [
   {
@@ -57,18 +60,27 @@ class App {
   __contracts = {};
 
   constructor() {
-    if (window.ethereum) {
-      window.ethereum.on("chainChanged", (event) => {
-        // console.log( 'Changed', event )
-        window.location.reload();
-      });
-    }
+    /*if (isProviderLoaded()) {
+      try{
+        window.connector.web3.currentProvider.on("chainChanged", (event) => {
+          // console.log( 'Changed', event )
+          window.location.reload();
+        });
+      }
+      catch (e){
+        console.log("Failed to set the reloader\n");
+        console.log(e);
+      }
+    }*/
+    //This can and will screw things up. Shouldn't really be refreshing on chain change
+    //if anything, it should be re-trying to get data from the contract.
+    //As it was, it would refresh the page... and reset the connector
   }
 
   async loadInitialization() {
     this.__handleLoading(true);
     try {
-      await loadWeb3();
+      //await loadWeb3();
       this.__initializeApp();
       this.loadMyNFTContract();
     } catch (error) {
@@ -85,14 +97,14 @@ class App {
     this.__handleLoading(true);
     try {
       // await loadWeb3();
-      const networkVersion = await web3.eth.net.getId();
+      const networkVersion = await window.connector.web3.getChainId();
       const contractObject = CONTRACTS.find(
         (i) => i.networkVersion === `${networkVersion}`
       );
       const abi = MyNftToken.output.abi;
       const address = contractObject ? contractObject.address : "";
 
-      this.__contract = await new web3.eth.Contract(abi, address);
+      this.__contract = await new window.connector.web3.eth.Contract(abi, address);
 
       document.querySelector(
         "#contractAddress"
@@ -176,7 +188,7 @@ class App {
         const newOption = document.createElement("option");
         newOption.value = network.chainID;
         newOption.textContent = network.name || "N/A";
-        if (window.ethereum.networkVersion === `${network.chainID}`) {
+        if (window.connector.web3.getChainId() === `${network.chainID}`) { // This maybe should be == not === ?
           newOption.setAttribute("selected", "true");
         }
 
@@ -363,7 +375,7 @@ class App {
 
   async __promptSwitchChainDataToFetch(ID) {
     try {
-      window.ethereum
+      window.connector.web3.currentProvider
         .request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: ID }], // chainId must be in hexadecimal numbers
@@ -388,12 +400,12 @@ class App {
     const genericSection = document.querySelector(".generic-section");
 
     //First we check that we have a connected wallet
-    if (window.ethereum == undefined) {
+    if (window.connector == undefined) {
       alert("Please connect to a Wallet first");
       return;
     }
 
-    if (window.web3.currentProvider.selectedAddress == null) {
+    if (!isProviderLoaded()) {
       alert("Please connect to a Wallet first");
       return;
     }
@@ -403,11 +415,11 @@ class App {
     // Instantiate an ERC721 contract at the address
     try {
       this.__contracts.originalChainERC721Contract =
-        new window.web3.eth.Contract(ABIS.ERC721, contractAddress);
+        new window.connector.web3.eth.Contract(ABIS.ERC721, contractAddress);
       this.__contracts.originalChainERC165Contract =
-        new window.web3.eth.Contract(ABIS.ERC165, contractAddress);
+        new window.connector.web3.eth.Contract(ABIS.ERC165, contractAddress);
       this.__contracts.originalChainERC721MetadataContract =
-        new window.web3.eth.Contract(ABIS.ERC721Metadata, contractAddress);
+        new window.connector.web3.eth.Contract(ABIS.ERC721Metadata, contractAddress);
     } catch (err) {
       genericSection.style.display = "none";
       console.log("Contract instantiation error: " + err);
@@ -514,7 +526,7 @@ class App {
     //Display or not the owner
     if (content) {
       document.getElementById("OGContractTokenOwner").innerHTML = `${content} ${
-        content === web3.eth.defaultAccount ? "<i>(Its you)</i>" : ""
+        content === window.connector.web3.eth.defaultAccount ? "<i>(Its you)</i>" : ""
       }`;
     }
   }
@@ -547,19 +559,19 @@ class App {
   //Return weather the og world is an ERC721 contract
   async __isContractERC721(contract, contractAddress) {
     //First we check that we have a connected wallet
-    if (window.ethereum == undefined) {
+    if (window.connector == undefined) {
       alert("Please connect to a Wallet first");
-      return false;
+      return;
     }
 
-    if (window.web3.currentProvider.selectedAddress == null) {
+    if (!isProviderLoaded() ) {
       alert("Please connect to a Wallet first");
-      return false;
+      return;
     }
 
     //Second, instanciate the contract through ERC165
     try {
-      contract = new window.web3.eth.Contract(ABIS.ERC165, contractAddress);
+      contract = new window.conector.web3.eth.Contract(ABIS.ERC165, contractAddress);
     } catch (err) {
       console.log("Contract ERC165 instantiation error: " + err);
       return false;
@@ -680,16 +692,20 @@ const navigateTo = (url) => {
 Model.navigateTo = navigateTo;
 //Return true if a provider is loaded.
 Model.isProviderLoaded = function () {
-  if (window.web3) {
-    let userAccount = window.web3.currentProvider.selectedAddress;
-    //If web3 already injected
-    return userAccount != "" && window.web3.eth != undefined;
-  } else {
-    return false;
+  try{
+    if (window.connector && window.connector.web3 && window.connector.isConnected) {
+      let userAccount = window.connector.web3.currentProvider.selectedAddress;
+      //If web3 already injected
+      return userAccount != "" && window.connector.web3.eth != undefined;
+    } else {
+      console.log("window.connector bad");
+      return false;
+    }
   }
+  catch(e){console.log(e);return false;}
 };
 Model.getConnectedAddr = function () {
-  return window.web3.currentProvider.selectedAddress;
+  return window.connector.web3.currentProvider.selectedAddress;
 };
 Model.displayConnectedWallet = function () {
   //Display user addr
@@ -717,6 +733,9 @@ document
     Model.navigateTo("wallet_connection");
   });
 
+document.getElementById("ReportBugBtn").addEventListener('click', function() {
+  window.open("mailto:bridge@mynft.com?subject=Mint%20bug%20report");
+})
 /* Document has loaded -  run the router! */
 router();
 
@@ -730,6 +749,7 @@ window.addEventListener("popstate", function (event) {
   }
 });
 
+window.customElements.define('nft-card', NFTCard);
 // window.customElements.define( "my-nav-bar", myNavBar );
 // window.customElements.define( "mint-from", mintForm );
 // window.customElements.define( "nft-section", nftSection );

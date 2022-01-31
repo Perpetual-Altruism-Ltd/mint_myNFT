@@ -35,7 +35,7 @@
   flex-flow: row wrap;
   gap: 2em 4em;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .CenteredCardLine{
