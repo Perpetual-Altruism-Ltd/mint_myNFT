@@ -14,12 +14,3 @@ export const addMetaData = async (body) => {
 
   return response;
 };
-
-export const addMetaDataCloudkit = async (body) => {
-  const response = await axios.post(
-    `http://localhost:4000/addNFTCloudkit`,
-    body
-  );
-
-  return response;
-};

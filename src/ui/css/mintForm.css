@@ -9,7 +9,7 @@
 .mint-form-buttons-container {
   display: flex;
   flex-direction: row;
-  gap: 25%;
+  gap: 28%;
   justify-content: flex-end;
 }
 
