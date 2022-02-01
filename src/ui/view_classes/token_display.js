@@ -108,8 +108,8 @@ export default class extends AbstractView {
     }
     let fetchUserNFTCollection = async function(){
       //Refresh user account addr
-      //let userAccount = model.getConnectedAddr();
-      let userAccount = '0x00';
+      let userAccount = model.getConnectedAddr();
+      //let userAccount = '0x00';
 
       //Sent request to mathom, to get list of NFT of the user
       try{
@@ -122,11 +122,18 @@ export default class extends AbstractView {
           }
           //If user has at least one NFT, display them
           else{
+            console.log(nftList);
             for(let nft of nftList){
               let mdata = nft.metadata;
+              console.log(mdata);
 
               //Add nft to nft collection
-              addNFTToCollection(mdata.name, nft.universe, nft.world, nft.tokenId, mdata.image);
+              if(mdata != undefined){
+                addNFTToCollection(mdata.name, nft.universe, nft.world, nft.tokenId, mdata.image);
+              }else{
+                addNFTToCollection("No name", nft.universe, nft.world, nft.tokenId, '');
+              }
+
             }
           }
         }else{

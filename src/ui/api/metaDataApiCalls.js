@@ -1,6 +1,6 @@
 export const getUserNFTs = async (userAddress) => {
   const respone = await axios.get(
-    `https://api.mynft.com/mathomhouse/publicKey/${userAddress}`
+    `https://api.mynft.com/mathomhouse/owner/${userAddress}`
   );
 
   return respone;
