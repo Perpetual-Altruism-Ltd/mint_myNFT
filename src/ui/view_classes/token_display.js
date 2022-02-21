@@ -1,5 +1,5 @@
-import AbstractView from './AbstractView.js';
-import {getUserNFTs} from '../api/metaDataApiCalls.js';
+import AbstractView from "./AbstractView.js";
+import { getUserNFTs } from "../api/metaDataApiCalls.js";
 
 export default class extends AbstractView {
   constructor(params) {
@@ -8,7 +8,7 @@ export default class extends AbstractView {
   }
 
   /*This function contain all the javascript code which will be executed when this view if selected */
-  initCode(model){
+  initCode(model) {
     //=====Wallet Provider management=====
     //autoconnect to metamask if injected
     let connectToMetamask = async function () {
@@ -97,55 +97,60 @@ export default class extends AbstractView {
     };
 
     //Call to Mathom API to get the list of all NFT of the user
-    let addNFTToCollection = function(name, universe, world, tokenId, imgSrc){
+    let addNFTToCollection = function (name, universe, world, tokenId, imgSrc) {
       let cont = document.getElementById("NFTCollectionContainer");
       let newNftCard = document.createElement("nft-card");
-      newNftCard.setAttribute('slot', "NFTElement");
-      newNftCard.setAttribute('name', name);
-      newNftCard.setAttribute('universe', universe);
-      newNftCard.setAttribute('world', world);
-      newNftCard.setAttribute('tokenid', tokenId);
-      newNftCard.setAttribute('imgsrc', imgSrc);
+      newNftCard.setAttribute("slot", "NFTElement");
+      newNftCard.setAttribute("name", name);
+      newNftCard.setAttribute("universe", universe);
+      newNftCard.setAttribute("world", world);
+      newNftCard.setAttribute("tokenid", tokenId);
+      newNftCard.setAttribute("imgsrc", imgSrc);
 
       cont.appendChild(newNftCard);
-    }
-    let fetchUserNFTCollection = async function(){
+    };
+    let fetchUserNFTCollection = async function () {
       //Refresh user account addr
-      //let userAccount = model.getConnectedAddr();
-      let userAccount = '0x00';
+      let userAccount = model.getConnectedAddr();
+      // let userAccount = '0x00';
 
       //Sent request to mathom, to get list of NFT of the user
-      try{
+      try {
         let response = await getUserNFTs(userAccount);
-        if(response.status == 200){
+        if (response.status == 200) {
           let nftList = response.data;
           //If user has no NFT at all
-          if(nftList.httpStatusCode == 404){
+          if (nftList.httpStatusCode == 404) {
             document.getElementById("EmptyCollecMsg").style.display = "block";
           }
           //If user has at least one NFT, display them
-          else{
-            for(let nft of nftList){
+          else {
+            for (let nft of nftList) {
               let mdata = nft.metadata;
 
               //Add nft to nft collection
-              addNFTToCollection(mdata.name, nft.universe, nft.world, nft.tokenId, mdata.image);
+              addNFTToCollection(
+                mdata.name,
+                nft.universe,
+                nft.world,
+                nft.tokenId,
+                mdata.image
+              );
             }
           }
-        }else{
-          console.log(response.status + ' : ' + response.statusText);
+        } else {
+          console.log(response.status + " : " + response.statusText);
         }
-      }catch(error){
+      } catch (error) {
         console.error(error);
       }
-    }
+    };
 
     walletProviderConnect();
 
-
-    document.getElementById("MintFormBtn").addEventListener('click', function(){
-      model.navigateTo('mint_form');
-    })
+    document.getElementById("MintFormBtn").addEventListener("click", function () {
+      model.navigateTo("mint_form");
+    });
   }
 
   async getHtml(callback) {

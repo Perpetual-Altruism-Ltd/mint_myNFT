@@ -42,15 +42,11 @@ export default class extends AbstractView {
         model.displayConnectedWallet();
       };*/
 
-
       //checking connector
-      if(model.isProviderLoaded()){
+      if (model.isProviderLoaded()) {
         model.displayConnectedWallet();
-      }
-      else{
-        console.log(
-          "Westron not loaded yet.. Redirecting to wallet_connection page."
-        );
+      } else {
+        console.log("Westron not loaded yet.. Redirecting to wallet_connection page.");
         model.navigateTo("wallet_connection");
         return; //To stop javascript execution in initCode() function
       }
@@ -62,7 +58,7 @@ export default class extends AbstractView {
       if (!model.isProviderLoaded()) {
         console.log("walletProviderConnect failed");
         model.navigateTo("/wallet_connection");
-      } else{
+      } else {
         console.log("Connector already loaded, perfect.");
         //Display connected addr + ogNet & prefill it
         model.displayConnectedWallet();
@@ -156,11 +152,15 @@ export default class extends AbstractView {
 
     //Add metadata to Mathom and mint token to blockchain
     const addMetadataAndMint = async () => {
+      const data = {
+        name: name.value,
+        description: description.value,
+      };
+
       const formData = new FormData();
 
       formData.append("file", selectedFileInput.files[0]);
-      formData.append("name", name.value);
-      formData.append("description", description.value);
+      formData.append("data", JSON.stringify(data));
 
       try {
         mintBtn.setAttribute("disabled", true);
@@ -210,7 +210,6 @@ export default class extends AbstractView {
 
     networkSelector();
 
-
     //=====NetworkSelector=====
     async function networkSelector() {
       console.log("NetworkSelecting");
@@ -221,8 +220,9 @@ export default class extends AbstractView {
           const newOption = document.createElement("option");
           newOption.value = network.chainID;
           newOption.textContent = network.name || "N/A";
-          let chainID=await window.connector.web3.eth.getChainId();
-          if (chainID == `${network.chainID}`) {// === -> == bc === wasn't working....? i'm guessing it just returns a different type.
+          let chainID = await window.connector.web3.eth.getChainId();
+          if (chainID == `${network.chainID}`) {
+            // === -> == bc === wasn't working....? i'm guessing it just returns a different type.
             newOption.setAttribute("selected", "true");
             const defaultChainID = "0x" + network.chainID.toString(16);
             console.log("Displaying");
@@ -255,15 +255,15 @@ export default class extends AbstractView {
         })
         .catch((res) => {
           console.error(
-            "Network switch canceled or error. (DataToFetch): " +
-              JSON.stringify(res)
+            "Network switch canceled or error. (DataToFetch): " + JSON.stringify(res)
           );
-          window.connector.web3.getChainId().then((chainID)=>
-            {
+          window.connector.web3.getChainId().then(
+            (chainID) => {
               document.querySelector(".network-selector").value = chainID;
               displayContractAddress(chainID);
             },
-          (badResponse)=>{});
+            (badResponse) => {}
+          );
         });
     }
 
